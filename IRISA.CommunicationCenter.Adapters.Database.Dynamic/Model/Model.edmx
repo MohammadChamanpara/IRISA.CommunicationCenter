@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Alias="Self" Provider="Oracle.DataAccess.Client" ProviderManifestToken="10.2" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ICC_CLIENT_TELEGRAMS" EntityType="Model.Store.ICC_CLIENT_TELEGRAMS" store:Type="Tables" Schema="ICC" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+        </EntityContainer>
+        <EntityType Name="ICC_CLIENT_TELEGRAMS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" Precision="18" />
+          <Property Name="TELEGRAM_ID" Type="number" Nullable="false" Precision="9" />
+          <Property Name="SOURCE" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="DESTINATION" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="SEND_TIME" Type="date" Nullable="false" />
+          <Property Name="PROCESSED" Type="number" Nullable="false" Precision="1" />
+          <Property Name="READY_FOR_CLIENT" Type="number" Nullable="false" Precision="1" />
+          <Property Name="BODY" Type="clob" />
+          <Property Name="TRANSFER_ID" Type="number" Precision="18" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="IccClientTelegrams" EntityType="Model.IccClientTelegram" />
+        </EntityContainer>
+        <EntityType Name="IccClientTelegram">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="TELEGRAM_ID" Type="Int32" Nullable="false" />
+          <Property Name="SOURCE" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="DESTINATION" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SEND_TIME" Type="DateTime" Nullable="false" />
+          <Property Name="PROCESSED" Type="Boolean" Nullable="false" />
+          <Property Name="READY_FOR_CLIENT" Type="Boolean" Nullable="false" />
+          <Property Name="BODY" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="TRANSFER_ID" Type="Int64" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="IccClientTelegrams">
+            <EntityTypeMapping TypeName="Model.IccClientTelegram">
+              <MappingFragment StoreEntitySet="ICC_CLIENT_TELEGRAMS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TELEGRAM_ID" ColumnName="TELEGRAM_ID" />
+                <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
+                <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
+                <ScalarProperty Name="SEND_TIME" ColumnName="SEND_TIME" />
+                <ScalarProperty Name="PROCESSED" ColumnName="PROCESSED" />
+                <ScalarProperty Name="READY_FOR_CLIENT" ColumnName="READY_FOR_CLIENT" />
+                <ScalarProperty Name="BODY" ColumnName="BODY" />
+                <ScalarProperty Name="TRANSFER_ID" ColumnName="TRANSFER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="Model.IccClientTelegram" Width="1.5" PointX="0.75" PointY="0.75" Height="2.7494921874999996" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

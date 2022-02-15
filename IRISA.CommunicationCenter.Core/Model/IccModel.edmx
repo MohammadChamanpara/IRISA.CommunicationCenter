@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="Oracle.DataAccess.Client" ProviderManifestToken="10.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ICC_EVENTS" EntityType="Model.Store.ICC_EVENTS" store:Type="Tables" Schema="ICC" />
+          <EntitySet Name="ICC_TRANSFERS" EntityType="Model.Store.ICC_TRANSFERS" store:Type="Tables" Schema="ICC" />
+        </EntityContainer>
+        <EntityType Name="ICC_EVENTS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" Precision="18" />
+          <Property Name="TIME" Type="date" Nullable="false" />
+          <Property Name="TYPE" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="TEXT" Type="varchar2" Nullable="false" />
+          <Property Name="STACK_TRACE" Type="varchar2" />
+        </EntityType>
+        <EntityType Name="ICC_TRANSFERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Nullable="false" Precision="18" />
+          <Property Name="SOURCE" Type="varchar2" MaxLength="20" />
+          <Property Name="DESTINATION" Type="varchar2" MaxLength="20" />
+          <Property Name="TELEGRAM_ID" Type="number" Precision="9" />
+          <Property Name="SENT" Type="number" Nullable="false" Precision="1" />
+          <Property Name="DROPPED" Type="number" Nullable="false" Precision="1" />
+          <Property Name="DROP_REASON" Type="varchar2" />
+          <Property Name="SEND_TIME" Type="date" Nullable="false" />
+          <Property Name="RECEIVE_TIME" Type="date" />
+          <Property Name="BODY" Type="clob" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IccEvents1" EntityType="Model.IccEvent" />
+          <EntitySet Name="IccTransfers" EntityType="Model.IccTransfer" />
+        </EntityContainer>
+        <EntityType Name="IccEvent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="TIME" Nullable="false" />
+          <Property Type="String" Name="TYPE" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TEXT" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STACK_TRACE" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="IccTransfer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" />
+          <Property Type="String" Name="SOURCE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DESTINATION" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="TELEGRAM_ID" />
+          <Property Type="Boolean" Name="SENT" Nullable="false" />
+          <Property Type="Boolean" Name="DROPPED" Nullable="false" />
+          <Property Type="String" Name="DROP_REASON" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="SEND_TIME" Nullable="false" />
+          <Property Type="DateTime" Name="RECEIVE_TIME" />
+          <Property Type="String" Name="BODY" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="IccEvents1">
+            <EntityTypeMapping TypeName="Model.IccEvent">
+              <MappingFragment StoreEntitySet="ICC_EVENTS">
+                <ScalarProperty Name="STACK_TRACE" ColumnName="STACK_TRACE" />
+                <ScalarProperty Name="TEXT" ColumnName="TEXT" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="TIME" ColumnName="TIME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IccTransfers">
+            <EntityTypeMapping TypeName="Model.IccTransfer">
+              <MappingFragment StoreEntitySet="ICC_TRANSFERS">
+                <ScalarProperty Name="BODY" ColumnName="BODY" />
+                <ScalarProperty Name="RECEIVE_TIME" ColumnName="RECEIVE_TIME" />
+                <ScalarProperty Name="SEND_TIME" ColumnName="SEND_TIME" />
+                <ScalarProperty Name="DROP_REASON" ColumnName="DROP_REASON" />
+                <ScalarProperty Name="DROPPED" ColumnName="DROPPED" />
+                <ScalarProperty Name="SENT" ColumnName="SENT" />
+                <ScalarProperty Name="TELEGRAM_ID" ColumnName="TELEGRAM_ID" />
+                <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
+                <ScalarProperty Name="SOURCE" ColumnName="SOURCE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="IccModel">
+        <EntityTypeShape EntityType="Model.IccEvent" Width="1.5" PointX="0.75" PointY="4.75" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="Model.IccTransfer" Width="1.5" PointX="2.75" PointY="4.75" Height="2.9417936197916674" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

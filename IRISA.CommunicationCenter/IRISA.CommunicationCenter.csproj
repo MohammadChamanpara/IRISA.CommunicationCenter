@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{1ABCDE9A-578C-4994-8565-AD2BEED6866E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>IRISA.CommunicationCenter</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>IRISA.CommunicationCenter</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IRISA.CommunicationCenter\IccEventStatus.cs" />
+    <Compile Include="IRISA.CommunicationCenter\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\PluginUserControl.Designer.cs">
+      <DependentUpon>PluginUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\SearchModels\IccEventSearchModel.cs" />
+    <Compile Include="IRISA.CommunicationCenter\SearchModels\ICCTransferSearchModel.cs" />
+    <Compile Include="IRISA.CommunicationCenter\TelegramViewerForm.Designer.cs">
+      <DependentUpon>TelegramViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\PluginUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\Program.cs" />
+    <Compile Include="IRISA.CommunicationCenter\TelegramViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IRISA.CommunicationCenter\UiSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IRISA.CommunicationCenter\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters.Base\IRISA.CommunicationCenter.Adapters.Base.csproj">
+      <Project>{9d450c6f-c172-485f-81e0-489e10ded04d}</Project>
+      <Name>IRISA.CommunicationCenter.Adapters.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco.csproj">
+      <Project>{349468f2-702b-4e21-ba9a-1799e5abeb5e}</Project>
+      <Name>IRISA.CommunicationCenter.Adapters.TcpIp.Wasco</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters\IRISA.CommunicationCenter.Adapters.csproj">
+      <Project>{8a4a2be7-9b27-40fc-a037-1579322d5e99}</Project>
+      <Name>IRISA.CommunicationCenter.Adapters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Core\IRISA.CommunicationCenter.Core.csproj">
+      <Project>{f7ec6e99-1d52-433d-b2dc-6a02a85bb733}</Project>
+      <Name>IRISA.CommunicationCenter.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IRISA\IRISA.csproj">
+      <Project>{56a6d708-c2bf-49be-a35c-e637528b5173}</Project>
+      <Name>IRISA</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\IRISA.CommunicationCenter.SearchModels.IccEventSearchModel.datasource" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
