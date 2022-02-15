@@ -39,15 +39,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRISA.CommunicationCenter.Adapters\BaseAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\ConnectionChangedEventHandler.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\IIccAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\ReceiveEventArgs.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\ReceiveEventHandler.cs" />
+    <Compile Include="IRISA.CommunicationCenter.Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter\FieldDefinition.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccTelegram.cs" />
     <Compile Include="IRISA.CommunicationCenter\NodeBase.cs" />

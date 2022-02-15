@@ -87,10 +87,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters.Base\IRISA.CommunicationCenter.Adapters.Base.csproj">
-      <Project>{9d450c6f-c172-485f-81e0-489e10ded04d}</Project>
-      <Name>IRISA.CommunicationCenter.Adapters.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco.csproj">
       <Project>{349468f2-702b-4e21-ba9a-1799e5abeb5e}</Project>
       <Name>IRISA.CommunicationCenter.Adapters.TcpIp.Wasco</Name>

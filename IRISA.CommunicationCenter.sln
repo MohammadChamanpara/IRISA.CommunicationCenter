@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA", "IRISA\IRISA.csproj", "{56A6D708-C2BF-49BE-A35C-E637528B5173}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters.Base", "IRISA.CommunicationCenter.Adapters.Base\IRISA.CommunicationCenter.Adapters.Base.csproj", "{9D450C6F-C172-485F-81E0-489E10DED04D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters", "IRISA.CommunicationCenter.Adapters\IRISA.CommunicationCenter.Adapters.csproj", "{8A4A2BE7-9B27-40FC-A037-1579322D5E99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Core", "IRISA.CommunicationCenter.Core\IRISA.CommunicationCenter.Core.csproj", "{F7EC6E99-1D52-433D-B2DC-6A02A85BB733}"
@@ -39,16 +37,6 @@ Global
 		{56A6D708-C2BF-49BE-A35C-E637528B5173}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{56A6D708-C2BF-49BE-A35C-E637528B5173}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{56A6D708-C2BF-49BE-A35C-E637528B5173}.Release|x86.ActiveCfg = Release|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{9D450C6F-C172-485F-81E0-489E10DED04D}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A4A2BE7-9B27-40FC-A037-1579322D5E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A4A2BE7-9B27-40FC-A037-1579322D5E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4A2BE7-9B27-40FC-A037-1579322D5E99}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

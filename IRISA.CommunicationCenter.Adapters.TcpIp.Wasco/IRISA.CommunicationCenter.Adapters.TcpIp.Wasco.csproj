@@ -39,10 +39,6 @@
     <Compile Include="IRISA.CommunicationCenter.Adapters\WascoTcpIpAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters.Base\IRISA.CommunicationCenter.Adapters.Base.csproj">
-      <Project>{9D450C6F-C172-485F-81E0-489E10DED04D}</Project>
-      <Name>IRISA.CommunicationCenter.Adapters.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters\IRISA.CommunicationCenter.Adapters.csproj">
       <Project>{8A4A2BE7-9B27-40FC-A037-1579322D5E99}</Project>
       <Name>IRISA.CommunicationCenter.Adapters</Name>
