@@ -29,7 +29,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return new EntityBusiness<Entities, IccEvent>(new Entities(this.ConnectionString));
+                return new EntityBusiness<Entities, IccEvent>(new Entities(ConnectionString));
             }
         }
         [Browsable(false)]
@@ -37,7 +37,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return new EntityBusiness<Entities, IccTransfer>(new Entities(this.ConnectionString));
+                return new EntityBusiness<Entities, IccTransfer>(new Entities(ConnectionString));
             }
         }
         [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
@@ -45,11 +45,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindStringValue("PersianDescription", "هسته مرکزی سیستم ارتباط");
+                return dllSettings.FindStringValue("PersianDescription", "هسته مرکزی سیستم ارتباط");
             }
             set
             {
-                this.dllSettings.SaveSetting("PersianDescription", value);
+                dllSettings.SaveSetting("PersianDescription", value);
             }
         }
         [DisplayName("شرح فارسی پروسه فعال ساز")]
@@ -57,11 +57,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
+                return dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
             }
             set
             {
-                this.dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
+                dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
             }
         }
         [DisplayName("شرح فارسی پروسه ارسال تلگرام")]
@@ -69,11 +69,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindStringValue("SendTimerPersianDescription", "پروسه ارسال تلگرام");
+                return dllSettings.FindStringValue("SendTimerPersianDescription", "پروسه ارسال تلگرام");
             }
             set
             {
-                this.dllSettings.SaveSetting("SendTimerPersianDescription", value);
+                dllSettings.SaveSetting("SendTimerPersianDescription", value);
             }
         }
         [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
@@ -81,11 +81,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindCharacterValue("BodySeparator", '$');
+                return dllSettings.FindCharacterValue("BodySeparator", '$');
             }
             set
             {
-                this.dllSettings.SaveSetting("BodySeparator", value);
+                dllSettings.SaveSetting("BodySeparator", value);
             }
         }
         [DisplayName("کاراکتر جدا کننده بین مقصد های تلگرام")]
@@ -93,11 +93,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindCharacterValue("DestinationSeparator", ',');
+                return dllSettings.FindCharacterValue("DestinationSeparator", ',');
             }
             set
             {
-                this.dllSettings.SaveSetting("DestinationSeparator", value);
+                dllSettings.SaveSetting("DestinationSeparator", value);
             }
         }
         [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
@@ -105,11 +105,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindIntValue("sendTimerInterval", 2000);
+                return dllSettings.FindIntValue("sendTimerInterval", 2000);
             }
             set
             {
-                this.dllSettings.SaveSetting("sendTimerInterval", value);
+                dllSettings.SaveSetting("sendTimerInterval", value);
             }
         }
         [DisplayName("دوره زمانی فعال نمودن پروسه های متوقف شده بر حسب میلی ثانیه")]
@@ -117,11 +117,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindIntValue("activatorTimerInterval", 20000);
+                return dllSettings.FindIntValue("activatorTimerInterval", 20000);
             }
             set
             {
-                this.dllSettings.SaveSetting("activatorTimerInterval", value);
+                dllSettings.SaveSetting("activatorTimerInterval", value);
             }
         }
         [DisplayName("رشته اتصال به پایگاه داده")]
@@ -129,11 +129,11 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.FindConnectionString();
+                return dllSettings.FindConnectionString();
             }
             set
             {
-                this.dllSettings.SaveConnectionString(value);
+                dllSettings.SaveConnectionString(value);
             }
         }
         [Category("ReadOnly"), DisplayName("وضعیت اجرای پروسه")]
@@ -147,7 +147,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.Assembly.AssemblyName();
+                return dllSettings.Assembly.AssemblyName();
             }
         }
         [Category("ReadOnly"), DisplayName("ورژن برنامه")]
@@ -155,7 +155,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.Assembly.AssemblyVersion();
+                return dllSettings.Assembly.AssemblyVersion();
             }
         }
         [Category("ReadOnly"), DisplayName("آدرس فایل")]
@@ -163,7 +163,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                return this.dllSettings.Assembly.Location;
+                return dllSettings.Assembly.Location;
             }
         }
         private void sendTimer_DoWork(object sender, DoWorkEventArgs e)
@@ -226,9 +226,9 @@ namespace IRISA.CommunicationCenter
             {
                 try
                 {
-                    IccTelegram iccTelegram = this.IccTransferToIccTelegram(transfer);
+                    IccTelegram iccTelegram = IccTransferToIccTelegram(transfer);
 
-                    this.ValidationForSend(iccTelegram);
+                    ValidationForSend(iccTelegram);
 
                     iccAdapter.Send(iccTelegram);
 
@@ -236,27 +236,27 @@ namespace IRISA.CommunicationCenter
                     transfer.DROP_REASON = null;
                     transfer.RECEIVE_TIME = new DateTime?(DateTime.Now);
                     transfer.SENT = true;
-                    this.Transfers.Edit(transfer);
+                    Transfers.Edit(transfer);
 
-                    this.eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
+                    eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
                     {
                             transfer.ID
                     });
 
-                    if (this.TelegramSent != null)
+                    if (TelegramSent != null)
                     {
-                        this.TelegramSent(new IccCoreTelegramEventArgs(iccTelegram));
+                        TelegramSent(new IccCoreTelegramEventArgs(iccTelegram));
                     }
                 }
                 catch (Exception ex)
                 {
                     if (transfer.SENT == false)
                     {
-                        this.DropTelegram(transfer, ex, true);
+                        DropTelegram(transfer, ex, true);
                     }
                     else
                     {
-                        this.eventLogger.LogException(ex);
+                        eventLogger.LogException(ex);
                     }
                 }
             }
@@ -274,10 +274,10 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                this.sendTimer.Awake();
-                if (this.connectedClients != null)
+                sendTimer.Awake();
+                if (connectedClients != null)
                 {
-                    foreach (IIccAdapter current in this.connectedClients)
+                    foreach (IIccAdapter current in connectedClients)
                     {
                         current.AwakeTimers();
                     }
@@ -285,8 +285,8 @@ namespace IRISA.CommunicationCenter
             }
             catch (Exception exception)
             {
-                this.eventLogger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
-                this.eventLogger.LogException(exception);
+                eventLogger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
+                eventLogger.LogException(exception);
             }
         }
         private void client_OnReceive(ReceiveEventArgs e)
@@ -299,19 +299,19 @@ namespace IRISA.CommunicationCenter
                 {
                     if (!e.Successful)
                     {
-                        this.DropTelegram(e.IccTelegram, e.FailException, false);
+                        DropTelegram(e.IccTelegram, e.FailException, false);
                     }
                     else
                     {
-                        foreach (IccTelegram current in this.DuplicateTelegramByDestination(e.IccTelegram))
+                        foreach (IccTelegram current in DuplicateTelegramByDestination(e.IccTelegram))
                         {
-                            this.QueueTelegram(current);
+                            QueueTelegram(current);
                         }
                     }
                 }
                 catch (Exception dropException)
                 {
-                    this.DropTelegram(e.IccTelegram, dropException, false);
+                    DropTelegram(e.IccTelegram, dropException, false);
                 }
             }
             finally
@@ -326,99 +326,99 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                this.connectedClients = new List<IIccAdapter>();
-                this.dllSettings = new DLLSettings<IccCore>();
-                this.eventLogger.DbLoggerEnabled = true;
-                if (!this.Transfers.Connected)
+                connectedClients = new List<IIccAdapter>();
+                dllSettings = new DLLSettings<IccCore>();
+                eventLogger.DbLoggerEnabled = true;
+                if (!Transfers.Connected)
                 {
-                    this.eventLogger.DbLoggerEnabled = false;
+                    eventLogger.DbLoggerEnabled = false;
                 }
                 else
                 {
-                    this.eventLogger.LogInfo("اجرای {0} آغاز شد.", new object[]
+                    eventLogger.LogInfo("اجرای {0} آغاز شد.", new object[]
                     {
-                        this.PersianDescription
+                        PersianDescription
                     });
-                    this.LoadClients();
-                    if (this.sendTimer != null)
+                    LoadClients();
+                    if (sendTimer != null)
                     {
-                        this.sendTimer.Stop();
+                        sendTimer.Stop();
                     }
-                    this.sendTimer = new IrisaBackgroundTimer();
-                    this.sendTimer.Interval = this.SendTimerInterval;
-                    this.sendTimer.DoWork += new DoWorkEventHandler(this.sendTimer_DoWork);
-                    this.sendTimer.PersianDescription = this.SendTimerPersianDescription + " در " + this.PersianDescription;
-                    this.sendTimer.EventLogger = this.eventLogger;
-                    this.sendTimer.Start();
-                    if (this.activatorTimer != null)
+                    sendTimer = new IrisaBackgroundTimer();
+                    sendTimer.Interval = SendTimerInterval;
+                    sendTimer.DoWork += new DoWorkEventHandler(sendTimer_DoWork);
+                    sendTimer.PersianDescription = SendTimerPersianDescription + " در " + PersianDescription;
+                    sendTimer.EventLogger = eventLogger;
+                    sendTimer.Start();
+                    if (activatorTimer != null)
                     {
-                        this.activatorTimer.Stop();
+                        activatorTimer.Stop();
                     }
-                    this.activatorTimer = new IrisaBackgroundTimer();
-                    this.activatorTimer.Interval = this.ActivatorTimerInterval;
-                    this.activatorTimer.DoWork += new DoWorkEventHandler(this.activatorTimer_DoWork);
-                    this.activatorTimer.PersianDescription = this.ActivatorTimerPersianDescription + " در " + this.PersianDescription;
-                    this.activatorTimer.EventLogger = this.eventLogger;
-                    this.activatorTimer.Start();
-                    this.Started = true;
+                    activatorTimer = new IrisaBackgroundTimer();
+                    activatorTimer.Interval = ActivatorTimerInterval;
+                    activatorTimer.DoWork += new DoWorkEventHandler(activatorTimer_DoWork);
+                    activatorTimer.PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription;
+                    activatorTimer.EventLogger = eventLogger;
+                    activatorTimer.Start();
+                    Started = true;
                 }
             }
             catch (Exception exception)
             {
-                this.Started = false;
-                this.eventLogger.LogException(exception);
+                Started = false;
+                eventLogger.LogException(exception);
             }
         }
         public void Stop()
         {
-            if (this.sendTimer != null)
+            if (sendTimer != null)
             {
-                this.sendTimer.Stop();
+                sendTimer.Stop();
             }
-            if (this.activatorTimer != null)
+            if (activatorTimer != null)
             {
-                this.activatorTimer.Stop();
+                activatorTimer.Stop();
             }
-            foreach (IIccAdapter current in this.connectedClients)
+            foreach (IIccAdapter current in connectedClients)
             {
                 current.Stop();
             }
-            if (this.Started)
+            if (Started)
             {
-                this.eventLogger.LogInfo("اجرای {0} خاتمه یافت.", new object[]
+                eventLogger.LogInfo("اجرای {0} خاتمه یافت.", new object[]
                 {
-                    this.PersianDescription
+                    PersianDescription
                 });
             }
-            this.Started = false;
+            Started = false;
         }
         private void CheckDataBaseConnection()
         {
-            if (!this.Transfers.Connected)
+            if (!Transfers.Connected)
             {
                 throw HelperMethods.CreateException("برنامه قادر به دسترسی به پایگاه داده {0} نمی باشد", new object[]
                 {
-                    this.PersianDescription
+                    PersianDescription
                 });
             }
         }
         private void LoadClients()
         {
-            this.connectedClients = HelperMethods.LoadPlugins<IIccAdapter>();
-            if (this.connectedClients.Count == 0)
+            connectedClients = HelperMethods.LoadPlugins<IIccAdapter>();
+            if (connectedClients.Count == 0)
             {
-                this.eventLogger.LogWarning("کلاینتی برای اتصال یافت نشد.", new object[0]);
+                eventLogger.LogWarning("کلاینتی برای اتصال یافت نشد.", new object[0]);
             }
-            foreach (IIccAdapter current in this.connectedClients)
+            foreach (IIccAdapter current in connectedClients)
             {
                 try
                 {
-                    current.Receive += new ReceiveEventHandler(this.client_OnReceive);
-                    current.Start(this.eventLogger);
+                    current.Receive += new ReceiveEventHandler(client_OnReceive);
+                    current.Start(eventLogger);
                 }
                 catch (Exception exception)
                 {
-                    this.eventLogger.LogException(exception);
+                    eventLogger.LogException(exception);
                 }
             }
         }
@@ -429,7 +429,7 @@ namespace IRISA.CommunicationCenter
                 throw HelperMethods.CreateException("مقصد تلگرام مشخص نشده است.", new object[0]);
             }
             IEnumerable<IIccAdapter> source =
-                from c in this.connectedClients
+                from c in connectedClients
                 where c.Name == iccTelegram.Destination
                 select c;
             if (source.Count<IIccAdapter>() == 0)
@@ -443,7 +443,7 @@ namespace IRISA.CommunicationCenter
         }
         private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)
         {
-            this.DropTelegram(this.IccTelegramToIccTransfer(iccTelegram), dropException, existingRecord);
+            DropTelegram(IccTelegramToIccTransfer(iccTelegram), dropException, existingRecord);
         }
         private void DropTelegram(IccTransfer iccTransfer, Exception dropException, bool existingRecord)
         {
@@ -455,30 +455,30 @@ namespace IRISA.CommunicationCenter
                     Monitor.Enter(this, ref flag);
                     if (!(dropException is IrisaException))
                     {
-                        this.eventLogger.LogException(dropException);
+                        eventLogger.LogException(dropException);
                     }
                     iccTransfer.SENT = false;
                     iccTransfer.DROPPED = true;
                     iccTransfer.DROP_REASON = dropException.MostInnerException().Message;
                     if (existingRecord)
                     {
-                        this.Transfers.Edit(iccTransfer);
+                        Transfers.Edit(iccTransfer);
                     }
                     else
                     {
-                        this.Transfers.Create(iccTransfer);
+                        Transfers.Create(iccTransfer);
                         iccTransfer = (
-                            from t in this.Transfers.GetAll()
+                            from t in Transfers.GetAll()
                             orderby t.ID descending
                             select t).First<IccTransfer>();
                     }
-                    this.eventLogger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
+                    eventLogger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
                     {
                         iccTransfer.ID
                     });
-                    if (this.TelegramDropped != null)
+                    if (TelegramDropped != null)
                     {
-                        this.TelegramDropped(new IccCoreTelegramEventArgs(this.IccTransferToIccTelegram(iccTransfer)));
+                        TelegramDropped(new IccCoreTelegramEventArgs(IccTransferToIccTelegram(iccTransfer)));
                     }
                 }
                 finally
@@ -491,7 +491,7 @@ namespace IRISA.CommunicationCenter
             }
             catch (Exception exception)
             {
-                this.eventLogger.LogException(exception);
+                eventLogger.LogException(exception);
             }
         }
         private void QueueTelegram(IccTelegram iccTelegram)
@@ -499,34 +499,34 @@ namespace IRISA.CommunicationCenter
             bool flag = false;
             try
             {
-                IccTransfer iccTransfer = this.IccTelegramToIccTransfer(iccTelegram);
+                IccTransfer iccTransfer = IccTelegramToIccTransfer(iccTelegram);
                 iccTransfer.DROPPED = false;
                 iccTransfer.DROP_REASON = null;
                 iccTransfer.SENT = false;
-                this.Transfers.Create(iccTransfer);
+                Transfers.Create(iccTransfer);
                 flag = true;
                 iccTransfer = (
-                    from t in this.Transfers.GetAll()
+                    from t in Transfers.GetAll()
                     orderby t.ID descending
                     select t).First<IccTransfer>();
-                this.eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
+                eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
                     iccTransfer.ID
                 });
-                if (this.TelegramQueued != null)
+                if (TelegramQueued != null)
                 {
-                    this.TelegramQueued(new IccCoreTelegramEventArgs(iccTelegram));
+                    TelegramQueued(new IccCoreTelegramEventArgs(iccTelegram));
                 }
             }
             catch (Exception ex)
             {
                 if (!flag)
                 {
-                    this.DropTelegram(iccTelegram, ex, false);
+                    DropTelegram(iccTelegram, ex, false);
                 }
                 else
                 {
-                    this.eventLogger.LogException(ex);
+                    eventLogger.LogException(ex);
                 }
             }
         }
@@ -538,7 +538,7 @@ namespace IRISA.CommunicationCenter
             iccTelegram.TransferId = iccTransfer.ID;
             iccTelegram.SendTime = iccTransfer.SEND_TIME;
             iccTelegram.Source = iccTransfer.SOURCE;
-            iccTelegram.SetBodyString(iccTransfer.BODY, this.BodySeparator);
+            iccTelegram.SetBodyString(iccTransfer.BODY, BodySeparator);
             return iccTelegram;
         }
         public IccTransfer IccTelegramToIccTransfer(IccTelegram iccTelegram)
@@ -549,7 +549,7 @@ namespace IRISA.CommunicationCenter
                 SOURCE = iccTelegram.Source,
                 DESTINATION = iccTelegram.Destination,
                 SEND_TIME = iccTelegram.SendTime,
-                BODY = iccTelegram.GetBodyString(this.BodySeparator)
+                BODY = iccTelegram.GetBodyString(BodySeparator)
             };
         }
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)
@@ -557,7 +557,7 @@ namespace IRISA.CommunicationCenter
             List<IccTelegram> list = new List<IccTelegram>();
             string[] array = iccTelegram.Destination.Split(new char[]
             {
-                this.DestinationSeparator
+                DestinationSeparator
             });
             for (int i = 0; i < array.Length; i++)
             {
