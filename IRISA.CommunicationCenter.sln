@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters.TcpIp.Wasco", "IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco.csproj", "{349468F2-702B-4E21-BA9A-1799E5ABEB5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Core.Tests", "IRISA.CommunicationCenter.Core.Tests\IRISA.CommunicationCenter.Core.Tests.csproj", "{31B7C6D2-190E-4319-891B-14F15F8C7FC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{349468F2-702B-4E21-BA9A-1799E5ABEB5E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{349468F2-702B-4E21-BA9A-1799E5ABEB5E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{349468F2-702B-4E21-BA9A-1799E5ABEB5E}.Release|x86.ActiveCfg = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Debug|x86.Build.0 = Debug|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|x86.ActiveCfg = Release|Any CPU
+		{31B7C6D2-190E-4319-891B-14F15F8C7FC7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
