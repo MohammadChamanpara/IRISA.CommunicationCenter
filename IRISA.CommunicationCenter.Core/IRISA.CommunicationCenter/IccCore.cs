@@ -179,7 +179,7 @@ namespace IRISA.CommunicationCenter
             var telegramGroups = GroupTelegramsByDestination(telegrams);
 
             foreach (var list in telegramGroups)
-                Task.Run(() => SendTelegramsToADestination(list));
+                Task.Run(() => SendTelegramsToADestination(list, connectedClients));
         }
 
         public HashSet<long> AddTelegramsToProcessingList(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
