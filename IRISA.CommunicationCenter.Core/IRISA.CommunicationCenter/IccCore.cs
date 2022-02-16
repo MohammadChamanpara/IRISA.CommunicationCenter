@@ -21,9 +21,9 @@ namespace IRISA.CommunicationCenter
         private IrisaBackgroundTimer activatorTimer;
         private DLLSettings<IccCore> dllSettings;
         public IccEventLogger eventLogger = new IccEventLogger();
-        public event IccCore.IccCoreTelegramEventHandler TelegramQueued;
-        public event IccCore.IccCoreTelegramEventHandler TelegramSent;
-        public event IccCore.IccCoreTelegramEventHandler TelegramDropped;
+        public event IccCoreTelegramEventHandler TelegramQueued;
+        public event IccCoreTelegramEventHandler TelegramSent;
+        public event IccCoreTelegramEventHandler TelegramDropped;
         [Browsable(false)]
         public EntityBusiness<Entities, IccEvent> Events
         {
