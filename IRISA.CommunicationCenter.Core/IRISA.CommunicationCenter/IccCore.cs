@@ -182,7 +182,7 @@ namespace IRISA.CommunicationCenter
                 Task.Run(() => SendTelegramsToADestination(list));
         }
 
-        private HashSet<long> AddTelegramsToProcessingList(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
+        public HashSet<long> AddTelegramsToProcessingList(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
         {
             processingTelegrams.UnionWith(telegrams.Select(x => x.ID));
             return processingTelegrams;
@@ -204,7 +204,7 @@ namespace IRISA.CommunicationCenter
                 .ToList();
         }
 
-        private static List<List<IccTransfer>> GroupTelegramsByDestination(List<IccTransfer> telegrams)
+        public List<List<IccTransfer>> GroupTelegramsByDestination(List<IccTransfer> telegrams)
         {
             return telegrams
                 .GroupBy(x => x.DESTINATION)
@@ -212,12 +212,12 @@ namespace IRISA.CommunicationCenter
                 .ToList();
         }
 
-        private void SendTelegramsToADestination(List<IccTransfer> telegrams)
+        public void SendTelegramsToADestination(List<IccTransfer> telegrams, List<IIccAdapter> adapters)
         {
             if (telegrams.Count == 0)
                 return;
 
-            IIccAdapter iccAdapter = GetDestinationAdapter(connectedClients, telegrams.First().DESTINATION);
+            IIccAdapter iccAdapter = GetDestinationAdapter(adapters, telegrams.First().DESTINATION);
 
             if (!iccAdapter.Connected)
                 return;
@@ -228,7 +228,7 @@ namespace IRISA.CommunicationCenter
                 {
                     IccTelegram iccTelegram = IccTransferToIccTelegram(transfer);
 
-                    ValidationForSend(iccTelegram);
+                    ValidateTelegram(iccTelegram);
 
                     iccAdapter.Send(iccTelegram);
 
@@ -422,21 +422,22 @@ namespace IRISA.CommunicationCenter
                 }
             }
         }
-        private void ValidationForSend(IccTelegram iccTelegram)
+        private void ValidateTelegram(IccTelegram iccTelegram)
         {
             if (!iccTelegram.Destination.HasValue())
             {
                 throw HelperMethods.CreateException("مقصد تلگرام مشخص نشده است.", new object[0]);
             }
-            IEnumerable<IIccAdapter> source =
-                from c in connectedClients
-                where c.Name == iccTelegram.Destination
-                select c;
-            if (source.Count<IIccAdapter>() == 0)
+
+            var destination = connectedClients
+                    .Where(c => c.Name == iccTelegram.Destination);
+
+            if (destination.Count() == 0)
             {
                 throw HelperMethods.CreateException("مقصد مشخص شده وجود ندارد.", new object[0]);
             }
-            if (source.Count<IIccAdapter>() > 1)
+
+            if (destination.Count() > 1)
             {
                 throw HelperMethods.CreateException("چند مقصد با نام داده شده وجود دارد.", new object[0]);
             }
