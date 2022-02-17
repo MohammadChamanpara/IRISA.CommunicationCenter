@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace IRISA.CommunicationCenter
@@ -24,6 +23,9 @@ namespace IRISA.CommunicationCenter
         public event IccCoreTelegramEventHandler TelegramQueued;
         public event IccCoreTelegramEventHandler TelegramSent;
         public event IccCoreTelegramEventHandler TelegramDropped;
+        private object sendLocker = new object();
+        private object receiveLocker = new object();
+
         [Browsable(false)]
         public EntityBusiness<Entities, IccEvent> Events
         {
@@ -168,18 +170,21 @@ namespace IRISA.CommunicationCenter
         }
         private void sendTimer_DoWork(object sender, DoWorkEventArgs e)
         {
-            CheckDataBaseConnection();
+            lock (sendLocker)
+            {
+                CheckDataBaseConnection();
 
-            var telegrams = GetTelegramsFromDataBase(Transfers);
+                var telegrams = GetTelegramsFromDataBase(Transfers);
 
-            telegrams = RemoveInProcessTelegrams(telegrams, ProcessingTelegrams);
+                telegrams = RemoveInProcessTelegrams(telegrams, ProcessingTelegrams);
 
-            ProcessingTelegrams = AddTelegramsToProcessingList(telegrams, ProcessingTelegrams);
+                ProcessingTelegrams = AddTelegramsToProcessingList(telegrams, ProcessingTelegrams);
 
-            var telegramGroups = GroupTelegramsByDestination(telegrams);
+                var telegramGroups = GroupTelegramsByDestination(telegrams);
 
-            foreach (var list in telegramGroups)
-                Task.Run(() => SendTelegramsToADestination(list, connectedClients));
+                foreach (var list in telegramGroups)
+                    Task.Run(() => SendTelegramsToADestination(list, connectedClients));
+            }
         }
 
         public HashSet<long> AddTelegramsToProcessingList(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
@@ -291,10 +296,8 @@ namespace IRISA.CommunicationCenter
         }
         private void client_OnReceive(ReceiveEventArgs e)
         {
-            bool flag = false;
-            try
+            lock (receiveLocker)
             {
-                Monitor.Enter(this, ref flag);
                 try
                 {
                     if (!e.Successful)
@@ -312,13 +315,6 @@ namespace IRISA.CommunicationCenter
                 catch (Exception dropException)
                 {
                     DropTelegram(e.IccTelegram, dropException, false);
-                }
-            }
-            finally
-            {
-                if (flag)
-                {
-                    Monitor.Exit(this);
                 }
             }
         }
@@ -450,44 +446,32 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                bool flag = false;
-                try
+                if (!(dropException is IrisaException))
                 {
-                    Monitor.Enter(this, ref flag);
-                    if (!(dropException is IrisaException))
-                    {
-                        eventLogger.LogException(dropException);
-                    }
-                    iccTransfer.SENT = false;
-                    iccTransfer.DROPPED = true;
-                    iccTransfer.DROP_REASON = dropException.MostInnerException().Message;
-                    if (existingRecord)
-                    {
-                        Transfers.Edit(iccTransfer);
-                    }
-                    else
-                    {
-                        Transfers.Create(iccTransfer);
-                        iccTransfer = (
-                            from t in Transfers.GetAll()
-                            orderby t.ID descending
-                            select t).First<IccTransfer>();
-                    }
-                    eventLogger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
-                    {
-                        iccTransfer.ID
-                    });
-                    if (TelegramDropped != null)
-                    {
-                        TelegramDropped(new IccCoreTelegramEventArgs(IccTransferToIccTelegram(iccTransfer)));
-                    }
+                    eventLogger.LogException(dropException);
                 }
-                finally
+                iccTransfer.SENT = false;
+                iccTransfer.DROPPED = true;
+                iccTransfer.DROP_REASON = dropException.MostInnerException().Message;
+                if (existingRecord)
                 {
-                    if (flag)
-                    {
-                        Monitor.Exit(this);
-                    }
+                    Transfers.Edit(iccTransfer);
+                }
+                else
+                {
+                    Transfers.Create(iccTransfer);
+                    iccTransfer = (
+                        from t in Transfers.GetAll()
+                        orderby t.ID descending
+                        select t).First<IccTransfer>();
+                }
+                eventLogger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
+                {
+                        iccTransfer.ID
+                });
+                if (TelegramDropped != null)
+                {
+                    TelegramDropped(new IccCoreTelegramEventArgs(IccTransferToIccTelegram(iccTransfer)));
                 }
             }
             catch (Exception exception)
