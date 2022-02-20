@@ -1,7 +1,6 @@
-using System;
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Core
 {
-	public class IccCoreTelegramEventArgs
+    public class IccCoreTelegramEventArgs
 	{
 		public IccTelegram IccTelegram;
 		public IccCoreTelegramEventArgs(IccTelegram iccTelegram)

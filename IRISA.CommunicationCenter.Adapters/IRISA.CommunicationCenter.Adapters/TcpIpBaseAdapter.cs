@@ -239,7 +239,7 @@ namespace IRISA.CommunicationCenter.Adapters
 						base.PersianDescription
 					});
                     this.socket = null;
-                    this.OnConnectionChanged(new IccCoreClientConnectionChangedEventArgs(this));
+                    this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                 }
                 else
                 {
@@ -307,7 +307,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.socket.SendTimeout = this.SendTimeout;
                 if (flag)
                 {
-                    this.OnConnectionChanged(new IccCoreClientConnectionChangedEventArgs(this));
+                    this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace IRISA.CommunicationCenter.Adapters
             }
             return result;
         }
-        public override void Send(IccTelegram iccTelegram)
+        public override void SendTelegram(IccTelegram iccTelegram)
         {
             byte[] buffer = this.ConvertStandardTelegramToClientTelegram(iccTelegram);
             if (!this.Connected)

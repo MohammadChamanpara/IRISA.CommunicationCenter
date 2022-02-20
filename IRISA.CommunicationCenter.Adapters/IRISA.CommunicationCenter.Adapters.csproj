@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRISA.CommunicationCenter.Adapters\BaseAdapter.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\ConnectionChangedEventHandler.cs" />
+    <Compile Include="IRISA.CommunicationCenter.Adapters\TelegramSendCompletedEventArgs.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\IIccAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter.Adapters\ReceiveEventArgs.cs" />

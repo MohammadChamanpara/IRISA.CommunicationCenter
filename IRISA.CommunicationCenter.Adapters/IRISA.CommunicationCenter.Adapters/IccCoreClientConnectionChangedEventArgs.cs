@@ -1,16 +1,15 @@
-using System;
 namespace IRISA.CommunicationCenter.Adapters
 {
-	public class IccCoreClientConnectionChangedEventArgs
-	{
-		public IIccAdapter Client
-		{
-			get;
-			set;
-		}
-		public IccCoreClientConnectionChangedEventArgs(IIccAdapter client)
-		{
-			this.Client = client;
-		}
-	}
+    public class AdapterConnectionChangedEventArgs
+    {
+        public IIccAdapter Adapter
+        {
+            get;
+            set;
+        }
+        public AdapterConnectionChangedEventArgs(IIccAdapter adapter)
+        {
+            this.Adapter = adapter;
+        }
+    }
 }

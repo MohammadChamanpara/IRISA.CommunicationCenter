@@ -5,7 +5,9 @@ namespace IRISA.CommunicationCenter.Adapters
 	public interface IIccAdapter
 	{
 		event ReceiveEventHandler Receive;
-		event ConnectionChangedEventHandler ConnectionChanged;
+		event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
+		event EventHandler<SendCompletedEventArgs> SendCompleted;
+
 		string Name
 		{
 			get;
@@ -18,7 +20,7 @@ namespace IRISA.CommunicationCenter.Adapters
 		{
 			get;
 		}
-		void Send(IccTelegram iccTelegram);
+		void SendTelegram(IccTelegram iccTelegram);
 		void Start(IrisaEventLogger EventLogger);
 		void Stop();
 		void AwakeTimers();
