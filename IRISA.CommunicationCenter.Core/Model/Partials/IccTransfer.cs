@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace IRISA.CommunicationCenter.Model
+namespace IRISA.CommunicationCenter.Core.Model
 {
     public partial class IccTransfer
     {

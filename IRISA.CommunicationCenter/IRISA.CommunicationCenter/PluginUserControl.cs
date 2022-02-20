@@ -30,17 +30,19 @@ namespace IRISA.CommunicationCenter
 			this.Caption = plugin.Name + " - " + plugin.PersianDescription;
 			this.connectPictureBox.Click += new EventHandler(this.Plugin_Click);
 			this.disconnectPictureBox.Click += new EventHandler(this.Plugin_Click);
-			plugin.ConnectionChanged += new ConnectionChangedEventHandler(this.plugin_ConnectionChanged);
+            plugin.ConnectionChanged += plugin_ConnectionChanged;
 			this.RefreshConnection();
 		}
-		private void Plugin_Click(object sender, EventArgs e)
+
+        private void Plugin_Click(object sender, EventArgs e)
 		{
 			this.RefreshConnection();
 		}
-		private void plugin_ConnectionChanged(IccCoreClientConnectionChangedEventArgs e)
+		private void plugin_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
 		{
 			this.RefreshConnection();
 		}
+
 		public void RefreshConnection()
 		{
 			try

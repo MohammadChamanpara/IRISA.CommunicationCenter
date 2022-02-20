@@ -17,7 +17,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
-namespace IRISA.CommunicationCenter.Model
+namespace IRISA.CommunicationCenter.Core.Model
 {
     #region Contexts
     

@@ -84,12 +84,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("activatorTimerInterval", value);
             }
         }
-        [Category("ReadOnly"), DisplayName("وضعیت اجرای پروسه ی دریافت تلگرام")]
-        public bool Started
-        {
-            get;
-            private set;
-        }
+
         [DisplayName("شرح فارسی پروسه دریافت تلگرام")]
         public string ReceiveTimerPersianDescription
         {
@@ -161,7 +156,7 @@ namespace IRISA.CommunicationCenter.Adapters
             this.receiveTimer.Start();
             if (this.Connected)
             {
-                this.OnConnectionChanged(new IccCoreClientConnectionChangedEventArgs(this));
+                this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
             }
             if (this.activatorTimer != null)
             {
@@ -173,7 +168,6 @@ namespace IRISA.CommunicationCenter.Adapters
             this.activatorTimer.PersianDescription = this.ActivatorTimerPersianDescription + " در " + this.PersianDescription;
             this.activatorTimer.EventLogger = this.eventLogger;
             this.activatorTimer.Start();
-            this.Started = true;
         }
         private void activatorTimer_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -197,7 +191,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.receiveTimer.Stop();
             }
         }
-        public override void Send(IccTelegram iccTelegram)
+        public override void SendTelegram(IccTelegram iccTelegram)
         {
             IccClientTelegram entity = new IccClientTelegram();
             this.ConvertStandardTelegramToClientTelegram(iccTelegram, ref entity);
@@ -266,7 +260,7 @@ namespace IRISA.CommunicationCenter.Adapters
                     this.databaseIsConnected = false;
                     if (flag)
                     {
-                        this.OnConnectionChanged(new IccCoreClientConnectionChangedEventArgs(this));
+                        this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                     }
                     throw HelperMethods.CreateException("برنامه قادر به اتصال به پایگاه داده {0} نمی باشد. ", new object[]
 					{
@@ -276,7 +270,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.databaseIsConnected = true;
                 if (!flag)
                 {
-                    this.OnConnectionChanged(new IccCoreClientConnectionChangedEventArgs(this));
+                    this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                 }
             }
         }

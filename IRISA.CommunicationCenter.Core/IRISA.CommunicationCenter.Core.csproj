@@ -30,7 +30,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>IRISA.CommunicationCenter</RootNamespace>
+    <RootNamespace>IRISA.CommunicationCenter.Core</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
@@ -48,9 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRISA.CommunicationCenter\IccCore.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccCoreTelegramEventArgs.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccEventLogger.cs" />
+    <Compile Include="Classes\IccCore.cs" />
+    <Compile Include="Classes\IccCoreTelegramEventArgs.cs" />
+    <Compile Include="Classes\IccEventLogger.cs" />
+    <Compile Include="Classes\InProcessTelegrams.cs" />
     <Compile Include="Model\IccModel1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
