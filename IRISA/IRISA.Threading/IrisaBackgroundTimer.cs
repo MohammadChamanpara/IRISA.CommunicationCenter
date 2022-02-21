@@ -1,10 +1,10 @@
-using IRISA.Log;
+using IRISA.Loggers;
 using System;
 using System.ComponentModel;
 using System.Threading;
 namespace IRISA.Threading
 {
-	public class IrisaBackgroundTimer : BackgroundWorker
+    public class IrisaBackgroundTimer : BackgroundWorker
 	{
 		private enum ProcessStatus
 		{
@@ -16,7 +16,7 @@ namespace IRISA.Threading
 		private ManualResetEvent intervalManualReset;
 		private IrisaBackgroundTimer.ProcessStatus processStatus = IrisaBackgroundTimer.ProcessStatus.Created;
 		private DateTime startTime = default(DateTime);
-		public IrisaEventLogger EventLogger
+		public ILogger EventLogger
 		{
 			get;
 			set;

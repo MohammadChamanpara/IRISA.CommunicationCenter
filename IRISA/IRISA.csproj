@@ -49,11 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRISA.Log\IrisaEventLogger.cs" />
-    <Compile Include="IRISA.Log\IrisaException.cs" />
+    <Compile Include="Loggers\BaseLogger.cs" />
+    <Compile Include="Loggers\EventType.cs" />
+    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Loggers\ILogger.cs" />
+    <Compile Include="Loggers\InMemoryLogger.cs" />
+    <Compile Include="Loggers\IrisaException.cs" />
     <Compile Include="IRISA.Model\EntityBusiness.cs" />
     <Compile Include="IRISA.Model\PropertyComparer.cs" />
     <Compile Include="IRISA.Model\SortableBindingList.cs" />
+    <Compile Include="Loggers\LogEvent.cs" />
     <Compile Include="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -1,4 +1,4 @@
-﻿using IRISA.Log;
+﻿using IRISA.Loggers;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -38,7 +38,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 }
             }
 
-            public override void Start(IrisaEventLogger eventLogger)
+            public override void Start(ILogger eventLogger)
             {
                 base.Start(eventLogger);
                 Running = true;

@@ -110,6 +110,10 @@
       <Project>{f7ec6e99-1d52-433d-b2dc-6a02a85bb733}</Project>
       <Name>IRISA.CommunicationCenter.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IRISA\IRISA.csproj">
+      <Project>{56A6D708-C2BF-49BE-A35C-E637528B5173}</Project>
+      <Name>IRISA</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

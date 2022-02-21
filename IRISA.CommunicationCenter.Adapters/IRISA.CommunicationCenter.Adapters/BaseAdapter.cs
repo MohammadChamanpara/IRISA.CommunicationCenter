@@ -1,4 +1,4 @@
-using IRISA.Log;
+using IRISA.Loggers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ namespace IRISA.CommunicationCenter.Adapters
         #region Variables
         protected TelegramDefinitions telegramDefinitions;
         protected DLLSettings<DLLT> dllSettings;
-        protected IrisaEventLogger eventLogger;
+        protected ILogger eventLogger;
         public event ReceiveEventHandler Receive;
         public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
@@ -142,7 +142,7 @@ namespace IRISA.CommunicationCenter.Adapters
         }
 
         public abstract void SendTelegram(IccTelegram iccTelegram);
-        public virtual void Start(IrisaEventLogger eventLogger)
+        public virtual void Start(ILogger eventLogger)
         {
             this.eventLogger = eventLogger;
             this.dllSettings = new DLLSettings<DLLT>();

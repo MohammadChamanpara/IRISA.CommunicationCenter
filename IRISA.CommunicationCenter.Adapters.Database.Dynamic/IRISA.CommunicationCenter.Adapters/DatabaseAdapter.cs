@@ -1,5 +1,5 @@
 using IRISA.CommunicationCenter.Adapters.Model;
-using IRISA.Log;
+using IRISA.Loggers;
 using IRISA.Model;
 using IRISA.Threading;
 using System;
@@ -145,7 +145,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("PerformBodyValidation", value);
             }
         }
-        public override void Start(IrisaEventLogger eventLogger)
+        public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
             this.receiveTimer = new IrisaBackgroundTimer();

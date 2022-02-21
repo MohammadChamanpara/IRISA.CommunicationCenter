@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using IRISA.CommunicationCenter.Adapters;
+using IRISA.Loggers;
 using System.ComponentModel;
 using System.Windows.Forms;
-using IRISA.Log;
-using IRISA.CommunicationCenter.Adapters;
 
 namespace IRISA.CommunicationCenter
 {
@@ -17,7 +13,7 @@ namespace IRISA.CommunicationCenter
         public PictureBox connectPictureBox;
         private Panel panel1;
         private Label captionLabel;
-        private IrisaEventLogger eventLogger;
+        private ILogger eventLogger;
         public IIccAdapter Plugin
         {
             get;

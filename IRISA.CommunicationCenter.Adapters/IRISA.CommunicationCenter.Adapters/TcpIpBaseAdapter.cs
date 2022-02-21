@@ -1,4 +1,4 @@
-using IRISA.Log;
+using IRISA.Loggers;
 using IRISA.Threading;
 using System;
 using System.Collections.Generic;
@@ -351,7 +351,7 @@ namespace IRISA.CommunicationCenter.Adapters
 				});
             }
         }
-        public override void Start(IrisaEventLogger eventLogger)
+        public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
             this.lastConnectionTime = DateTime.Now;

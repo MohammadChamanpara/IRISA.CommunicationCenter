@@ -1,7 +1,7 @@
 using System;
-namespace IRISA.Log
+namespace IRISA.Loggers
 {
-	public class IrisaException : Exception
+    public class IrisaException : Exception
 	{
 		public IrisaException(string message) : base(message)
 		{

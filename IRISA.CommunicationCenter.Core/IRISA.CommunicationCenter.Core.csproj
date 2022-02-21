@@ -51,7 +51,6 @@
     <Compile Include="Classes\IccCore.cs" />
     <Compile Include="Classes\IccCoreTelegramEventArgs.cs" />
     <Compile Include="Classes\InProcessTelegrams.cs" />
-    <Compile Include="Loggers\OracleDBLogger.cs" />
     <Compile Include="Model\IccModel1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

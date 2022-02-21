@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using IRISA.CommunicationCenter.Core.Model;
+using IRISA.Loggers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
         public void GroupTelegramsByDestination_Always_ShouldGroup()
         {
             //Arrange
-            var iccCore = new IccCore(new InProcessTelegrams());
+            var iccCore = new IccCore(new InProcessTelegrams(), new InMemoryLogger());
             var telegrams = new List<IccTransfer>()
             {
                 new IccTransfer() { ID=1, DESTINATION="1" },

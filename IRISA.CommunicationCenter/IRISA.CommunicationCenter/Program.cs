@@ -1,10 +1,10 @@
-using IRISA.CommunicationCenter.Core;
+using IRISA.Loggers;
 using System;
 using System.Threading;
 using System.Windows.Forms;
 namespace IRISA.CommunicationCenter
 {
-	internal static class Program
+    internal static class Program
 	{
 		[STAThread]
 		private static void Main()
@@ -31,11 +31,11 @@ namespace IRISA.CommunicationCenter
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			Exception exception = (Exception)e.ExceptionObject;
-			new IccEventLogger().LogException(exception);
+			new InMemoryLogger().LogException(exception);
 		}
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
-			new IccEventLogger().LogException(e.Exception);
+			new InMemoryLogger().LogException(e.Exception);
 		}
 	}
 }

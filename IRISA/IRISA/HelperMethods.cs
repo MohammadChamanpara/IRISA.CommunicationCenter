@@ -1,5 +1,4 @@
-using IRISA.Log;
-using IRISA.Properties;
+using IRISA.Loggers;
 using IRISA.Windows.Forms;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Reflection;
 using System.Threading;
 namespace IRISA
 {
-	public static class HelperMethods
+    public static class HelperMethods
 	{
 		public static List<T> LoadPlugins<T>()
 		{

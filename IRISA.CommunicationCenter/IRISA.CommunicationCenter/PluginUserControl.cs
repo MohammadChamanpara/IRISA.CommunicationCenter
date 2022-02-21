@@ -1,6 +1,6 @@
 using IRISA.CommunicationCenter.Adapters;
 using IRISA.CommunicationCenter.Properties;
-using IRISA.Log;
+using IRISA.Loggers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -22,7 +22,7 @@ namespace IRISA.CommunicationCenter
 			}
 		}
 
-		public PluginUserControl(IIccAdapter plugin, IrisaEventLogger eventLogger)
+		public PluginUserControl(IIccAdapter plugin, ILogger eventLogger)
 		{
 			this.InitializeComponent();
 			this.eventLogger = eventLogger;

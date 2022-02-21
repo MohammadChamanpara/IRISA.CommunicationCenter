@@ -1,8 +1,8 @@
-using IRISA.Log;
+using IRISA.Loggers;
 using System;
 namespace IRISA.CommunicationCenter.Adapters
 {
-	public interface IIccAdapter
+    public interface IIccAdapter
 	{
 		event ReceiveEventHandler Receive;
 		event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Adapters
 			get;
 		}
 		void SendTelegram(IccTelegram iccTelegram);
-		void Start(IrisaEventLogger EventLogger);
+		void Start(ILogger EventLogger);
 		void Stop();
 		void AwakeTimers();
 	}
