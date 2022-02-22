@@ -12,14 +12,14 @@ namespace IRISA.CommunicationCenter.Core.Tests
         public void RemoveFrom_Always_ShouldRemoveInProcessTelegrams()
         {
             //Arrange
-            var inProcessTelegrams = new InProcessTelegrams(1,2);
-            var telegrams = new List<IccTransfer>()
+            var inProcessTelegrams = new InProcessTelegrams(1, 2);
+            var telegrams = new List<IccTelegram>()
             {
-                new IccTransfer() { ID=1 },
-                new IccTransfer() { ID=2 },
-                new IccTransfer() { ID=3 },
-                new IccTransfer() { ID=4 },
-                new IccTransfer() { ID=5 }
+                new IccTelegram() { TransferId = 1 },
+                new IccTelegram() { TransferId = 2 },
+                new IccTelegram() { TransferId = 3 },
+                new IccTelegram() { TransferId = 4 },
+                new IccTelegram() { TransferId = 5 }
             };
 
             //Act
@@ -27,7 +27,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             //Assert
             sendingTelegrams.Count.Should().Be(3);
-            sendingTelegrams.TrueForAll(x => x.ID > 2);
+            sendingTelegrams.TrueForAll(x => x.TransferId > 2);
         }
 
         [TestMethod]
@@ -36,13 +36,13 @@ namespace IRISA.CommunicationCenter.Core.Tests
             //Arrange
             var inProcessTelegrams = new InProcessTelegrams();
 
-            var telegrams = new List<IccTransfer>()
+            var telegrams = new List<IccTelegram>()
             {
-                new IccTransfer() { ID=1 },
-                new IccTransfer() { ID=2 },
-                new IccTransfer() { ID=3 },
-                new IccTransfer() { ID=4 },
-                new IccTransfer() { ID=5 }
+                new IccTelegram() { TransferId = 1 },
+                new IccTelegram() { TransferId = 2 },
+                new IccTelegram() { TransferId = 3 },
+                new IccTelegram() { TransferId = 4 },
+                new IccTelegram() { TransferId = 5 }
             };
 
             //Act
@@ -58,11 +58,11 @@ namespace IRISA.CommunicationCenter.Core.Tests
             //Arrange
             var inProcessTelegrams = new InProcessTelegrams();
 
-            var telegrams = new List<IccTransfer>()
+            var telegrams = new List<IccTelegram>()
             {
-                new IccTransfer() { ID=1 },
-                new IccTransfer() { ID=2 },
-                new IccTransfer() { ID=3 }
+                new IccTelegram() { TransferId = 1 },
+                new IccTelegram() { TransferId = 2 },
+                new IccTelegram() { TransferId = 3 }
             };
 
             //Act
@@ -76,13 +76,13 @@ namespace IRISA.CommunicationCenter.Core.Tests
         public void AddRange_WhenAlreayInProcessing_ShouldNotAdd()
         {
             //Arrange
-            var inProcessTelegrams = new InProcessTelegrams(1,2);
+            var inProcessTelegrams = new InProcessTelegrams(1, 2);
 
-            var telegrams = new List<IccTransfer>()
+            var telegrams = new List<IccTelegram>()
             {
-                new IccTransfer() { ID=1 },
-                new IccTransfer() { ID=2 },
-                new IccTransfer() { ID=3 }
+                new IccTelegram() { TransferId = 1 },
+                new IccTelegram() { TransferId = 2 },
+                new IccTelegram() { TransferId = 3 }
             };
 
             //Act
@@ -93,6 +93,6 @@ namespace IRISA.CommunicationCenter.Core.Tests
             inProcessTelegrams.GetAllIds().Should().BeEquivalentTo(new long[] { 1, 2, 3 });
         }
 
-        
+
     }
 }

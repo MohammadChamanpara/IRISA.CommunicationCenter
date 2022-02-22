@@ -330,7 +330,7 @@ namespace IRISA.CommunicationCenter.Adapters
             }
             return result;
         }
-        public override void SendTelegram(IccTelegram iccTelegram)
+        protected override void SendTelegram(IccTelegram iccTelegram)
         {
             byte[] buffer = this.ConvertStandardTelegramToClientTelegram(iccTelegram);
             if (!this.Connected)

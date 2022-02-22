@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Adapters
 		{
 			get;
 		}
-		void SendTelegram(IccTelegram iccTelegram);
+		void Send(IccTelegram iccTelegram);
 		void Start(ILogger EventLogger);
 		void Stop();
 		void AwakeTimers();

@@ -141,7 +141,7 @@ namespace IRISA.CommunicationCenter.Adapters
             SendCompleted?.Invoke(this, e);
         }
 
-        public abstract void SendTelegram(IccTelegram iccTelegram);
+        protected abstract void SendTelegram(IccTelegram iccTelegram);
         public virtual void Start(ILogger eventLogger)
         {
             this.eventLogger = eventLogger;

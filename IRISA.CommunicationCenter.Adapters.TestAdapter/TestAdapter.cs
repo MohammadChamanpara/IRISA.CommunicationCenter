@@ -1,5 +1,6 @@
 ﻿using IRISA.Loggers;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -29,7 +30,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             public override bool Connected => Running;
 
             private object sendLocker = new object();
-            public override void SendTelegram(IccTelegram iccTelegram)
+            protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 lock (sendLocker)
                 {
@@ -66,6 +67,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                                     Source = Name,
                                     //Destination = Name == "Behnam" ? "Mamad" : "Behnam",
                                     Destination = "Behnam",
+                                    Body = new List<string>() { "A", "B" },
                                     TelegramId = Name == "Behnam" ? 1 : 2,
                                     TransferId = id++,
                                     SendTime = DateTime.Now
@@ -73,7 +75,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                                 , true
                                 , null
                             )
-                        );
+                        ); 
                     }
                     catch (Exception exception)
                     {

@@ -191,7 +191,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.receiveTimer.Stop();
             }
         }
-        public override void SendTelegram(IccTelegram iccTelegram)
+        protected override void SendTelegram(IccTelegram iccTelegram)
         {
             IccClientTelegram entity = new IccClientTelegram();
             this.ConvertStandardTelegramToClientTelegram(iccTelegram, ref entity);
@@ -212,7 +212,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 SEND_TIME = iccTelegram.SendTime,
                 SOURCE = iccTelegram.Source,
                 READY_FOR_CLIENT = true,
-                TRANSFER_ID = new long?(iccTelegram.TransferId)
+                TRANSFER_ID = iccTelegram.TransferId
             };
         }
         public virtual void ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram, ref IccTelegram iccTelegram)
