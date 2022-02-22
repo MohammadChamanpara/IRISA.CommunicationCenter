@@ -22,6 +22,13 @@ namespace IRISA.CommunicationCenter.Core
         public void Add(IccTelegram iccTelegram)
         {
             Transfers.Create(iccTelegram.ToIccTransfer());
+
+            var id =
+                Transfers
+                .GetAll()
+                .Max(x => x.ID);
+
+            iccTelegram.TransferId = id;
         }
 
         public void Edit(IccTelegram iccTelegram)
@@ -31,6 +38,9 @@ namespace IRISA.CommunicationCenter.Core
 
         public List<IccTelegram> GetTelegramsToSend()
         {
+            if (!Connected)
+                throw HelperMethods.CreateException("برنامه قادر به دسترسی به صف تلگرام ها نمی باشد");
+
             return Transfers
                 .GetAll()
                 .Where(x => x.DROPPED == false && x.SENT == false)

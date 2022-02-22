@@ -32,15 +32,6 @@ namespace IRISA.CommunicationCenter.Core
             IccQueue = iccQueue;
         }
 
-        //[Browsable(false)]
-        //public EntityBusiness<Entities, IccEvent> Events
-        //{
-        //    get
-        //    {
-        //        return new EntityBusiness<Entities, IccEvent>(new Entities(ConnectionString));
-        //    }
-        //}
-
         [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
         public string PersianDescription
         {
@@ -158,7 +149,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        
+
         public void SendTelegrams(List<IccTelegram> telegrams, List<IIccAdapter> adapters)
         {
             if (telegrams.Count == 0)
@@ -320,16 +311,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             Started = false;
         }
-        private void CheckDataBaseConnection()
-        {
-            //if (!Transfers.Connected)
-            //{
-            //    throw HelperMethods.CreateException("برنامه قادر به دسترسی به پایگاه داده {0} نمی باشد", new object[]
-            //    {
-            //        PersianDescription
-            //    });
-            //}
-        }
+
         private void LoadClients()
         {
             connectedClients = HelperMethods.LoadPlugins<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
@@ -396,18 +378,10 @@ namespace IRISA.CommunicationCenter.Core
                 if (existingRecord)
                 {
                     IccQueue.Edit(iccTelegram);
-                    //Transfers.Edit(iccTransfer);
                 }
                 else
                 {
                     IccQueue.Add(iccTelegram);
-
-                    //InMemoryQueue.Add(iccTelegram);
-                    //Transfers.Create(iccTransfer);
-                    //iccTransfer = (
-                    //    from t in Transfers.GetAll()
-                    //    orderby t.ID descending
-                    //    select t).First<IccTransfer>();
                 }
 
                 Logger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
@@ -439,23 +413,11 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.Sent = false;
 
                 IccQueue.Add(iccTelegram);
-                //Transfers.Create(iccTransfer);
-                //iccTransfer.ID = InMemoryQueue.Count;
-                //InMemoryQueue.Add(iccTransfer);
-
-                //flag = true;
-                //iccTransfer = (
-                //    from t in Transfers.GetAll()
-                //    orderby t.ID descending
-                //    select t).First<IccTransfer>();
                 Logger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
                     iccTelegram.TransferId
                 });
-                if (TelegramQueued != null)
-                {
-                    TelegramQueued(new IccCoreTelegramEventArgs(iccTelegram));
-                }
+                TelegramQueued?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
             }
             catch (Exception ex)
             {
