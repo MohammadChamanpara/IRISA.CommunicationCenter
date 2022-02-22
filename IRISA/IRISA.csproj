@@ -51,9 +51,9 @@
   <ItemGroup>
     <Compile Include="Loggers\BaseLogger.cs" />
     <Compile Include="Loggers\EventType.cs" />
-    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Loggers\LoggerInFile.cs" />
     <Compile Include="Loggers\ILogger.cs" />
-    <Compile Include="Loggers\InMemoryLogger.cs" />
+    <Compile Include="Loggers\LoggerInMemory.cs" />
     <Compile Include="Loggers\IrisaException.cs" />
     <Compile Include="IRISA.Model\EntityBusiness.cs" />
     <Compile Include="IRISA.Model\PropertyComparer.cs" />

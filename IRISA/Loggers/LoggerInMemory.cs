@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IRISA.Loggers
 {
-    public class InMemoryLogger : BaseLogger
+    public class LoggerInMemory : BaseLogger
     {
         private static List<LogEvent> logs = new List<LogEvent>();
         private static int id = 1;

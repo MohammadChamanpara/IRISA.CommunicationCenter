@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IRISA.Loggers
 {
-    public class FileLogger : BaseLogger
+    public class LoggerInFile : BaseLogger
     {
         private string LogFileAddress => $"Events\\Events {DateTime.Now.ToPersianDate("-")}.txt";
         
@@ -35,7 +35,7 @@ namespace IRISA.Loggers
 
         public override IQueryable<LogEvent> GetLogs()
         {
-            throw new NotSupportedException($"Getting logs is not supported in {nameof(FileLogger)}");
+            throw new NotSupportedException($"Getting logs is not supported in {nameof(LoggerInFile)}");
         }
     }
 }
