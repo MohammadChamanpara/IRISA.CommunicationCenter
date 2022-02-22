@@ -100,7 +100,6 @@
   <ItemGroup>
     <Compile Include="InProcessTelegramsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IccCoreTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
