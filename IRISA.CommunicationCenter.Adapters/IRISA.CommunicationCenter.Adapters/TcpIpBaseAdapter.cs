@@ -18,6 +18,8 @@ namespace IRISA.CommunicationCenter.Adapters
         private IrisaBackgroundTimer receiveTimer;
         protected List<byte> receivedBuffer = new List<byte>();
         private DateTime lastConnectionTime;
+
+        [Category("Information")]
         public override string Type
         {
             get
@@ -25,6 +27,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 return "Tcp/Ip";
             }
         }
+        
+        [Category("Operation")]
         [DisplayName("کاراکتر آغاز کننده تلگرام")]
         public char StartCharacter
         {
@@ -37,6 +41,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("StartCharacter", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("کاراکتر خاتمه دهنده تلگرام")]
         public char EndCharacter
         {
@@ -49,6 +55,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("EndCharacter", value);
             }
         }
+        
+        [Category("Operation")]
         [DisplayName("سایز هدر تلگرام بر حسب بایت")]
         public int HeaderSize
         {
@@ -61,6 +69,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("HeaderSize", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("شناسه کلاینت")]
         public int Id
         {
@@ -73,6 +83,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("Id", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("آدرس کلاینت")]
         public string Ip
         {
@@ -85,6 +97,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("Ip", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("شماره پورت ارتباطی")]
         public int Port
         {
@@ -97,6 +111,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("port", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("شرح فارسی پروسه تشخیص کلاینت")]
         public string ClientDetectTimerPersianDescription
         {
@@ -109,6 +125,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("ClientDetectTimerPersianDescription", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("دوره زمانی بررسی حضور کلاینت بر حسب میلی ثانیه")]
         public int ClientDetectInterval
         {
@@ -121,6 +139,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("ClientDetectInterval", value);
             }
         }
+
+        [Category("Operation")]
         [DisplayName("شرح فارسی پروسه دریافت پکت")]
         public string ReceiveTimerPersianDescription
         {
@@ -133,6 +153,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
             }
         }
+
         [DisplayName("دوره زمانی بررسی دریافت پکت بر حسب میلی ثانیه")]
         public int ReceiveInterval
         {
@@ -145,6 +166,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("ReceiveInterval", value);
             }
         }
+
         [DisplayName("حداکثر زمان معتبر بودن اتصال کلاینت بر حسب میلی ثانیه")]
         public int TcpIpConnectExpireTime
         {
@@ -157,6 +179,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("TcpIpConnectExpireTime", value);
             }
         }
+
         [DisplayName("حداکثر زمان انتظار برای ارسال پکت بر حسب میلی ثانیه")]
         public int SendTimeout
         {
@@ -169,7 +192,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("SendTimeout", value);
             }
         }
-        [Category("ReadOnly"), DisplayName("کلاینت متصل شده - آدرس")]
+        [Category("Information"), DisplayName("کلاینت متصل شده - آدرس")]
         public string ClientServerIp
         {
             get
@@ -193,7 +216,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 return result;
             }
         }
-        [Category("ReadOnly"), DisplayName("کلاینت متصل شده - نام")]
+        [Category("Information"), DisplayName("کلاینت متصل شده - نام")]
         public string ClientServerName
         {
             get
@@ -217,6 +240,8 @@ namespace IRISA.CommunicationCenter.Adapters
                 return result;
             }
         }
+
+        [Category("Information")]
         public override bool Connected
         {
             get

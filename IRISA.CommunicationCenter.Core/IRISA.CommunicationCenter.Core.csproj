@@ -48,16 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\IccCore.cs" />
-    <Compile Include="Classes\IccCoreTelegramEventArgs.cs" />
-    <Compile Include="Classes\InProcessTelegrams.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IccCore.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IccCoreTelegramEventArgs.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IccQueueInMemory.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IccQueueInOracle.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IIccQueue.cs" />
+    <Compile Include="IRISA.CommunicationCenter\InProcessTelegrams.cs" />
     <Compile Include="Model\IccModel1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IccModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model\Partials\IccEvent.cs" />
-    <Compile Include="Model\Partials\IccTransfer.cs" />
+    <Compile Include="Model\IccTransferExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">

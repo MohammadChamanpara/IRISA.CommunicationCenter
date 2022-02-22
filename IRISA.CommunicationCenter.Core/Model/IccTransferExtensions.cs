@@ -2,7 +2,7 @@
 {
     public static class IccTransferExtensions
     {
-        public static IccTelegram ToIccTelegram(this IccTransfer iccTransfer, char bodySeparator)
+        public static IccTelegram ToIccTelegram(this IccTransfer iccTransfer)
         {
             var telegram = new IccTelegram()
             {
@@ -16,11 +16,11 @@
                 DropReason = iccTransfer.DROP_REASON,
                 ReceiveTime = iccTransfer.RECEIVE_TIME
             };
-            telegram.SetBodyString(iccTransfer.BODY, bodySeparator);
+            telegram.SetBodyString(iccTransfer.BODY,',');
             return telegram;
         }
 
-        public static IccTransfer ToIccTransfer(this IccTelegram iccTelegram, char bodySeparator)
+        public static IccTransfer ToIccTransfer(this IccTelegram iccTelegram)
         {
             return new IccTransfer
             {
@@ -33,7 +33,7 @@
                 SENT = iccTelegram.Sent,
                 DROPPED = iccTelegram.Dropped,
                 DROP_REASON = iccTelegram.DropReason,
-                BODY = iccTelegram.GetBodyString(bodySeparator)
+                BODY = iccTelegram.BodyString
             };
         }
     }

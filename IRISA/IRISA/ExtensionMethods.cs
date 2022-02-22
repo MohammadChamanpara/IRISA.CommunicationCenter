@@ -20,7 +20,7 @@ namespace IRISA
 			while (exception.InnerException != null)
 			{
 				exception = exception.InnerException;
-				text = text + " متن خطای داخلی : " + exception.Message;
+				text = text + "\r\nInner Exception: " + exception.Message;
 			}
 			return text;
 		}

@@ -28,7 +28,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 return "پایگاه داده";
             }
         }
-        [Category("ReadOnly"), DisplayName("وضعیت اتصال کلاینت")]
+        [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
         public override bool Connected
         {
             get

@@ -21,20 +21,20 @@ namespace IRISA.CommunicationCenter.Adapters
 
 
         #region Properties
-        [Category("ReadOnly"), DisplayName("درحال اجرا")]
+        [Category("Information"), DisplayName("درحال اجرا")]
         public bool Started
         {
             get;
             private set;
         }
 
-        [Category("ReadOnly"), DisplayName("نوع کلاینت")]
+        [Category("Information"), DisplayName("نوع کلاینت")]
         public abstract string Type
         {
             get;
         }
 
-        [Category("ReadOnly"), DisplayName("نام فایل پلاگین")]
+        [Category("Information"), DisplayName("نام فایل پلاگین")]
         public string FileName
         {
             get
@@ -42,7 +42,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 return this.dllSettings.Assembly.AsssemblyFileName();
             }
         }
-        [Category("ReadOnly"), DisplayName("ورژن برنامه")]
+        [Category("Information"), DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
             get
@@ -50,7 +50,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 return this.dllSettings.Assembly.AssemblyVersion();
             }
         }
-        [Category("ReadOnly"), DisplayName("آدرس فایل پلاگین")]
+        [Category("Information"), DisplayName("آدرس فایل پلاگین")]
         public string FileAddress
         {
             get
@@ -58,7 +58,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 return this.dllSettings.Assembly.Location;
             }
         }
-        [Category("ReadOnly"), DisplayName("نوع فایل پلاگین")]
+        [Category("Information"), DisplayName("نوع فایل پلاگین")]
         public string FileAssembly
         {
             get
@@ -103,7 +103,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 this.dllSettings.SaveSetting("TelegramDefinitionFile", value);
             }
         }
-        [Category("ReadOnly"), DisplayName("وضعیت اتصال کلاینت")]
+        [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
         public abstract bool Connected
         {
             get;

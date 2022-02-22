@@ -1,47 +1,46 @@
 using IRISA.CommunicationCenter.Adapters;
-using IRISA.CommunicationCenter.Model;
-using IRISA.Log;
-using IRISA.Model;
+using IRISA.Loggers;
 using IRISA.Threading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Core
 {
     public class IccCore
     {
         public delegate void IccCoreTelegramEventHandler(IccCoreTelegramEventArgs e);
-        private static HashSet<long> ProcessingTelegrams = new HashSet<long>();
         public List<IIccAdapter> connectedClients;
         private IrisaBackgroundTimer sendTimer;
         private IrisaBackgroundTimer activatorTimer;
         private DLLSettings<IccCore> dllSettings;
-        public IccEventLogger eventLogger = new IccEventLogger();
         public event IccCoreTelegramEventHandler TelegramQueued;
         public event IccCoreTelegramEventHandler TelegramSent;
         public event IccCoreTelegramEventHandler TelegramDropped;
-        private object sendLocker = new object();
-        private object receiveLocker = new object();
+        private readonly object sendLocker = new object();
+        private readonly object receiveLocker = new object();
 
-        [Browsable(false)]
-        public EntityBusiness<Entities, IccEvent> Events
+        public readonly ILogger Logger;
+        private readonly IInProcessTelegrams InProcessTelegrams;
+        public readonly IIccQueue IccQueue;
+
+        public IccCore(IInProcessTelegrams inProcessTelegrams, ILogger logger, IIccQueue iccQueue)
         {
-            get
-            {
-                return new EntityBusiness<Entities, IccEvent>(new Entities(ConnectionString));
-            }
+            InProcessTelegrams = inProcessTelegrams;
+            Logger = logger;
+            IccQueue = iccQueue;
         }
-        [Browsable(false)]
-        public EntityBusiness<Entities, IccTransfer> Transfers
-        {
-            get
-            {
-                return new EntityBusiness<Entities, IccTransfer>(new Entities(ConnectionString));
-            }
-        }
+
+        //[Browsable(false)]
+        //public EntityBusiness<Entities, IccEvent> Events
+        //{
+        //    get
+        //    {
+        //        return new EntityBusiness<Entities, IccEvent>(new Entities(ConnectionString));
+        //    }
+        //}
+
         [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
         public string PersianDescription
         {
@@ -78,18 +77,7 @@ namespace IRISA.CommunicationCenter
                 dllSettings.SaveSetting("SendTimerPersianDescription", value);
             }
         }
-        [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
-        public char BodySeparator
-        {
-            get
-            {
-                return dllSettings.FindCharacterValue("BodySeparator", '$');
-            }
-            set
-            {
-                dllSettings.SaveSetting("BodySeparator", value);
-            }
-        }
+
         [DisplayName("کاراکتر جدا کننده بین مقصد های تلگرام")]
         public char DestinationSeparator
         {
@@ -126,25 +114,13 @@ namespace IRISA.CommunicationCenter
                 dllSettings.SaveSetting("activatorTimerInterval", value);
             }
         }
-        [DisplayName("رشته اتصال به پایگاه داده")]
-        public string ConnectionString
-        {
-            get
-            {
-                return dllSettings.FindConnectionString();
-            }
-            set
-            {
-                dllSettings.SaveConnectionString(value);
-            }
-        }
-        [Category("ReadOnly"), DisplayName("وضعیت اجرای پروسه")]
+        [Category("Information"), DisplayName("وضعیت اجرای پروسه")]
         public bool Started
         {
             get;
             private set;
         }
-        [Category("ReadOnly"), DisplayName("نوع فایل")]
+        [Category("Information"), DisplayName("نوع فایل")]
         public string FileAssembly
         {
             get
@@ -152,7 +128,7 @@ namespace IRISA.CommunicationCenter
                 return dllSettings.Assembly.AssemblyName();
             }
         }
-        [Category("ReadOnly"), DisplayName("ورژن برنامه")]
+        [Category("Information"), DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
             get
@@ -160,7 +136,7 @@ namespace IRISA.CommunicationCenter
                 return dllSettings.Assembly.AssemblyVersion();
             }
         }
-        [Category("ReadOnly"), DisplayName("آدرس فایل")]
+        [Category("Information"), DisplayName("آدرس فایل")]
         public string FileAddress
         {
             get
@@ -172,99 +148,63 @@ namespace IRISA.CommunicationCenter
         {
             lock (sendLocker)
             {
-                CheckDataBaseConnection();
+                List<IccTelegram> telegrams = IccQueue.GetTelegramsToSend();
 
-                var telegrams = GetTelegramsFromDataBase(Transfers);
+                telegrams = InProcessTelegrams.RemoveFrom(telegrams);
 
-                telegrams = RemoveInProcessTelegrams(telegrams, ProcessingTelegrams);
+                InProcessTelegrams.AddRange(telegrams);
 
-                ProcessingTelegrams = AddTelegramsToProcessingList(telegrams, ProcessingTelegrams);
-
-                var telegramGroups = GroupTelegramsByDestination(telegrams);
-
-                foreach (var list in telegramGroups)
-                    Task.Run(() => SendTelegramsToADestination(list, connectedClients));
+                SendTelegrams(telegrams, connectedClients);
             }
         }
 
-        public HashSet<long> AddTelegramsToProcessingList(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
-        {
-            processingTelegrams.UnionWith(telegrams.Select(x => x.ID));
-            return processingTelegrams;
-        }
-
-        public List<IccTransfer> GetTelegramsFromDataBase(EntityBusiness<Entities, IccTransfer> transfers)
-        {
-            return
-                transfers
-                   .GetAll()
-                   .Where(x => x.SENT == false && x.DROPPED == false)
-                   .ToList();
-        }
-
-        public List<IccTransfer> RemoveInProcessTelegrams(List<IccTransfer> telegrams, HashSet<long> processingTelegrams)
-        {
-            return telegrams
-                .Where(x => !processingTelegrams.Contains(x.ID))
-                .ToList();
-        }
-
-        public List<List<IccTransfer>> GroupTelegramsByDestination(List<IccTransfer> telegrams)
-        {
-            return telegrams
-                .GroupBy(x => x.DESTINATION)
-                .Select(x => x.ToList())
-                .ToList();
-        }
-
-        public void SendTelegramsToADestination(List<IccTransfer> telegrams, List<IIccAdapter> adapters)
+        
+        public void SendTelegrams(List<IccTelegram> telegrams, List<IIccAdapter> adapters)
         {
             if (telegrams.Count == 0)
                 return;
 
-            IIccAdapter iccAdapter = GetDestinationAdapter(adapters, telegrams.First().DESTINATION);
+            telegrams = telegrams.OrderBy(x => x.SendTime).ToList();
 
-            if (!iccAdapter.Connected)
-                return;
-
-            foreach (IccTransfer transfer in telegrams)
+            foreach (IccTelegram telegram in telegrams)
             {
                 try
                 {
-                    IccTelegram iccTelegram = IccTransferToIccTelegram(transfer);
+                    IIccAdapter iccAdapter = GetDestinationAdapter(adapters, telegram.Destination);
 
-                    ValidateTelegram(iccTelegram);
-
-                    iccAdapter.Send(iccTelegram);
-
-                    transfer.DROPPED = false;
-                    transfer.DROP_REASON = null;
-                    transfer.RECEIVE_TIME = new DateTime?(DateTime.Now);
-                    transfer.SENT = true;
-                    Transfers.Edit(transfer);
-
-                    eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
+                    if (!iccAdapter.Connected)
                     {
-                            transfer.ID
-                    });
-
-                    if (TelegramSent != null)
-                    {
-                        TelegramSent(new IccCoreTelegramEventArgs(iccTelegram));
+                        InProcessTelegrams.Remove(telegram);
+                        continue;
                     }
+
+                    ValidateTelegram(telegram);
+
+                    iccAdapter.Send(telegram);
                 }
                 catch (Exception ex)
                 {
-                    if (transfer.SENT == false)
-                    {
-                        DropTelegram(transfer, ex, true);
-                    }
-                    else
-                    {
-                        eventLogger.LogException(ex);
-                    }
+                    Logger.LogException(ex);
                 }
             }
+        }
+
+        private void UpdateSentTelegram(IccTelegram iccTelegram)
+        {
+            InProcessTelegrams.Remove(iccTelegram);
+            iccTelegram.Dropped = false;
+            iccTelegram.DropReason = null;
+            iccTelegram.ReceiveTime = new DateTime?(DateTime.Now);
+            iccTelegram.Sent = true;
+
+            IccQueue.Edit(iccTelegram);
+
+            Logger.LogSuccess("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
+            {
+                    iccTelegram.TransferId
+            });
+
+            TelegramSent?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
         }
 
         public IIccAdapter GetDestinationAdapter(List<IIccAdapter> adapters, string destination)
@@ -290,8 +230,8 @@ namespace IRISA.CommunicationCenter
             }
             catch (Exception exception)
             {
-                eventLogger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
-                eventLogger.LogException(exception);
+                Logger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
+                Logger.LogException(exception);
             }
         }
         private void client_OnReceive(ReceiveEventArgs e)
@@ -324,45 +264,37 @@ namespace IRISA.CommunicationCenter
             {
                 connectedClients = new List<IIccAdapter>();
                 dllSettings = new DLLSettings<IccCore>();
-                eventLogger.DbLoggerEnabled = true;
-                if (!Transfers.Connected)
+                Logger.LogInfo("اجرای {0} آغاز شد.", new object[]
                 {
-                    eventLogger.DbLoggerEnabled = false;
-                }
-                else
-                {
-                    eventLogger.LogInfo("اجرای {0} آغاز شد.", new object[]
-                    {
                         PersianDescription
-                    });
-                    LoadClients();
-                    if (sendTimer != null)
-                    {
-                        sendTimer.Stop();
-                    }
-                    sendTimer = new IrisaBackgroundTimer();
-                    sendTimer.Interval = SendTimerInterval;
-                    sendTimer.DoWork += new DoWorkEventHandler(sendTimer_DoWork);
-                    sendTimer.PersianDescription = SendTimerPersianDescription + " در " + PersianDescription;
-                    sendTimer.EventLogger = eventLogger;
-                    sendTimer.Start();
-                    if (activatorTimer != null)
-                    {
-                        activatorTimer.Stop();
-                    }
-                    activatorTimer = new IrisaBackgroundTimer();
-                    activatorTimer.Interval = ActivatorTimerInterval;
-                    activatorTimer.DoWork += new DoWorkEventHandler(activatorTimer_DoWork);
-                    activatorTimer.PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription;
-                    activatorTimer.EventLogger = eventLogger;
-                    activatorTimer.Start();
-                    Started = true;
+                });
+                LoadClients();
+                if (sendTimer != null)
+                {
+                    sendTimer.Stop();
                 }
+                sendTimer = new IrisaBackgroundTimer();
+                sendTimer.Interval = SendTimerInterval;
+                sendTimer.DoWork += new DoWorkEventHandler(sendTimer_DoWork);
+                sendTimer.PersianDescription = SendTimerPersianDescription + " در " + PersianDescription;
+                sendTimer.EventLogger = Logger;
+                sendTimer.Start();
+                if (activatorTimer != null)
+                {
+                    activatorTimer.Stop();
+                }
+                activatorTimer = new IrisaBackgroundTimer();
+                activatorTimer.Interval = ActivatorTimerInterval;
+                activatorTimer.DoWork += new DoWorkEventHandler(activatorTimer_DoWork);
+                activatorTimer.PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription;
+                activatorTimer.EventLogger = Logger;
+                activatorTimer.Start();
+                Started = true;
             }
             catch (Exception exception)
             {
                 Started = false;
-                eventLogger.LogException(exception);
+                Logger.LogException(exception);
             }
         }
         public void Stop()
@@ -381,7 +313,7 @@ namespace IRISA.CommunicationCenter
             }
             if (Started)
             {
-                eventLogger.LogInfo("اجرای {0} خاتمه یافت.", new object[]
+                Logger.LogInfo("اجرای {0} خاتمه یافت.", new object[]
                 {
                     PersianDescription
                 });
@@ -390,34 +322,45 @@ namespace IRISA.CommunicationCenter
         }
         private void CheckDataBaseConnection()
         {
-            if (!Transfers.Connected)
-            {
-                throw HelperMethods.CreateException("برنامه قادر به دسترسی به پایگاه داده {0} نمی باشد", new object[]
-                {
-                    PersianDescription
-                });
-            }
+            //if (!Transfers.Connected)
+            //{
+            //    throw HelperMethods.CreateException("برنامه قادر به دسترسی به پایگاه داده {0} نمی باشد", new object[]
+            //    {
+            //        PersianDescription
+            //    });
+            //}
         }
         private void LoadClients()
         {
-            connectedClients = HelperMethods.LoadPlugins<IIccAdapter>();
+            connectedClients = HelperMethods.LoadPlugins<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+
             if (connectedClients.Count == 0)
             {
-                eventLogger.LogWarning("کلاینتی برای اتصال یافت نشد.", new object[0]);
+                Logger.LogWarning("کلاینتی برای اتصال یافت نشد.", new object[0]);
             }
-            foreach (IIccAdapter current in connectedClients)
+            foreach (IIccAdapter adapter in connectedClients)
             {
                 try
                 {
-                    current.Receive += new ReceiveEventHandler(client_OnReceive);
-                    current.Start(eventLogger);
+                    adapter.Receive += new ReceiveEventHandler(client_OnReceive);
+                    adapter.SendCompleted += Adapter_SendCompleted;
+                    adapter.Start(Logger);
                 }
                 catch (Exception exception)
                 {
-                    eventLogger.LogException(exception);
+                    Logger.LogException(exception);
                 }
             }
         }
+
+        private void Adapter_SendCompleted(object sender, SendCompletedEventArgs e)
+        {
+            if (e.Successful)
+                UpdateSentTelegram(e.IccTelegram);
+            else
+                DropTelegram(e.IccTelegram, e.FailException, true);
+        }
+
         private void ValidateTelegram(IccTelegram iccTelegram)
         {
             if (!iccTelegram.Destination.HasValue())
@@ -440,43 +383,50 @@ namespace IRISA.CommunicationCenter
         }
         private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)
         {
-            DropTelegram(IccTelegramToIccTransfer(iccTelegram), dropException, existingRecord);
-        }
-        private void DropTelegram(IccTransfer iccTransfer, Exception dropException, bool existingRecord)
-        {
             try
             {
                 if (!(dropException is IrisaException))
                 {
-                    eventLogger.LogException(dropException);
+                    Logger.LogException(dropException);
                 }
-                iccTransfer.SENT = false;
-                iccTransfer.DROPPED = true;
-                iccTransfer.DROP_REASON = dropException.MostInnerException().Message;
+                iccTelegram.Sent = false;
+                iccTelegram.Dropped = true;
+                iccTelegram.DropReason = dropException.InnerExceptionsMessage();
+
                 if (existingRecord)
                 {
-                    Transfers.Edit(iccTransfer);
+                    IccQueue.Edit(iccTelegram);
+                    //Transfers.Edit(iccTransfer);
                 }
                 else
                 {
-                    Transfers.Create(iccTransfer);
-                    iccTransfer = (
-                        from t in Transfers.GetAll()
-                        orderby t.ID descending
-                        select t).First<IccTransfer>();
+                    IccQueue.Add(iccTelegram);
+
+                    //InMemoryQueue.Add(iccTelegram);
+                    //Transfers.Create(iccTransfer);
+                    //iccTransfer = (
+                    //    from t in Transfers.GetAll()
+                    //    orderby t.ID descending
+                    //    select t).First<IccTransfer>();
                 }
-                eventLogger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
+
+                Logger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
                 {
-                        iccTransfer.ID
+                        iccTelegram.TransferId
                 });
+
                 if (TelegramDropped != null)
                 {
-                    TelegramDropped(new IccCoreTelegramEventArgs(IccTransferToIccTelegram(iccTransfer)));
+                    TelegramDropped(new IccCoreTelegramEventArgs(iccTelegram));
                 }
             }
             catch (Exception exception)
             {
-                eventLogger.LogException(exception);
+                Logger.LogException(exception);
+            }
+            finally
+            {
+                InProcessTelegrams.Remove(iccTelegram);
             }
         }
         private void QueueTelegram(IccTelegram iccTelegram)
@@ -484,19 +434,23 @@ namespace IRISA.CommunicationCenter
             bool flag = false;
             try
             {
-                IccTransfer iccTransfer = IccTelegramToIccTransfer(iccTelegram);
-                iccTransfer.DROPPED = false;
-                iccTransfer.DROP_REASON = null;
-                iccTransfer.SENT = false;
-                Transfers.Create(iccTransfer);
-                flag = true;
-                iccTransfer = (
-                    from t in Transfers.GetAll()
-                    orderby t.ID descending
-                    select t).First<IccTransfer>();
-                eventLogger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
+                iccTelegram.Dropped = false;
+                iccTelegram.DropReason = null;
+                iccTelegram.Sent = false;
+
+                IccQueue.Add(iccTelegram);
+                //Transfers.Create(iccTransfer);
+                //iccTransfer.ID = InMemoryQueue.Count;
+                //InMemoryQueue.Add(iccTransfer);
+
+                //flag = true;
+                //iccTransfer = (
+                //    from t in Transfers.GetAll()
+                //    orderby t.ID descending
+                //    select t).First<IccTransfer>();
+                Logger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
-                    iccTransfer.ID
+                    iccTelegram.TransferId
                 });
                 if (TelegramQueued != null)
                 {
@@ -511,31 +465,9 @@ namespace IRISA.CommunicationCenter
                 }
                 else
                 {
-                    eventLogger.LogException(ex);
+                    Logger.LogException(ex);
                 }
             }
-        }
-        public IccTelegram IccTransferToIccTelegram(IccTransfer iccTransfer)
-        {
-            IccTelegram iccTelegram = new IccTelegram();
-            iccTelegram.Destination = iccTransfer.DESTINATION;
-            iccTelegram.TelegramId = (iccTransfer.TELEGRAM_ID.HasValue ? iccTransfer.TELEGRAM_ID.Value : 0);
-            iccTelegram.TransferId = iccTransfer.ID;
-            iccTelegram.SendTime = iccTransfer.SEND_TIME;
-            iccTelegram.Source = iccTransfer.SOURCE;
-            iccTelegram.SetBodyString(iccTransfer.BODY, BodySeparator);
-            return iccTelegram;
-        }
-        public IccTransfer IccTelegramToIccTransfer(IccTelegram iccTelegram)
-        {
-            return new IccTransfer
-            {
-                TELEGRAM_ID = new int?(iccTelegram.TelegramId),
-                SOURCE = iccTelegram.Source,
-                DESTINATION = iccTelegram.Destination,
-                SEND_TIME = iccTelegram.SendTime,
-                BODY = iccTelegram.GetBodyString(BodySeparator)
-            };
         }
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)
         {

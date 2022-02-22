@@ -149,7 +149,7 @@ namespace IRISA.CommunicationCenter
 				this.dllSettings.SaveSetting("TelegramDefinitionFile", value);
 			}
 		}
-		[Category("ReadOnly"), DisplayName("نوع نرم افزار واسط کاربر")]
+		[Category("Information"), DisplayName("نوع نرم افزار واسط کاربر")]
 		public string UIApplicationType
 		{
 			get
@@ -157,7 +157,7 @@ namespace IRISA.CommunicationCenter
 				return "Microsoft Visual C# 2010 .Net Framework 4.0, Windows Forms Application. ";
 			}
 		}
-		[Category("ReadOnly"), DisplayName("نوع فایل")]
+		[Category("Information"), DisplayName("نوع فایل")]
 		public string FileAssembly
 		{
 			get
@@ -165,7 +165,7 @@ namespace IRISA.CommunicationCenter
 				return this.dllSettings.Assembly.AssemblyName();
 			}
 		}
-		[Category("ReadOnly"), DisplayName("ورژن برنامه")]
+		[Category("Information"), DisplayName("ورژن برنامه")]
 		public string FileAssemblyVersion
 		{
 			get
@@ -173,7 +173,7 @@ namespace IRISA.CommunicationCenter
 				return this.dllSettings.Assembly.AssemblyVersion();
 			}
 		}
-		[Category("ReadOnly"), DisplayName("آدرس فایل")]
+		[Category("Information"), DisplayName("آدرس فایل")]
 		public string FileAddress
 		{
 			get

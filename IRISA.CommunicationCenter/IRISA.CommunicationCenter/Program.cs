@@ -31,11 +31,11 @@ namespace IRISA.CommunicationCenter
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			Exception exception = (Exception)e.ExceptionObject;
-			new InMemoryLogger().LogException(exception);
+			new LoggerInMemory().LogException(exception);
 		}
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
-			new InMemoryLogger().LogException(e.Exception);
+			new LoggerInMemory().LogException(e.Exception);
 		}
 	}
 }

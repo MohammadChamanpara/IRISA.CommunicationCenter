@@ -52,11 +52,6 @@ namespace IRISA.CommunicationCenter
         private ToolStripLabel toolStripLabel5;
         private ToolStripLabel toolStripLabel6;
         private ToolStripButton eventsRefreshButton;
-        private DataGridViewTextBoxColumn IdColumn;
-        private DataGridViewTextBoxColumn TimeColumn;
-        private DataGridViewTextBoxColumn TypeColumn;
-        private DataGridViewTextBoxColumn TextColumn;
-        private DataGridViewTextBoxColumn StackTraceColumn;
         private ToolStripButton TelegramDetailsButton;
         private GroupBox telegramSearchGroupbox;
         private Label label1;
@@ -68,16 +63,6 @@ namespace IRISA.CommunicationCenter
         private TextBox dropReasonTextBox;
         private ToolStrip searchToolStrip;
         private ToolStripButton clearSearchButton;
-        private DataGridViewTextBoxColumn transfersIdColumn;
-        private DataGridViewTextBoxColumn sourceColumn;
-        private DataGridViewTextBoxColumn DestinationColumn;
-        private DataGridViewTextBoxColumn TelegramIdColumn;
-        private DataGridViewTextBoxColumn BodyColumn;
-        private DataGridViewTextBoxColumn SendTimeColumn;
-        private DataGridViewTextBoxColumn ReceiveTimeColumn;
-        private DataGridViewTextBoxColumn SentColumn;
-        private DataGridViewTextBoxColumn DroppedColumn;
-        private DataGridViewTextBoxColumn DropReasonColumn;
         private FlowLayoutPanel flowLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel2;
         private FlowLayoutPanel flowLayoutPanel3;
@@ -145,11 +130,11 @@ namespace IRISA.CommunicationCenter
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
             this.clientsSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -168,16 +153,6 @@ namespace IRISA.CommunicationCenter
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.TransfersTabPage = new System.Windows.Forms.TabPage();
             this.transfersDataGrid = new IRISA.Windows.Components.IrisaDataGrid();
-            this.transfersIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sourceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DestinationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TelegramIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BodyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SendTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReceiveTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DroppedColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DropReasonColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.telegramSearchGroupbox = new System.Windows.Forms.GroupBox();
             this.searchFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.searchToolStrip = new System.Windows.Forms.ToolStrip();
@@ -254,7 +229,6 @@ namespace IRISA.CommunicationCenter
             this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StackTraceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iccEventSearchGroupBox = new System.Windows.Forms.GroupBox();
             this.eventsSearchflowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -290,6 +264,9 @@ namespace IRISA.CommunicationCenter
             this.splitter18 = new System.Windows.Forms.Splitter();
             this.flowLayoutPanel23 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label34 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel27 = new System.Windows.Forms.FlowLayoutPanel();
+            this.statusTypeComboBox = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel24 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel25 = new System.Windows.Forms.FlowLayoutPanel();
             this.splitter21 = new System.Windows.Forms.Splitter();
@@ -312,9 +289,16 @@ namespace IRISA.CommunicationCenter
             this.minimizeApplicationButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.label34 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel27 = new System.Windows.Forms.FlowLayoutPanel();
-            this.statusTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.transfersIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sourceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DestinationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TelegramIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BodyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SendTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReceiveTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DroppedColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DropReasonColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.clientsSplitContainer)).BeginInit();
@@ -357,9 +341,9 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel21.SuspendLayout();
             this.flowLayoutPanel22.SuspendLayout();
             this.flowLayoutPanel14.SuspendLayout();
+            this.flowLayoutPanel27.SuspendLayout();
             this.eventsToolStrip.SuspendLayout();
             this.bottomToolStrip.SuspendLayout();
-            this.flowLayoutPanel27.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -398,7 +382,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.clientsSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.clientsSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clientsSplitContainer.Location = new System.Drawing.Point(3, 28);
+            this.clientsSplitContainer.Location = new System.Drawing.Point(3, 47);
             this.clientsSplitContainer.Name = "clientsSplitContainer";
             // 
             // clientsSplitContainer.Panel1
@@ -410,7 +394,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.clientsSplitContainer.Panel2.BackColor = System.Drawing.Color.White;
             this.clientsSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.clientsSplitContainer.Size = new System.Drawing.Size(1080, 540);
+            this.clientsSplitContainer.Size = new System.Drawing.Size(1080, 521);
             this.clientsSplitContainer.SplitterDistance = 381;
             this.clientsSplitContainer.SplitterWidth = 10;
             this.clientsSplitContainer.TabIndex = 1;
@@ -423,19 +407,20 @@ namespace IRISA.CommunicationCenter
             this.clientsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.clientsPanel.Location = new System.Drawing.Point(0, 0);
             this.clientsPanel.Name = "clientsPanel";
-            this.clientsPanel.Size = new System.Drawing.Size(379, 538);
+            this.clientsPanel.Size = new System.Drawing.Size(379, 519);
             this.clientsPanel.TabIndex = 0;
             // 
             // clientsToolStrip
             // 
             this.clientsToolStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.clientsToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.clientsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel3,
             this.toolStripButton2,
             this.toolStripLabel4});
             this.clientsToolStrip.Location = new System.Drawing.Point(3, 3);
             this.clientsToolStrip.Name = "clientsToolStrip";
-            this.clientsToolStrip.Size = new System.Drawing.Size(1080, 25);
+            this.clientsToolStrip.Size = new System.Drawing.Size(1080, 44);
             this.clientsToolStrip.TabIndex = 2;
             this.clientsToolStrip.Text = "toolStrip1";
             // 
@@ -443,7 +428,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.toolStripLabel3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(442, 22);
+            this.toolStripLabel3.Size = new System.Drawing.Size(442, 41);
             this.toolStripLabel3.Text = "در این بخش کلاینت های متصل به سیستم را مشاهده می فرمایید . کلاینت های فعال به صور" +
     "ت ";
             // 
@@ -454,13 +439,13 @@ namespace IRISA.CommunicationCenter
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Margin = new System.Windows.Forms.Padding(0);
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 25);
+            this.toolStripButton2.Size = new System.Drawing.Size(44, 44);
             this.toolStripButton2.Text = "toolStripButton2";
             // 
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(110, 22);
+            this.toolStripLabel4.Size = new System.Drawing.Size(110, 41);
             this.toolStripLabel4.Text = "نمایش داده می شوند.";
             // 
             // settingsTabPage
@@ -480,7 +465,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.settingsSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.settingsSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.settingsSplitContainer.Location = new System.Drawing.Point(3, 28);
+            this.settingsSplitContainer.Location = new System.Drawing.Point(3, 50);
             this.settingsSplitContainer.Name = "settingsSplitContainer";
             // 
             // settingsSplitContainer.Panel1
@@ -492,7 +477,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.settingsSplitContainer.Panel2.Controls.Add(this.settingsPropertyGrid);
             this.settingsSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.settingsSplitContainer.Size = new System.Drawing.Size(1080, 540);
+            this.settingsSplitContainer.Size = new System.Drawing.Size(1080, 518);
             this.settingsSplitContainer.SplitterDistance = 329;
             this.settingsSplitContainer.SplitterWidth = 10;
             this.settingsSplitContainer.TabIndex = 1;
@@ -505,7 +490,7 @@ namespace IRISA.CommunicationCenter
             this.settingsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.settingsPanel.Location = new System.Drawing.Point(0, 0);
             this.settingsPanel.Name = "settingsPanel";
-            this.settingsPanel.Size = new System.Drawing.Size(327, 538);
+            this.settingsPanel.Size = new System.Drawing.Size(327, 516);
             this.settingsPanel.TabIndex = 0;
             // 
             // settingsPropertyGrid
@@ -515,19 +500,20 @@ namespace IRISA.CommunicationCenter
             this.settingsPropertyGrid.Location = new System.Drawing.Point(0, 0);
             this.settingsPropertyGrid.Name = "settingsPropertyGrid";
             this.settingsPropertyGrid.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.settingsPropertyGrid.Size = new System.Drawing.Size(739, 538);
+            this.settingsPropertyGrid.Size = new System.Drawing.Size(739, 516);
             this.settingsPropertyGrid.TabIndex = 0;
             this.settingsPropertyGrid.UseCompatibleTextRendering = true;
             // 
             // settingsToolStrip
             // 
+            this.settingsToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.settingsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripButton1,
             this.toolStripLabel2});
             this.settingsToolStrip.Location = new System.Drawing.Point(3, 3);
             this.settingsToolStrip.Name = "settingsToolStrip";
-            this.settingsToolStrip.Size = new System.Drawing.Size(1080, 25);
+            this.settingsToolStrip.Size = new System.Drawing.Size(1080, 47);
             this.settingsToolStrip.TabIndex = 2;
             this.settingsToolStrip.Text = "toolStrip1";
             // 
@@ -535,7 +521,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.toolStripLabel1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(214, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(214, 44);
             this.toolStripLabel1.Text = "برای ایجاد تغییر در تنظیمات ، توسط  دکمه";
             // 
             // toolStripButton1
@@ -544,14 +530,14 @@ namespace IRISA.CommunicationCenter
             this.toolStripButton1.Image = global::IRISA.CommunicationCenter.Properties.Resources.stop;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(44, 44);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(117, 22);
+            this.toolStripLabel2.Size = new System.Drawing.Size(117, 44);
             this.toolStripLabel2.Text = "برنامه را متوقف نمایید.";
             // 
             // TransfersTabPage
@@ -594,93 +580,6 @@ namespace IRISA.CommunicationCenter
             this.transfersDataGrid.ReadOnly = true;
             this.transfersDataGrid.Size = new System.Drawing.Size(1086, 455);
             this.transfersDataGrid.TabIndex = 1;
-            // 
-            // transfersIdColumn
-            // 
-            this.transfersIdColumn.DataPropertyName = "ID";
-            this.transfersIdColumn.HeaderText = "شناسه";
-            this.transfersIdColumn.Name = "transfersIdColumn";
-            this.transfersIdColumn.ReadOnly = true;
-            this.transfersIdColumn.Width = 70;
-            // 
-            // sourceColumn
-            // 
-            this.sourceColumn.DataPropertyName = "SOURCE";
-            this.sourceColumn.HeaderText = "مبدا";
-            this.sourceColumn.Name = "sourceColumn";
-            this.sourceColumn.ReadOnly = true;
-            this.sourceColumn.Width = 60;
-            // 
-            // DestinationColumn
-            // 
-            this.DestinationColumn.DataPropertyName = "DESTINATION";
-            this.DestinationColumn.HeaderText = "مقصد";
-            this.DestinationColumn.Name = "DestinationColumn";
-            this.DestinationColumn.ReadOnly = true;
-            this.DestinationColumn.Width = 60;
-            // 
-            // TelegramIdColumn
-            // 
-            this.TelegramIdColumn.DataPropertyName = "TELEGRAM_ID";
-            this.TelegramIdColumn.HeaderText = "شناسه تلگرام";
-            this.TelegramIdColumn.Name = "TelegramIdColumn";
-            this.TelegramIdColumn.ReadOnly = true;
-            // 
-            // BodyColumn
-            // 
-            this.BodyColumn.DataPropertyName = "BODY";
-            this.BodyColumn.HeaderText = "محتوای تلگرام";
-            this.BodyColumn.Name = "BodyColumn";
-            this.BodyColumn.ReadOnly = true;
-            // 
-            // SendTimeColumn
-            // 
-            this.SendTimeColumn.DataPropertyName = "PERSIAN_SEND_TIME";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.Format = "G";
-            dataGridViewCellStyle2.NullValue = null;
-            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.SendTimeColumn.HeaderText = "زمان ارسال";
-            this.SendTimeColumn.Name = "SendTimeColumn";
-            this.SendTimeColumn.ReadOnly = true;
-            this.SendTimeColumn.Width = 130;
-            // 
-            // ReceiveTimeColumn
-            // 
-            this.ReceiveTimeColumn.DataPropertyName = "PERSIAN_RECEIVE_TIME";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "G";
-            dataGridViewCellStyle3.NullValue = null;
-            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.ReceiveTimeColumn.HeaderText = "زمان دریافت";
-            this.ReceiveTimeColumn.Name = "ReceiveTimeColumn";
-            this.ReceiveTimeColumn.ReadOnly = true;
-            this.ReceiveTimeColumn.Width = 130;
-            // 
-            // SentColumn
-            // 
-            this.SentColumn.DataPropertyName = "SENT";
-            this.SentColumn.HeaderText = "ارسال شده";
-            this.SentColumn.Name = "SentColumn";
-            this.SentColumn.ReadOnly = true;
-            this.SentColumn.Width = 85;
-            // 
-            // DroppedColumn
-            // 
-            this.DroppedColumn.DataPropertyName = "DROPPED";
-            this.DroppedColumn.HeaderText = "حذف شده";
-            this.DroppedColumn.Name = "DroppedColumn";
-            this.DroppedColumn.ReadOnly = true;
-            this.DroppedColumn.Width = 80;
-            // 
-            // DropReasonColumn
-            // 
-            this.DropReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DropReasonColumn.DataPropertyName = "DROP_REASON";
-            this.DropReasonColumn.HeaderText = "دلیل حذف";
-            this.DropReasonColumn.MinimumWidth = 400;
-            this.DropReasonColumn.Name = "DropReasonColumn";
-            this.DropReasonColumn.ReadOnly = true;
             // 
             // telegramSearchGroupbox
             // 
@@ -733,12 +632,13 @@ namespace IRISA.CommunicationCenter
             // 
             this.searchToolStrip.BackColor = System.Drawing.Color.Transparent;
             this.searchToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.searchToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.searchToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearSearchButton});
             this.searchToolStrip.Location = new System.Drawing.Point(1090, 22);
             this.searchToolStrip.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
             this.searchToolStrip.Name = "searchToolStrip";
-            this.searchToolStrip.Size = new System.Drawing.Size(35, 25);
+            this.searchToolStrip.Size = new System.Drawing.Size(56, 30);
             this.searchToolStrip.TabIndex = 37;
             this.searchToolStrip.Text = "toolStrip1";
             // 
@@ -748,7 +648,7 @@ namespace IRISA.CommunicationCenter
             this.clearSearchButton.Image = global::IRISA.CommunicationCenter.Properties.Resources.close;
             this.clearSearchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearSearchButton.Name = "clearSearchButton";
-            this.clearSearchButton.Size = new System.Drawing.Size(23, 22);
+            this.clearSearchButton.Size = new System.Drawing.Size(44, 27);
             this.clearSearchButton.Text = "toolStripButton3";
             this.clearSearchButton.ToolTipText = "حذف فیلترینگ";
             this.clearSearchButton.Click += new System.EventHandler(this.clearSearchButton_Click);
@@ -1447,6 +1347,7 @@ namespace IRISA.CommunicationCenter
             // transfersToolStrip
             // 
             this.transfersToolStrip.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.transfersToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.transfersToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel5,
             this.transfersRefreshButton,
@@ -1537,8 +1438,7 @@ namespace IRISA.CommunicationCenter
             this.IdColumn,
             this.TimeColumn,
             this.TypeColumn,
-            this.TextColumn,
-            this.StackTraceColumn});
+            this.TextColumn});
             this.eventsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.eventsDataGrid.Location = new System.Drawing.Point(0, 116);
             this.eventsDataGrid.MultiSelect = false;
@@ -1549,7 +1449,7 @@ namespace IRISA.CommunicationCenter
             // 
             // IdColumn
             // 
-            this.IdColumn.DataPropertyName = "ID";
+            this.IdColumn.DataPropertyName = "Id";
             this.IdColumn.HeaderText = "شناسه";
             this.IdColumn.Name = "IdColumn";
             this.IdColumn.ReadOnly = true;
@@ -1557,7 +1457,7 @@ namespace IRISA.CommunicationCenter
             // 
             // TimeColumn
             // 
-            this.TimeColumn.DataPropertyName = "PERSIAN_TIME";
+            this.TimeColumn.DataPropertyName = "PersianTime";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle5.Format = "G";
             dataGridViewCellStyle5.NullValue = null;
@@ -1569,7 +1469,7 @@ namespace IRISA.CommunicationCenter
             // 
             // TypeColumn
             // 
-            this.TypeColumn.DataPropertyName = "TYPE";
+            this.TypeColumn.DataPropertyName = "PersianType";
             this.TypeColumn.HeaderText = "نوع رویداد";
             this.TypeColumn.Name = "TypeColumn";
             this.TypeColumn.ReadOnly = true;
@@ -1578,19 +1478,11 @@ namespace IRISA.CommunicationCenter
             // TextColumn
             // 
             this.TextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TextColumn.DataPropertyName = "TEXT";
+            this.TextColumn.DataPropertyName = "Text";
             this.TextColumn.HeaderText = "متن رویداد";
             this.TextColumn.MinimumWidth = 150;
             this.TextColumn.Name = "TextColumn";
             this.TextColumn.ReadOnly = true;
-            // 
-            // StackTraceColumn
-            // 
-            this.StackTraceColumn.DataPropertyName = "STACK_TRACE";
-            this.StackTraceColumn.HeaderText = "محل رویداد خطا";
-            this.StackTraceColumn.Name = "StackTraceColumn";
-            this.StackTraceColumn.ReadOnly = true;
-            this.StackTraceColumn.Width = 120;
             // 
             // iccEventSearchGroupBox
             // 
@@ -1637,12 +1529,13 @@ namespace IRISA.CommunicationCenter
             // 
             this.toolStrip1.BackColor = System.Drawing.Color.Transparent;
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearSearchEventsPanel});
-            this.toolStrip1.Location = new System.Drawing.Point(1045, 22);
+            this.toolStrip1.Location = new System.Drawing.Point(1024, 22);
             this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(35, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(56, 43);
             this.toolStrip1.TabIndex = 37;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1652,7 +1545,7 @@ namespace IRISA.CommunicationCenter
             this.clearSearchEventsPanel.Image = global::IRISA.CommunicationCenter.Properties.Resources.close;
             this.clearSearchEventsPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearSearchEventsPanel.Name = "clearSearchEventsPanel";
-            this.clearSearchEventsPanel.Size = new System.Drawing.Size(23, 22);
+            this.clearSearchEventsPanel.Size = new System.Drawing.Size(44, 40);
             this.clearSearchEventsPanel.Text = "toolStripButton3";
             this.clearSearchEventsPanel.ToolTipText = "حذف فیلترینگ";
             this.clearSearchEventsPanel.Click += new System.EventHandler(this.clearSearchEventsPanel_Click);
@@ -1660,7 +1553,7 @@ namespace IRISA.CommunicationCenter
             // splitter12
             // 
             this.splitter12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter12.Location = new System.Drawing.Point(1044, 0);
+            this.splitter12.Location = new System.Drawing.Point(1023, 0);
             this.splitter12.Margin = new System.Windows.Forms.Padding(0);
             this.splitter12.Name = "splitter12";
             this.splitter12.Size = new System.Drawing.Size(1, 65);
@@ -1672,7 +1565,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel15.AutoSize = true;
             this.flowLayoutPanel15.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel15.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel15.Location = new System.Drawing.Point(1041, 3);
+            this.flowLayoutPanel15.Location = new System.Drawing.Point(1020, 3);
             this.flowLayoutPanel15.Name = "flowLayoutPanel15";
             this.flowLayoutPanel15.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel15.TabIndex = 0;
@@ -1683,7 +1576,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel16.AutoSize = true;
             this.flowLayoutPanel16.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel16.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel16.Location = new System.Drawing.Point(1035, 3);
+            this.flowLayoutPanel16.Location = new System.Drawing.Point(1014, 3);
             this.flowLayoutPanel16.Name = "flowLayoutPanel16";
             this.flowLayoutPanel16.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel16.TabIndex = 1;
@@ -1694,7 +1587,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel17.AutoSize = true;
             this.flowLayoutPanel17.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel17.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel17.Location = new System.Drawing.Point(1029, 3);
+            this.flowLayoutPanel17.Location = new System.Drawing.Point(1008, 3);
             this.flowLayoutPanel17.Name = "flowLayoutPanel17";
             this.flowLayoutPanel17.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel17.TabIndex = 2;
@@ -1705,7 +1598,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel18.AutoSize = true;
             this.flowLayoutPanel18.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel18.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel18.Location = new System.Drawing.Point(1023, 3);
+            this.flowLayoutPanel18.Location = new System.Drawing.Point(1002, 3);
             this.flowLayoutPanel18.Name = "flowLayoutPanel18";
             this.flowLayoutPanel18.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel18.TabIndex = 3;
@@ -1718,7 +1611,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel19.Controls.Add(this.label23);
             this.flowLayoutPanel19.Controls.Add(this.flowLayoutPanel20);
             this.flowLayoutPanel19.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel19.Location = new System.Drawing.Point(836, 3);
+            this.flowLayoutPanel19.Location = new System.Drawing.Point(815, 3);
             this.flowLayoutPanel19.Name = "flowLayoutPanel19";
             this.flowLayoutPanel19.Size = new System.Drawing.Size(181, 46);
             this.flowLayoutPanel19.TabIndex = 4;
@@ -1858,7 +1751,7 @@ namespace IRISA.CommunicationCenter
             // splitter17
             // 
             this.splitter17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter17.Location = new System.Drawing.Point(832, 0);
+            this.splitter17.Location = new System.Drawing.Point(811, 0);
             this.splitter17.Margin = new System.Windows.Forms.Padding(0);
             this.splitter17.Name = "splitter17";
             this.splitter17.Size = new System.Drawing.Size(1, 65);
@@ -1872,7 +1765,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel21.Controls.Add(this.label28);
             this.flowLayoutPanel21.Controls.Add(this.flowLayoutPanel22);
             this.flowLayoutPanel21.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel21.Location = new System.Drawing.Point(648, 3);
+            this.flowLayoutPanel21.Location = new System.Drawing.Point(627, 3);
             this.flowLayoutPanel21.Name = "flowLayoutPanel21";
             this.flowLayoutPanel21.Size = new System.Drawing.Size(181, 46);
             this.flowLayoutPanel21.TabIndex = 5;
@@ -1996,7 +1889,7 @@ namespace IRISA.CommunicationCenter
             // splitter18
             // 
             this.splitter18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter18.Location = new System.Drawing.Point(644, 0);
+            this.splitter18.Location = new System.Drawing.Point(623, 0);
             this.splitter18.Margin = new System.Windows.Forms.Padding(0);
             this.splitter18.Name = "splitter18";
             this.splitter18.Size = new System.Drawing.Size(1, 65);
@@ -2008,7 +1901,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel23.AutoSize = true;
             this.flowLayoutPanel23.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel23.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel23.Location = new System.Drawing.Point(641, 3);
+            this.flowLayoutPanel23.Location = new System.Drawing.Point(620, 3);
             this.flowLayoutPanel23.Name = "flowLayoutPanel23";
             this.flowLayoutPanel23.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel23.TabIndex = 6;
@@ -2018,17 +1911,48 @@ namespace IRISA.CommunicationCenter
             // 
             this.flowLayoutPanel14.Controls.Add(this.label34);
             this.flowLayoutPanel14.Controls.Add(this.flowLayoutPanel27);
-            this.flowLayoutPanel14.Location = new System.Drawing.Point(476, 3);
+            this.flowLayoutPanel14.Location = new System.Drawing.Point(455, 3);
             this.flowLayoutPanel14.Name = "flowLayoutPanel14";
             this.flowLayoutPanel14.Size = new System.Drawing.Size(159, 59);
             this.flowLayoutPanel14.TabIndex = 65;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label34.Location = new System.Drawing.Point(105, 3);
+            this.label34.Margin = new System.Windows.Forms.Padding(3);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(51, 13);
+            this.label34.TabIndex = 71;
+            this.label34.Text = "نوع رویداد";
+            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // flowLayoutPanel27
+            // 
+            this.flowLayoutPanel27.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.flowLayoutPanel27.Controls.Add(this.statusTypeComboBox);
+            this.flowLayoutPanel27.Location = new System.Drawing.Point(0, 22);
+            this.flowLayoutPanel27.Name = "flowLayoutPanel27";
+            this.flowLayoutPanel27.Size = new System.Drawing.Size(156, 24);
+            this.flowLayoutPanel27.TabIndex = 72;
+            // 
+            // statusTypeComboBox
+            // 
+            this.statusTypeComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.iccEventSearchModelBindingSource, "Type", true));
+            this.statusTypeComboBox.DataSource = this.iccEventSearchModelBindingSource;
+            this.statusTypeComboBox.FormattingEnabled = true;
+            this.statusTypeComboBox.Location = new System.Drawing.Point(32, 3);
+            this.statusTypeComboBox.Name = "statusTypeComboBox";
+            this.statusTypeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.statusTypeComboBox.TabIndex = 73;
             // 
             // flowLayoutPanel24
             // 
             this.flowLayoutPanel24.AutoSize = true;
             this.flowLayoutPanel24.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel24.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel24.Location = new System.Drawing.Point(470, 3);
+            this.flowLayoutPanel24.Location = new System.Drawing.Point(449, 3);
             this.flowLayoutPanel24.Name = "flowLayoutPanel24";
             this.flowLayoutPanel24.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel24.TabIndex = 7;
@@ -2039,7 +1963,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel25.AutoSize = true;
             this.flowLayoutPanel25.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel25.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel25.Location = new System.Drawing.Point(464, 3);
+            this.flowLayoutPanel25.Location = new System.Drawing.Point(443, 3);
             this.flowLayoutPanel25.Name = "flowLayoutPanel25";
             this.flowLayoutPanel25.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel25.TabIndex = 8;
@@ -2048,7 +1972,7 @@ namespace IRISA.CommunicationCenter
             // splitter21
             // 
             this.splitter21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter21.Location = new System.Drawing.Point(460, 0);
+            this.splitter21.Location = new System.Drawing.Point(439, 0);
             this.splitter21.Margin = new System.Windows.Forms.Padding(0);
             this.splitter21.Name = "splitter21";
             this.splitter21.Size = new System.Drawing.Size(1, 65);
@@ -2060,7 +1984,7 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel26.AutoSize = true;
             this.flowLayoutPanel26.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel26.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel26.Location = new System.Drawing.Point(457, 3);
+            this.flowLayoutPanel26.Location = new System.Drawing.Point(436, 3);
             this.flowLayoutPanel26.Name = "flowLayoutPanel26";
             this.flowLayoutPanel26.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel26.TabIndex = 60;
@@ -2068,7 +1992,7 @@ namespace IRISA.CommunicationCenter
             // 
             // DoIccEventSearch
             // 
-            this.DoIccEventSearch.Location = new System.Drawing.Point(376, 3);
+            this.DoIccEventSearch.Location = new System.Drawing.Point(355, 3);
             this.DoIccEventSearch.Name = "DoIccEventSearch";
             this.DoIccEventSearch.Size = new System.Drawing.Size(75, 23);
             this.DoIccEventSearch.TabIndex = 64;
@@ -2079,6 +2003,7 @@ namespace IRISA.CommunicationCenter
             // eventsToolStrip
             // 
             this.eventsToolStrip.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.eventsToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.eventsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel6,
             this.eventsRefreshButton,
@@ -2143,6 +2068,7 @@ namespace IRISA.CommunicationCenter
             // bottomToolStrip
             // 
             this.bottomToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.bottomToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.bottomToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSeparator1,
             this.closeApplicationButton,
@@ -2239,36 +2165,92 @@ namespace IRISA.CommunicationCenter
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
-            // label34
+            // transfersIdColumn
             // 
-            this.label34.AutoSize = true;
-            this.label34.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label34.Location = new System.Drawing.Point(105, 3);
-            this.label34.Margin = new System.Windows.Forms.Padding(3);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(51, 13);
-            this.label34.TabIndex = 71;
-            this.label34.Text = "نوع رویداد";
-            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.transfersIdColumn.DataPropertyName = "TransferId";
+            this.transfersIdColumn.HeaderText = "شناسه";
+            this.transfersIdColumn.Name = "transfersIdColumn";
+            this.transfersIdColumn.ReadOnly = true;
+            this.transfersIdColumn.Width = 70;
             // 
-            // flowLayoutPanel27
+            // sourceColumn
             // 
-            this.flowLayoutPanel27.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.flowLayoutPanel27.Controls.Add(this.statusTypeComboBox);
-            this.flowLayoutPanel27.Location = new System.Drawing.Point(0, 22);
-            this.flowLayoutPanel27.Name = "flowLayoutPanel27";
-            this.flowLayoutPanel27.Size = new System.Drawing.Size(156, 24);
-            this.flowLayoutPanel27.TabIndex = 72;
+            this.sourceColumn.DataPropertyName = "Source";
+            this.sourceColumn.HeaderText = "مبدا";
+            this.sourceColumn.Name = "sourceColumn";
+            this.sourceColumn.ReadOnly = true;
+            this.sourceColumn.Width = 60;
             // 
-            // statusTypeComboBox
+            // DestinationColumn
             // 
-            this.statusTypeComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.iccEventSearchModelBindingSource, "Type", true));
-            this.statusTypeComboBox.DataSource = this.iccEventSearchModelBindingSource;
-            this.statusTypeComboBox.FormattingEnabled = true;
-            this.statusTypeComboBox.Location = new System.Drawing.Point(32, 3);
-            this.statusTypeComboBox.Name = "statusTypeComboBox";
-            this.statusTypeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.statusTypeComboBox.TabIndex = 73;
+            this.DestinationColumn.DataPropertyName = "Destination";
+            this.DestinationColumn.HeaderText = "مقصد";
+            this.DestinationColumn.Name = "DestinationColumn";
+            this.DestinationColumn.ReadOnly = true;
+            this.DestinationColumn.Width = 60;
+            // 
+            // TelegramIdColumn
+            // 
+            this.TelegramIdColumn.DataPropertyName = "TelegramId";
+            this.TelegramIdColumn.HeaderText = "شناسه تلگرام";
+            this.TelegramIdColumn.Name = "TelegramIdColumn";
+            this.TelegramIdColumn.ReadOnly = true;
+            // 
+            // BodyColumn
+            // 
+            this.BodyColumn.DataPropertyName = "BodyString";
+            this.BodyColumn.HeaderText = "محتوای تلگرام";
+            this.BodyColumn.Name = "BodyColumn";
+            this.BodyColumn.ReadOnly = true;
+            // 
+            // SendTimeColumn
+            // 
+            this.SendTimeColumn.DataPropertyName = "PersianSendTime";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "G";
+            dataGridViewCellStyle2.NullValue = null;
+            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.SendTimeColumn.HeaderText = "زمان ارسال";
+            this.SendTimeColumn.Name = "SendTimeColumn";
+            this.SendTimeColumn.ReadOnly = true;
+            this.SendTimeColumn.Width = 130;
+            // 
+            // ReceiveTimeColumn
+            // 
+            this.ReceiveTimeColumn.DataPropertyName = "PersianReceiveTime";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "G";
+            dataGridViewCellStyle3.NullValue = null;
+            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ReceiveTimeColumn.HeaderText = "زمان دریافت";
+            this.ReceiveTimeColumn.Name = "ReceiveTimeColumn";
+            this.ReceiveTimeColumn.ReadOnly = true;
+            this.ReceiveTimeColumn.Width = 130;
+            // 
+            // SentColumn
+            // 
+            this.SentColumn.DataPropertyName = "Sent";
+            this.SentColumn.HeaderText = "ارسال شده";
+            this.SentColumn.Name = "SentColumn";
+            this.SentColumn.ReadOnly = true;
+            this.SentColumn.Width = 85;
+            // 
+            // DroppedColumn
+            // 
+            this.DroppedColumn.DataPropertyName = "Dropped";
+            this.DroppedColumn.HeaderText = "حذف شده";
+            this.DroppedColumn.Name = "DroppedColumn";
+            this.DroppedColumn.ReadOnly = true;
+            this.DroppedColumn.Width = 80;
+            // 
+            // DropReasonColumn
+            // 
+            this.DropReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DropReasonColumn.DataPropertyName = "DropReason";
+            this.DropReasonColumn.HeaderText = "دلیل حذف";
+            this.DropReasonColumn.MinimumWidth = 400;
+            this.DropReasonColumn.Name = "DropReasonColumn";
+            this.DropReasonColumn.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -2357,11 +2339,11 @@ namespace IRISA.CommunicationCenter
             this.flowLayoutPanel22.PerformLayout();
             this.flowLayoutPanel14.ResumeLayout(false);
             this.flowLayoutPanel14.PerformLayout();
+            this.flowLayoutPanel27.ResumeLayout(false);
             this.eventsToolStrip.ResumeLayout(false);
             this.eventsToolStrip.PerformLayout();
             this.bottomToolStrip.ResumeLayout(false);
             this.bottomToolStrip.PerformLayout();
-            this.flowLayoutPanel27.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2411,5 +2393,19 @@ namespace IRISA.CommunicationCenter
         private Label label34;
         private FlowLayoutPanel flowLayoutPanel27;
         private ComboBox statusTypeComboBox;
+        private DataGridViewTextBoxColumn IdColumn;
+        private DataGridViewTextBoxColumn TimeColumn;
+        private DataGridViewTextBoxColumn TypeColumn;
+        private DataGridViewTextBoxColumn TextColumn;
+        private DataGridViewTextBoxColumn transfersIdColumn;
+        private DataGridViewTextBoxColumn sourceColumn;
+        private DataGridViewTextBoxColumn DestinationColumn;
+        private DataGridViewTextBoxColumn TelegramIdColumn;
+        private DataGridViewTextBoxColumn BodyColumn;
+        private DataGridViewTextBoxColumn SendTimeColumn;
+        private DataGridViewTextBoxColumn ReceiveTimeColumn;
+        private DataGridViewTextBoxColumn SentColumn;
+        private DataGridViewTextBoxColumn DroppedColumn;
+        private DataGridViewTextBoxColumn DropReasonColumn;
     }
 }
