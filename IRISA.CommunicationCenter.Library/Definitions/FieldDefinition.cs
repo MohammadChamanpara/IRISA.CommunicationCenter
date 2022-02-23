@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace IRISA.CommunicationCenter.Library.TelegramDefinition
+namespace IRISA.CommunicationCenter.Library.Definitions
 {
     public class FieldDefinition : NodeBase
     {
@@ -14,13 +14,13 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 int result;
                 try
                 {
-                    result = int.Parse(base.Node.Attributes["size"].InnerText.Trim());
+                    result = int.Parse(Node.Attributes["size"].InnerText.Trim());
                 }
                 catch
                 {
                     throw HelperMethods.CreateException("سایز عددی برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
-                        base.Name
+                        Name
                     });
                 }
                 return result;
@@ -33,13 +33,13 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 string result;
                 try
                 {
-                    result = base.Node.Attributes["type"].InnerText.Trim();
+                    result = Node.Attributes["type"].InnerText.Trim();
                 }
                 catch
                 {
                     throw HelperMethods.CreateException("نوع برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
-                        base.Name
+                        Name
                     });
                 }
                 return result;
@@ -49,7 +49,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
         {
             get
             {
-                return this.Type.ToLower() == "array".ToLower();
+                return Type.ToLower() == "array".ToLower();
             }
         }
         public FieldDefinition(XmlNode node) : base(node)
@@ -57,7 +57,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
         }
         public byte[] GetBytes(string value)
         {
-            string text = this.Type.ToLower();
+            string text = Type.ToLower();
             if (text != null)
             {
                 byte[] result;
@@ -68,7 +68,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                         int size;
                         if (text == "number")
                         {
-                            size = this.Size;
+                            size = Size;
                             switch (size)
                             {
                                 case 1:
@@ -84,7 +84,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                                         }
                                         throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 1 بایتی نیست.", new object[]
                                         {
-                                    base.Name,
+                                    Name,
                                     value
                                         });
                                     }
@@ -98,7 +98,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                                         }
                                         throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 2 بایتی نیست.", new object[]
                                         {
-                                    base.Name,
+                                    Name,
                                     value
                                         });
                                     }
@@ -114,7 +114,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                                         }
                                         throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 4 بایتی نیست.", new object[]
                                         {
-                                    base.Name,
+                                    Name,
                                     value
                                         });
                                     }
@@ -129,24 +129,24 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                                         }
                                         throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 8 بایتی نیست.", new object[]
                                         {
-                                        base.Name,
+                                        Name,
                                         value
                                         });
                                     }
                                     break;
                             }
-                            throw this.CreateFieldTypeException();
+                            throw CreateFieldTypeException();
                         }
                         if (!(text == "float"))
                         {
-                            throw this.CreateFieldTypeException();
+                            throw CreateFieldTypeException();
                         }
-                        size = this.Size;
+                        size = Size;
                         if (size != 4)
                         {
                             if (size != 8)
                             {
-                                throw this.CreateFieldTypeException();
+                                throw CreateFieldTypeException();
                             }
 
                             double value5;
@@ -154,7 +154,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                             {
                                 throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 8 بایتی نیست.", new object[]
                                 {
-                                    base.Name,
+                                    Name,
                                     value
                                 });
                             }
@@ -167,7 +167,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                             {
                                 throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 4 بایتی نیست.", new object[]
                                 {
-                                    base.Name,
+                                    Name,
                                     value
                                 });
                             }
@@ -181,7 +181,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                         {
                             throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به مقدار بولین نیست.", new object[]
                             {
-                                base.Name,
+                                Name,
                                 value
                             });
                         }
@@ -190,30 +190,30 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 }
                 else
                 {
-                    if (value.Length > this.Size)
+                    if (value.Length > Size)
                     {
                         throw HelperMethods.CreateException("طول رشته محتوای فیلد {0}  برابر با {1} و حداکثر طول مجاز {2} می باشد.", new object[]
                         {
-                            base.Name,
+                            Name,
                             value.Length,
-                            this.Size
+                            Size
                         });
                     }
-                    byte[] second = new byte[this.Size - value.Length];
+                    byte[] second = new byte[Size - value.Length];
                     byte[] bytes = Encoding.ASCII.GetBytes(value);
-                    result = bytes.Concat(second).ToArray<byte>();
+                    result = bytes.Concat(second).ToArray();
                 }
                 return result;
             }
-            throw this.CreateFieldTypeException();
+            throw CreateFieldTypeException();
         }
         public string GetValue(byte[] fieldBytes)
         {
-            if (fieldBytes.Length < this.Size)
+            if (fieldBytes.Length < Size)
             {
                 throw HelperMethods.CreateException("تعداد فیلد های ارسال شده کمتر از تعداد فیلد های تعریف شده می باشد.", new object[0]);
             }
-            string text = this.Type.ToLower();
+            string text = Type.ToLower();
             if (text != null)
             {
                 string result;
@@ -224,7 +224,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                         int size;
                         if (text == "number")
                         {
-                            size = this.Size;
+                            size = Size;
                             switch (size)
                             {
                                 case 1:
@@ -246,18 +246,18 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                                     }
                                     break;
                             }
-                            throw this.CreateFieldTypeException();
+                            throw CreateFieldTypeException();
                         }
                         if (!(text == "float"))
                         {
-                            throw this.CreateFieldTypeException();
+                            throw CreateFieldTypeException();
                         }
-                        size = this.Size;
+                        size = Size;
                         if (size != 4)
                         {
                             if (size != 8)
                             {
-                                throw this.CreateFieldTypeException();
+                                throw CreateFieldTypeException();
                             }
                             result = BitConverter.ToDouble(fieldBytes, 0).ToString();
                         }
@@ -268,17 +268,17 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                     }
                     else
                     {
-                        int size = this.Size;
+                        int size = Size;
                         if (size != 1)
                         {
-                            throw this.CreateFieldTypeException();
+                            throw CreateFieldTypeException();
                         }
                         result = BitConverter.ToBoolean(fieldBytes, 0).ToString();
                     }
                 }
                 else
                 {
-                    string text2 = Encoding.ASCII.GetString(fieldBytes, 0, this.Size);
+                    string text2 = Encoding.ASCII.GetString(fieldBytes, 0, Size);
                     int num = text2.IndexOf('\0');
                     if (num >= 0)
                     {
@@ -288,15 +288,15 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 }
                 return result;
             }
-            throw this.CreateFieldTypeException();
+            throw CreateFieldTypeException();
         }
         private Exception CreateFieldTypeException()
         {
             return HelperMethods.CreateException("نوع داده {0} با سایز {1} در تعریف فیلد {2} صحیح نیست.", new object[]
             {
-                this.Type,
-                this.Size,
-                base.Name
+                Type,
+                Size,
+                Name
             });
         }
     }

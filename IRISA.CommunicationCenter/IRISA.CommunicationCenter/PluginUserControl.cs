@@ -1,13 +1,10 @@
-using IRISA.CommunicationCenter.Adapters;
-using IRISA.CommunicationCenter.Properties;
+using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.Loggers;
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 namespace IRISA.CommunicationCenter
 {
-	public partial class PluginUserControl : UserControl
+    public partial class PluginUserControl : UserControl
 	{
 		
 		public string Caption

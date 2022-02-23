@@ -1,4 +1,4 @@
-﻿using IRISA.CommunicationCenter.Adapters;
+﻿using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.Loggers;
 using System.ComponentModel;
 using System.Windows.Forms;

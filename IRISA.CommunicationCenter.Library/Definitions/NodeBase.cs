@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace IRISA.CommunicationCenter.Library.TelegramDefinition
+namespace IRISA.CommunicationCenter.Library.Definitions
 {
     public class NodeBase
     {
@@ -16,7 +16,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 string result;
                 try
                 {
-                    result = this.Node.Attributes["name"].InnerText.Trim();
+                    result = Node.Attributes["name"].InnerText.Trim();
                 }
                 catch
                 {
@@ -32,13 +32,13 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
                 string result;
                 try
                 {
-                    result = this.Node.Attributes["description"].InnerText.Trim();
+                    result = Node.Attributes["description"].InnerText.Trim();
                 }
                 catch
                 {
                     throw HelperMethods.CreateException("شرح برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
-                        this.Name
+                        Name
                     });
                 }
                 return result;
@@ -46,7 +46,7 @@ namespace IRISA.CommunicationCenter.Library.TelegramDefinition
         }
         public NodeBase(XmlNode node)
         {
-            this.Node = node;
+            Node = node;
         }
     }
 }

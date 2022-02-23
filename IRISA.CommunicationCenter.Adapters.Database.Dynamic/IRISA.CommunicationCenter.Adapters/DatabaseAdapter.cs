@@ -1,4 +1,6 @@
 using IRISA.CommunicationCenter.Adapters.Model;
+using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using IRISA.Model;

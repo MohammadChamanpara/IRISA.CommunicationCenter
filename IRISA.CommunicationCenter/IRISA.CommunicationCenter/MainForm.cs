@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Adapters;
 using IRISA.CommunicationCenter.Core;
+using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Properties;
 using IRISA.CommunicationCenter.SearchModels;

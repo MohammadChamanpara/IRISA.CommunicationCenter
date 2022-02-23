@@ -1,4 +1,5 @@
-﻿using IRISA.CommunicationCenter.Library.Models;
+﻿using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using System;
 using System.Collections.Generic;

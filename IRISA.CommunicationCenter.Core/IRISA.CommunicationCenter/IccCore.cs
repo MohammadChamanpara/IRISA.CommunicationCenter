@@ -1,4 +1,4 @@
-using IRISA.CommunicationCenter.Adapters;
+using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using IRISA.Threading;
