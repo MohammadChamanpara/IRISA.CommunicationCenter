@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IRISA.Loggers
+namespace IRISA.CommunicationCenter.Library.Logging
 {
     public class LoggerInMemory : BaseLogger
     {

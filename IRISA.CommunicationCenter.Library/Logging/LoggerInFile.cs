@@ -1,13 +1,14 @@
+using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace IRISA.Loggers
+namespace IRISA.CommunicationCenter.Library.Logging
 {
     public class LoggerInFile : BaseLogger
     {
         private string LogFileAddress => $"Events\\Events {DateTime.Now.ToPersianDate("-")}.txt";
-        
+
         protected override void Log(string eventText, EventType eventType)
         {
             string logText = string.Concat(new string[]

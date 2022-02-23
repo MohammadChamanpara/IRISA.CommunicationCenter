@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace IRISA.Loggers
+namespace IRISA.CommunicationCenter.Library.Logging
 {
     public interface ILogger
     {

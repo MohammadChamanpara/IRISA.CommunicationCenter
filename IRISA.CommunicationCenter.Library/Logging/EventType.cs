@@ -1,4 +1,4 @@
-﻿namespace IRISA.Loggers
+﻿namespace IRISA.CommunicationCenter.Library.Logging
 {
     public enum EventType
     {

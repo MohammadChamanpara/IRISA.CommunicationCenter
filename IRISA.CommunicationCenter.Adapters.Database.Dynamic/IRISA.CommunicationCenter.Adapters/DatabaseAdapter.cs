@@ -1,11 +1,12 @@
 using IRISA.CommunicationCenter.Adapters.Model;
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Definitions;
+using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
+using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
+using IRISA.CommunicationCenter.Library.Threading;
 using IRISA.CommunicationCenter.Oracle;
-using IRISA.Loggers;
-using IRISA.Threading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

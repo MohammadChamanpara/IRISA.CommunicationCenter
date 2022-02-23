@@ -1,10 +1,10 @@
-using IRISA.CommunicationCenter.Adapters;
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Extensions;
+using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Properties;
 using IRISA.CommunicationCenter.Settings;
-using IRISA.Loggers;
 using IRISA.Model;
 using System;
 using System.Collections.Generic;
@@ -203,17 +203,34 @@ namespace IRISA.CommunicationCenter
 
                 base.Invoke(new Action(() =>
                 {
-                    this.resultsCountLabel.Text = resultsCount.DigitGrouping();
+                    this.resultsCountLabel.Text = GroupDigits(resultsCount);
                 }));
                 base.Invoke(new Action(() =>
                 {
-                    this.pageSizeLabel.Text = pageSize.DigitGrouping();
+                    this.pageSizeLabel.Text = GroupDigits(pageSize);
                 }));
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
             }
+        }
+        public string GroupDigits(int number)
+        {
+            string text = number.ToString();
+            if (text.Length > 3)
+            {
+                text = text.Insert(text.Length - 3, ",");
+            }
+            if (text.Length > 7)
+            {
+                text = text.Insert(text.Length - 7, ",");
+            }
+            if (text.Length > 11)
+            {
+                text = text.Insert(text.Length - 11, ",");
+            }
+            return text;
         }
         private void LoadMoreTransfers()
         {

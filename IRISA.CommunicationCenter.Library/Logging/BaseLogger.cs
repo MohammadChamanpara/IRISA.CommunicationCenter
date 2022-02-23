@@ -1,7 +1,8 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using System;
 using System.Linq;
 
-namespace IRISA.Loggers
+namespace IRISA.CommunicationCenter.Library.Logging
 {
     public abstract partial class BaseLogger : ILogger
     {

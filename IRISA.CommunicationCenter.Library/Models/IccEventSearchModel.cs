@@ -1,4 +1,5 @@
-﻿namespace IRISA.CommunicationCenter.Library.Models
+﻿
+namespace IRISA.CommunicationCenter.Library.Models
 {
     public class IccEventSearchModel
     {

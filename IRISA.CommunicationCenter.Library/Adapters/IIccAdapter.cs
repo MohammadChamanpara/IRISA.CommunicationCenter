@@ -1,5 +1,5 @@
+using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.Loggers;
 using System;
 namespace IRISA.CommunicationCenter.Library.Adapters
 {

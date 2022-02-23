@@ -1,5 +1,5 @@
 using IRISA.CommunicationCenter.Library.Adapters;
-using IRISA.Loggers;
+using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Windows.Forms;
 namespace IRISA.CommunicationCenter

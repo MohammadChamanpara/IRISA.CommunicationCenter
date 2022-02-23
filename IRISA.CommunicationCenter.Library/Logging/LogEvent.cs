@@ -1,6 +1,7 @@
-﻿using System;
+﻿using IRISA.CommunicationCenter.Library.Models;
+using System;
 
-namespace IRISA.Loggers
+namespace IRISA.CommunicationCenter.Library.Logging
 {
     public class LogEvent
     {

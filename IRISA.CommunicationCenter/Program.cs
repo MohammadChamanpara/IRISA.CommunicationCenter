@@ -1,4 +1,4 @@
-using IRISA.Loggers;
+using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Threading;
 using System.Windows.Forms;

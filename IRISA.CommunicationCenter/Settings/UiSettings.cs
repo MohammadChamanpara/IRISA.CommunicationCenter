@@ -1,3 +1,5 @@
+using IRISA.CommunicationCenter.Library.Extensions;
+using IRISA.CommunicationCenter.Library.Settings;
 using System.ComponentModel;
 
 namespace IRISA.CommunicationCenter.Settings

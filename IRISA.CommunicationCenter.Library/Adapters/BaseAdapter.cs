@@ -1,6 +1,8 @@
 using IRISA.CommunicationCenter.Library.Definitions;
+using IRISA.CommunicationCenter.Library.Extensions;
+using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.Loggers;
+using IRISA.CommunicationCenter.Library.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
