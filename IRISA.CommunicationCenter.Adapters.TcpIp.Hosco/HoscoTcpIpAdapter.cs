@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Hosco
         protected override DateTime GetTelegramSendTime(byte[] telegramBytes)
         {
             string @string = Encoding.ASCII.GetString(telegramBytes, 9, 14);
-            return base.StringToDateTime(@string, this.dateFormat);
+            return base.StringToDateTime(@string, dateFormat);
         }
         protected override string GetTelegramSource(byte[] telegramBytes)
         {
@@ -42,7 +42,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Hosco
             memoryStream.Write(BitConverter.GetBytes(base.StartCharacter), 0, 1);
             memoryStream.Write(BitConverter.GetBytes(iccTelegram.TelegramId), 0, 4);
             memoryStream.Write(BitConverter.GetBytes(body.Length), 0, 4);
-            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(this.dateFormat)), 0, this.dateFormat.Length);
+            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(dateFormat)), 0, dateFormat.Length);
             memoryStream.Write(BitConverter.GetBytes(0), 0, 4);
             memoryStream.Write(body, 0, body.Length);
             memoryStream.Write(BitConverter.GetBytes(base.EndCharacter), 0, 1);

@@ -23,7 +23,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 }
                 set
                 {
-                    this.dllSettings.SaveSetting("DelayInSend", value);
+                    dllSettings.SaveSetting("DelayInSend", value);
                 }
             }
 
@@ -60,7 +60,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 {
                     try
                     {
-                        this.OnReceive
+                        OnReceive
                         (
                             new ReceiveEventArgs
                             (

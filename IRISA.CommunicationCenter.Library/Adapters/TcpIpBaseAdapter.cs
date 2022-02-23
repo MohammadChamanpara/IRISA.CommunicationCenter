@@ -37,11 +37,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindCharacterValue("StartCharacter", '$');
+                return dllSettings.FindCharacterValue("StartCharacter", '$');
             }
             set
             {
-                this.dllSettings.SaveSetting("StartCharacter", value);
+                dllSettings.SaveSetting("StartCharacter", value);
             }
         }
 
@@ -51,11 +51,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindCharacterValue("EndCharacter", '#');
+                return dllSettings.FindCharacterValue("EndCharacter", '#');
             }
             set
             {
-                this.dllSettings.SaveSetting("EndCharacter", value);
+                dllSettings.SaveSetting("EndCharacter", value);
             }
         }
         
@@ -65,11 +65,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("HeaderSize", 27);
+                return dllSettings.FindIntValue("HeaderSize", 27);
             }
             set
             {
-                this.dllSettings.SaveSetting("HeaderSize", value);
+                dllSettings.SaveSetting("HeaderSize", value);
             }
         }
 
@@ -79,11 +79,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("Id", 0);
+                return dllSettings.FindIntValue("Id", 0);
             }
             set
             {
-                this.dllSettings.SaveSetting("Id", value);
+                dllSettings.SaveSetting("Id", value);
             }
         }
 
@@ -93,11 +93,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("Ip", "127.0.0.1");
+                return dllSettings.FindStringValue("Ip", "127.0.0.1");
             }
             set
             {
-                this.dllSettings.SaveSetting("Ip", value);
+                dllSettings.SaveSetting("Ip", value);
             }
         }
 
@@ -107,11 +107,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("port", 6000);
+                return dllSettings.FindIntValue("port", 6000);
             }
             set
             {
-                this.dllSettings.SaveSetting("port", value);
+                dllSettings.SaveSetting("port", value);
             }
         }
 
@@ -121,11 +121,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("ClientDetectTimerPersianDescription", "پروسه تشخیص کلاینت");
+                return dllSettings.FindStringValue("ClientDetectTimerPersianDescription", "پروسه تشخیص کلاینت");
             }
             set
             {
-                this.dllSettings.SaveSetting("ClientDetectTimerPersianDescription", value);
+                dllSettings.SaveSetting("ClientDetectTimerPersianDescription", value);
             }
         }
 
@@ -135,11 +135,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("ClientDetectInterval", 2000);
+                return dllSettings.FindIntValue("ClientDetectInterval", 2000);
             }
             set
             {
-                this.dllSettings.SaveSetting("ClientDetectInterval", value);
+                dllSettings.SaveSetting("ClientDetectInterval", value);
             }
         }
 
@@ -149,11 +149,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("ReceiveTimerPersianDescription", "پروسه دریافت پکت");
+                return dllSettings.FindStringValue("ReceiveTimerPersianDescription", "پروسه دریافت پکت");
             }
             set
             {
-                this.dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
+                dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
             }
         }
 
@@ -162,11 +162,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("ReceiveInterval", 2000);
+                return dllSettings.FindIntValue("ReceiveInterval", 2000);
             }
             set
             {
-                this.dllSettings.SaveSetting("ReceiveInterval", value);
+                dllSettings.SaveSetting("ReceiveInterval", value);
             }
         }
 
@@ -175,11 +175,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("TcpIpConnectExpireTime", 20000);
+                return dllSettings.FindIntValue("TcpIpConnectExpireTime", 20000);
             }
             set
             {
-                this.dllSettings.SaveSetting("TcpIpConnectExpireTime", value);
+                dllSettings.SaveSetting("TcpIpConnectExpireTime", value);
             }
         }
 
@@ -188,11 +188,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindIntValue("SendTimeout", 5000);
+                return dllSettings.FindIntValue("SendTimeout", 5000);
             }
             set
             {
-                this.dllSettings.SaveSetting("SendTimeout", value);
+                dllSettings.SaveSetting("SendTimeout", value);
             }
         }
         [Category("Information"), DisplayName("کلاینت متصل شده - آدرس")]
@@ -203,9 +203,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 string result;
                 try
                 {
-                    if (this.socket != null)
+                    if (socket != null)
                     {
-                        result = (this.socket.RemoteEndPoint as IPEndPoint).Address.ToString();
+                        result = (socket.RemoteEndPoint as IPEndPoint).Address.ToString();
                     }
                     else
                     {
@@ -227,13 +227,13 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 string result;
                 try
                 {
-                    if (this.socket == null)
+                    if (socket == null)
                     {
                         result = "";
                     }
                     else
                     {
-                        result = Dns.GetHostEntry((this.socket.RemoteEndPoint as IPEndPoint).Address).HostName;
+                        result = Dns.GetHostEntry((socket.RemoteEndPoint as IPEndPoint).Address).HostName;
                     }
                 }
                 catch
@@ -249,7 +249,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return base.Started && this.socket != null && this.socket.Connected;
+                return base.Started && socket != null && socket.Connected;
             }
         }
         #endregion
@@ -258,27 +258,27 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         private void receiverTimer_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (this.socket != null)
+            if (socket != null)
             {
-                if ((DateTime.Now - this.lastConnectionTime).TotalMilliseconds > (double)this.TcpIpConnectExpireTime)
+                if ((DateTime.Now - lastConnectionTime).TotalMilliseconds > (double)TcpIpConnectExpireTime)
                 {
-                    this.eventLogger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
+                    eventLogger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
 					{
 						base.PersianDescription
 					});
-                    this.socket = null;
-                    this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+                    socket = null;
+                    OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                 }
                 else
                 {
-                    if (this.socket != null)
+                    if (socket != null)
                     {
-                        if (this.socket.Available > 0)
+                        if (socket.Available > 0)
                         {
-                            this.lastConnectionTime = DateTime.Now;
-                            byte[] array = new byte[this.socket.Available];
-                            int num = this.socket.Receive(array);
-                            this.receivedBuffer.AddRange(array);
+                            lastConnectionTime = DateTime.Now;
+                            byte[] array = new byte[socket.Available];
+                            int num = socket.Receive(array);
+                            receivedBuffer.AddRange(array);
                             bool flag = false;
                             IccTelegram iccTelegram = new IccTelegram
                             {
@@ -287,7 +287,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                             };
                             try
                             {
-                                while (this.receivedBuffer.Count > 0 && !flag)
+                                while (receivedBuffer.Count > 0 && !flag)
                                 {
                                     iccTelegram = new IccTelegram
                                     {
@@ -295,10 +295,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                                         SendTime = DateTime.Now
                                     };
                                     byte[] completeTelegram;
-                                    if (this.retrieveCompleteTelegram(out completeTelegram, ref iccTelegram))
+                                    if (retrieveCompleteTelegram(out completeTelegram, ref iccTelegram))
                                     {
-                                        this.ConvertClientTelegramToStandardTelegram(completeTelegram, ref iccTelegram);
-                                        this.OnReceive(new ReceiveEventArgs(iccTelegram, true, null));
+                                        ConvertClientTelegramToStandardTelegram(completeTelegram, ref iccTelegram);
+                                        OnReceive(new ReceiveEventArgs(iccTelegram, true, null));
                                     }
                                     else
                                     {
@@ -308,8 +308,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                             }
                             catch (Exception failException)
                             {
-                                this.receivedBuffer.Clear();
-                                this.OnReceive(new ReceiveEventArgs(iccTelegram, false, failException));
+                                receivedBuffer.Clear();
+                                OnReceive(new ReceiveEventArgs(iccTelegram, false, failException));
                             }
                         }
                     }
@@ -318,24 +318,24 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         private void clientDetectTimer_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (this.tcpListener.Pending())
+            if (tcpListener.Pending())
             {
-                this.lastConnectionTime = DateTime.Now;
+                lastConnectionTime = DateTime.Now;
                 bool flag = false;
-                if (this.socket == null)
+                if (socket == null)
                 {
-                    this.eventLogger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription), new object[0]);
+                    eventLogger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription), new object[0]);
                     flag = true;
                 }
                 else
                 {
-                    this.eventLogger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription), new object[0]);
+                    eventLogger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription), new object[0]);
                 }
-                this.socket = this.tcpListener.AcceptSocket();
-                this.socket.SendTimeout = this.SendTimeout;
+                socket = tcpListener.AcceptSocket();
+                socket.SendTimeout = SendTimeout;
                 if (flag)
                 {
-                    this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+                    OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                 }
             }
         }
@@ -348,7 +348,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             catch
             {
-                this.eventLogger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
+                eventLogger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
 				{
 					base.PersianDescription,
 					stringDate,
@@ -360,15 +360,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         protected override void SendTelegram(IccTelegram iccTelegram)
         {
-            byte[] buffer = this.ConvertStandardTelegramToClientTelegram(iccTelegram);
-            if (!this.Connected)
+            byte[] buffer = ConvertStandardTelegramToClientTelegram(iccTelegram);
+            if (!Connected)
             {
                 throw IrisaException.Create("مقصد تلگرام متصل نمی باشد", new object[0]);
             }
             try
             {
-                this.socket.Send(buffer);
-                this.lastConnectionTime = DateTime.Now;
+                socket.Send(buffer);
+                lastConnectionTime = DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -382,109 +382,109 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
-            this.lastConnectionTime = DateTime.Now;
-            IPAddress localaddr = IPAddress.Parse(this.Ip);
-            if (this.tcpListener != null)
+            lastConnectionTime = DateTime.Now;
+            IPAddress localaddr = IPAddress.Parse(Ip);
+            if (tcpListener != null)
             {
-                this.tcpListener.Stop();
+                tcpListener.Stop();
             }
-            this.tcpListener = new TcpListener(localaddr, this.Port);
+            tcpListener = new TcpListener(localaddr, Port);
             try
             {
-                this.tcpListener.Start();
+                tcpListener.Start();
             }
             catch
             {
                 throw IrisaException.Create("برنامه دیگری در حال استفاده از پورت {0} مورد استفاده در آداپتور {1} می باشد", new object[]
 				{
-					this.Port,
+					Port,
 					base.PersianDescription
 				});
             }
-            if (this.clientDetectTimer != null)
+            if (clientDetectTimer != null)
             {
-                this.clientDetectTimer.Stop();
+                clientDetectTimer.Stop();
             }
-            this.clientDetectTimer = new IrisaBackgroundTimer();
-            this.clientDetectTimer.Interval = this.ClientDetectInterval;
-            this.clientDetectTimer.DoWork += new DoWorkEventHandler(this.clientDetectTimer_DoWork);
-            this.clientDetectTimer.PersianDescription = this.ClientDetectTimerPersianDescription + " در آداپتور " + base.PersianDescription;
-            this.clientDetectTimer.EventLogger = this.eventLogger;
-            this.clientDetectTimer.Start();
-            if (this.receiveTimer != null)
+            clientDetectTimer = new IrisaBackgroundTimer();
+            clientDetectTimer.Interval = ClientDetectInterval;
+            clientDetectTimer.DoWork += new DoWorkEventHandler(clientDetectTimer_DoWork);
+            clientDetectTimer.PersianDescription = ClientDetectTimerPersianDescription + " در آداپتور " + base.PersianDescription;
+            clientDetectTimer.EventLogger = eventLogger;
+            clientDetectTimer.Start();
+            if (receiveTimer != null)
             {
-                this.receiveTimer.Stop();
+                receiveTimer.Stop();
             }
-            this.receiveTimer = new IrisaBackgroundTimer();
-            this.receiveTimer.Interval = this.ReceiveInterval;
-            this.receiveTimer.DoWork += new DoWorkEventHandler(this.receiverTimer_DoWork);
-            this.receiveTimer.PersianDescription = this.ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription;
-            this.receiveTimer.EventLogger = this.eventLogger;
-            this.receiveTimer.Start();
+            receiveTimer = new IrisaBackgroundTimer();
+            receiveTimer.Interval = ReceiveInterval;
+            receiveTimer.DoWork += new DoWorkEventHandler(receiverTimer_DoWork);
+            receiveTimer.PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription;
+            receiveTimer.EventLogger = eventLogger;
+            receiveTimer.Start();
         }
         public override void Stop()
         {
             base.Stop();
-            if (this.clientDetectTimer != null)
+            if (clientDetectTimer != null)
             {
-                this.clientDetectTimer.Stop();
+                clientDetectTimer.Stop();
             }
-            if (this.receiveTimer != null)
+            if (receiveTimer != null)
             {
-                this.receiveTimer.Stop();
+                receiveTimer.Stop();
             }
-            if (this.tcpListener != null)
+            if (tcpListener != null)
             {
-                this.tcpListener.Stop();
+                tcpListener.Stop();
             }
-            if (this.socket != null)
+            if (socket != null)
             {
-                this.socket.Close();
+                socket.Close();
             }
         }
         public override void AwakeTimers()
         {
             base.AwakeTimers();
-            if (this.receiveTimer != null)
+            if (receiveTimer != null)
             {
-                this.receiveTimer.Awake();
+                receiveTimer.Awake();
             }
-            if (this.clientDetectTimer != null)
+            if (clientDetectTimer != null)
             {
-                this.clientDetectTimer.Awake();
+                clientDetectTimer.Awake();
             }
         }
         protected virtual bool retrieveCompleteTelegram(out byte[] completeTelegram, ref IccTelegram iccTelegram)
         {
             bool result;
-            if (this.receivedBuffer.Count == 0)
+            if (receivedBuffer.Count == 0)
             {
                 completeTelegram = null;
                 result = false;
             }
             else
             {
-                char startCharacter = this.StartCharacter;
+                char startCharacter = StartCharacter;
                 byte b = BitConverter.GetBytes(startCharacter).First<byte>();
-                char endCharacter = this.EndCharacter;
+                char endCharacter = EndCharacter;
                 byte b2 = BitConverter.GetBytes(endCharacter).First<byte>();
-                if (b != 0 && this.receivedBuffer.First<byte>() != b)
+                if (b != 0 && receivedBuffer.First<byte>() != b)
                 {
                     throw IrisaException.Create("پکت دریافتی  با کاراکتر {0} آغاز نشده است.", new object[]
 					{
 						startCharacter
 					});
                 }
-                if (this.receivedBuffer.Count < this.HeaderSize)
+                if (receivedBuffer.Count < HeaderSize)
                 {
                     throw IrisaException.Create("طول پکت دریافتی {0} بایت و حداقل طول مجاز {1} بایت می باشد.", new object[]
 					{
-						this.receivedBuffer.Count,
-						this.HeaderSize
+						receivedBuffer.Count,
+						HeaderSize
 					});
                 }
-                iccTelegram.TelegramId = this.GetTelegramId(this.receivedBuffer.ToArray());
-                int telegramSize = this.GetTelegramSize(this.receivedBuffer.ToArray());
+                iccTelegram.TelegramId = GetTelegramId(receivedBuffer.ToArray());
+                int telegramSize = GetTelegramSize(receivedBuffer.ToArray());
                 if (telegramSize < 0)
                 {
                     throw IrisaException.Create("اندازه تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
@@ -493,17 +493,17 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 					});
                 }
                 completeTelegram = new byte[telegramSize];
-                if (this.receivedBuffer.Count < telegramSize)
+                if (receivedBuffer.Count < telegramSize)
                 {
-                    if (this.receivedBuffer.Count < 1000 && this.receivedBuffer.Last<byte>() == b2)
+                    if (receivedBuffer.Count < 1000 && receivedBuffer.Last<byte>() == b2)
                     {
                         throw IrisaException.Create("طول پکت دریافتی {0} بایت و طول اعلام شده توسط پکت {1} بایت می باشد.", new object[]
 						{
-							this.receivedBuffer.Count,
+							receivedBuffer.Count,
 							telegramSize
 						});
                     }
-                    this.eventLogger.LogInfo("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
+                    eventLogger.LogInfo("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
 					{
 						base.Name
 					});
@@ -511,15 +511,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 }
                 else
                 {
-                    if (this.receivedBuffer.Count > telegramSize)
+                    if (receivedBuffer.Count > telegramSize)
                     {
-                        this.receivedBuffer.CopyTo(0, completeTelegram, 0, telegramSize);
-                        this.receivedBuffer = this.receivedBuffer.Skip(telegramSize).ToList<byte>();
+                        receivedBuffer.CopyTo(0, completeTelegram, 0, telegramSize);
+                        receivedBuffer = receivedBuffer.Skip(telegramSize).ToList<byte>();
                     }
                     else
                     {
-                        completeTelegram = this.receivedBuffer.ToArray();
-                        this.receivedBuffer.Clear();
+                        completeTelegram = receivedBuffer.ToArray();
+                        receivedBuffer.Clear();
                     }
                     if (b2 != 0 && completeTelegram.Last<byte>() != b2)
                     {
@@ -535,8 +535,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         protected virtual void ConvertClientTelegramToStandardTelegram(byte[] completeTelegram, ref IccTelegram iccTelegram)
         {
-            iccTelegram.TelegramId = this.GetTelegramId(completeTelegram);
-            int telegramBodySize = this.GetTelegramBodySize(completeTelegram);
+            iccTelegram.TelegramId = GetTelegramId(completeTelegram);
+            int telegramBodySize = GetTelegramBodySize(completeTelegram);
             if (telegramBodySize < 0)
             {
                 throw IrisaException.Create("اندازه محتوات تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
@@ -544,11 +544,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 					telegramBodySize
 				});
             }
-            iccTelegram.SendTime = this.GetTelegramSendTime(completeTelegram);
-            iccTelegram.Source = this.GetTelegramSource(completeTelegram);
-            TelegramDefinition telegramDefinition = this.telegramDefinitions.Find(iccTelegram);
+            iccTelegram.SendTime = GetTelegramSendTime(completeTelegram);
+            iccTelegram.Source = GetTelegramSource(completeTelegram);
+            TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
             iccTelegram.Destination = telegramDefinition.Destination;
-            byte[] array = completeTelegram.Skip(this.HeaderSize).ToArray<byte>();
+            byte[] array = completeTelegram.Skip(HeaderSize).ToArray<byte>();
             array = array.Take(telegramBodySize).ToArray<byte>();
             byte[] bodyBytes = array;
             List<FieldDefinition> fields = telegramDefinition.Fields;
@@ -575,14 +575,14 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 					array.Length
 				});
             }
-            this.ExtraValidationsOnReceive(completeTelegram, bodyBytes, iccTelegram);
+            ExtraValidationsOnReceive(completeTelegram, bodyBytes, iccTelegram);
         }
         protected virtual void ExtraValidationsOnReceive(byte[] completeTelegram, byte[] bodyBytes, IccTelegram iccTelegram)
         {
         }
         protected virtual byte[] ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram)
         {
-            TelegramDefinition telegramDefinition = this.telegramDefinitions.Find(iccTelegram);
+            TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
             MemoryStream memoryStream = new MemoryStream();
             List<FieldDefinition> fields = telegramDefinition.Fields;
             if (fields.Count != iccTelegram.Body.Count)
@@ -600,12 +600,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 memoryStream.Write(bytes, 0, bytes.Length);
             }
             byte[] body = memoryStream.ToArray();
-            return this.CreateClientBytes(iccTelegram, body);
+            return CreateClientBytes(iccTelegram, body);
         }
         protected virtual int GetTelegramSize(byte[] telegramBytes)
         {
-            int num = (this.EndCharacter == '\0') ? 0 : 1;
-            return this.HeaderSize + this.GetTelegramBodySize(telegramBytes) + num;
+            int num = (EndCharacter == '\0') ? 0 : 1;
+            return HeaderSize + GetTelegramBodySize(telegramBytes) + num;
         }
         protected abstract byte[] CreateClientBytes(IccTelegram iccTelegram, byte[] body);
         protected abstract int GetTelegramBodySize(byte[] telegramBytes);

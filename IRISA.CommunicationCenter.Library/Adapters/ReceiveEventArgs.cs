@@ -21,9 +21,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 		}
 		public ReceiveEventArgs(IccTelegram iccTelegram, bool successful, Exception failException)
 		{
-			this.IccTelegram = iccTelegram;
-			this.Successful = successful;
-			this.FailException = failException;
+			IccTelegram = iccTelegram;
+			Successful = successful;
+			FailException = failException;
 		}
 	}
 }

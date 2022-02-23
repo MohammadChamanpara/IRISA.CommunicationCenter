@@ -11,7 +11,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
     {
         protected byte CalculateCrc(byte[] body)
         {
-            byte crc = this.CrcDivisor;
+            byte crc = CrcDivisor;
 
             foreach (byte b in body)
                 crc = (byte)(crc ^ b);
@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
         }
         protected byte GetTelegramCrc(byte[] completeTelegram)
         {
-            return completeTelegram[this.HeaderSize - 1];
+            return completeTelegram[HeaderSize - 1];
         }
 
         public Byte CrcDivisor
@@ -37,7 +37,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
 
         protected override void ExtraValidationsOnReceive(byte[] completeTelegram, byte[] bodyBytes, IccTelegram iccTelegram)
         {
-            if (!this.CheckCrc)
+            if (!CheckCrc)
                 return;
 
             byte destinationCrc = CalculateCrc(bodyBytes);
@@ -59,22 +59,22 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
         }
         protected override DateTime GetTelegramSendTime(byte[] telegramBytes)
         {
-            string @string = Encoding.ASCII.GetString(telegramBytes, 8, this.dateFormat.Length);
-            return base.StringToDateTime(@string, this.dateFormat);
+            string @string = Encoding.ASCII.GetString(telegramBytes, 8, dateFormat.Length);
+            return base.StringToDateTime(@string, dateFormat);
         }
         protected override string GetTelegramSource(byte[] telegramBytes)
         {
             string source = Encoding.ASCII.GetString(telegramBytes, 5, 3);
-            if (source != this.Name)
-                throw IrisaException.Create("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد.", source, this.Name);
-            return this.Name;
+            if (source != Name)
+                throw IrisaException.Create("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد.", source, Name);
+            return Name;
         }
         protected override byte[] CreateClientBytes(IccTelegram iccTelegram, byte[] body)
         {
             MemoryStream memoryStream = new MemoryStream();
 
             /* Start Character */
-            memoryStream.Write(BitConverter.GetBytes(this.StartCharacter), 0, 1);
+            memoryStream.Write(BitConverter.GetBytes(StartCharacter), 0, 1);
 
             /* Telegram Id */
             memoryStream.Write(BitConverter.GetBytes(iccTelegram.TelegramId), 0, 4);
@@ -102,7 +102,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
             memoryStream.Write(body, 0, body.Length);
 
             /* End Character */
-            memoryStream.Write(BitConverter.GetBytes(this.EndCharacter), 0, 1);
+            memoryStream.Write(BitConverter.GetBytes(EndCharacter), 0, 1);
 
             return memoryStream.ToArray();
         }

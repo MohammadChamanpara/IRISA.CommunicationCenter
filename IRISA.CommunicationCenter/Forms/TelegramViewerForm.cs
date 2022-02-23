@@ -13,14 +13,14 @@ namespace IRISA.CommunicationCenter.Forms
 		private UiSettings uiSettings = new UiSettings();
 		public TelegramViewerForm(IccTelegram iccTelegram)
 		{
-			this.InitializeComponent();
-			this.ShowTelegram(iccTelegram);
+			InitializeComponent();
+			ShowTelegram(iccTelegram);
 		}
 		private void ShowTelegram(IccTelegram iccTelegram)
 		{
-			TelegramDefinitions telegramDefinitions = new TelegramDefinitions(this.uiSettings.TelegramDefinitionFile);
+			TelegramDefinitions telegramDefinitions = new TelegramDefinitions(uiSettings.TelegramDefinitionFile);
 			TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
-			TreeNode treeNode = this.treeView.Nodes.Add("Telegram");
+			TreeNode treeNode = treeView.Nodes.Add("Telegram");
 			treeNode.Nodes.Add("id : " + telegramDefinition.Id);
 			treeNode.Nodes.Add("Name : " + telegramDefinition.Name);
 			treeNode.Nodes.Add("Description : " + telegramDefinition.Description);
@@ -33,7 +33,7 @@ namespace IRISA.CommunicationCenter.Forms
 				list = iccTelegram.Body;
 			}
 			string[] array = iccTelegram.Body.ToArray();
-			this.MakeTree(parentTreeNode, telegramDefinition.Node, ref array);
+			MakeTree(parentTreeNode, telegramDefinition.Node, ref array);
 			treeNode.Expand();
 		}
 		private void MakeTree(TreeNode parentTreeNode, XmlNode xmlNode, ref string[] values)
@@ -64,7 +64,7 @@ namespace IRISA.CommunicationCenter.Forms
 					for (int i = 0; i < fieldDefinition.Size; i++)
 					{
 						TreeNode parentTreeNode2 = treeNode.Nodes.Add(fieldDefinition.Name + "[" + (i + 1).ToString() + "]");
-						this.MakeTree(parentTreeNode2, xmlNode2, ref values);
+						MakeTree(parentTreeNode2, xmlNode2, ref values);
 					}
 				}
 			}

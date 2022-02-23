@@ -9,7 +9,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         public AdapterConnectionChangedEventArgs(IIccAdapter adapter)
         {
-            this.Adapter = adapter;
+            Adapter = adapter;
         }
     }
 }

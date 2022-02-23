@@ -43,7 +43,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.Assembly.AsssemblyFileName();
+                return dllSettings.Assembly.AsssemblyFileName();
             }
         }
         [Category("Information"), DisplayName("ورژن برنامه")]
@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.Assembly.AssemblyVersion();
+                return dllSettings.Assembly.AssemblyVersion();
             }
         }
         [Category("Information"), DisplayName("آدرس فایل پلاگین")]
@@ -59,7 +59,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.Assembly.Location;
+                return dllSettings.Assembly.Location;
             }
         }
         [Category("Information"), DisplayName("نوع فایل پلاگین")]
@@ -67,7 +67,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.Assembly.AssemblyName();
+                return dllSettings.Assembly.AssemblyName();
             }
         }
         [DisplayName("نام کلاینت")]
@@ -75,11 +75,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("Name", this.FileName);
+                return dllSettings.FindStringValue("Name", FileName);
             }
             set
             {
-                this.dllSettings.SaveSetting("Name", value);
+                dllSettings.SaveSetting("Name", value);
             }
         }
 
@@ -88,11 +88,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("PersianDescription", "کلاینت");
+                return dllSettings.FindStringValue("PersianDescription", "کلاینت");
             }
             set
             {
-                this.dllSettings.SaveSetting("PersianDescription", value);
+                dllSettings.SaveSetting("PersianDescription", value);
             }
         }
         [DisplayName("آدرس فایل تعریف ساختار تلگرام ها")]
@@ -100,11 +100,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return this.dllSettings.FindStringValue("TelegramDefinitionFile", "TelegramDefinitions.xml");
+                return dllSettings.FindStringValue("TelegramDefinitionFile", "TelegramDefinitions.xml");
             }
             set
             {
-                this.dllSettings.SaveSetting("TelegramDefinitionFile", value);
+                dllSettings.SaveSetting("TelegramDefinitionFile", value);
             }
         }
         [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
@@ -117,7 +117,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public void Send(IccTelegram iccTelegram)
         {
-            this.sendQueue.Enqueue(iccTelegram);
+            sendQueue.Enqueue(iccTelegram);
         }
 
         private async Task KeepSending()
@@ -148,19 +148,19 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected abstract void SendTelegram(IccTelegram iccTelegram);
         public virtual void Start(ILogger eventLogger)
         {
-            this.eventLogger = eventLogger;
-            this.dllSettings = new DLLSettings<DLLT>();
-            this.telegramDefinitions = new TelegramDefinitions(this.TelegramDefinitionFile);
-            this.Started = true;
+            eventLogger = eventLogger;
+            dllSettings = new DLLSettings<DLLT>();
+            telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
+            Started = true;
             Task.Run(() => KeepSending());
         }
         public virtual void Stop()
         {
-            bool connected = this.Connected;
-            this.Started = false;
+            bool connected = Connected;
+            Started = false;
             if (connected)
             {
-                this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+                OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
             }
         }
         public virtual void AwakeTimers()
@@ -168,9 +168,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         public virtual void OnReceive(ReceiveEventArgs e)
         {
-            if (this.Receive != null)
+            if (Receive != null)
             {
-                this.Receive(e);
+                Receive(e);
             }
         }
         public virtual void OnConnectionChanged(AdapterConnectionChangedEventArgs e)

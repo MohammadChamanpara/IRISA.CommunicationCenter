@@ -7,7 +7,7 @@ namespace IRISA.CommunicationCenter.Core
 		public IccTelegram IccTelegram;
 		public IccCoreTelegramEventArgs(IccTelegram iccTelegram)
 		{
-			this.IccTelegram = iccTelegram;
+			IccTelegram = iccTelegram;
 		}
 	}
 }
