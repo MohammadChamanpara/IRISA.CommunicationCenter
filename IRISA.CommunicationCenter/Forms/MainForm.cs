@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IRISA.CommunicationCenter.Forms
@@ -20,8 +21,7 @@ namespace IRISA.CommunicationCenter.Forms
         #region Properties
         private IccCore iccCore;
         private UiSettings uiSettings;
-        private bool refreshRecords = false;
-
+        private bool refreshingRecordsEnabled = false;
         public IccEventSearchModel IccEventSearchModel { get; set; }
         #endregion
 
@@ -36,8 +36,8 @@ namespace IRISA.CommunicationCenter.Forms
             iccCore.Start();
             LoadClients();
             LoadSettings();
-            LoadRecords();
             LoadStatusTypeComboBox();
+            transfersDataGrid.Click += TransfersDataGrid_Click;
             stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
             stopStartApplicationButton.Image = Resources.stop;
             settingsPropertyGrid.Enabled = false;
@@ -58,9 +58,37 @@ namespace IRISA.CommunicationCenter.Forms
             }
             iccEventSearchModelBindingSource.DataSource = typeof(IccEventSearchModel);
             iccEventSearchModelBindingSource.Add(IccEventSearchModel);
-            ChangeRefreshStatus(true);
-            LoadRecords();
+            StartRefreshingRecords();
         }
+
+        private void TransfersDataGrid_Click(object sender, EventArgs e)
+        {
+            StopRefreshingRecords();
+        }
+
+        private void StartRefreshingRecords()
+        {
+            if (!refreshingRecordsEnabled)
+                _ = KeepRefreshingRecords();
+        }
+
+        private async Task KeepRefreshingRecords()
+        {
+            SetRefreshStatus(true);
+            var startTime = DateTime.Now;
+            while ((DateTime.Now - startTime).TotalSeconds < 20 && refreshingRecordsEnabled == true)
+            {
+                LoadRecords();
+                await Task.Delay(1000);
+            }
+            StopRefreshingRecords();
+        }
+
+        private void StopRefreshingRecords()
+        {
+            SetRefreshStatus(false);
+        }
+
         private void StopApplication()
         {
             iccCore.Stop();
@@ -80,7 +108,6 @@ namespace IRISA.CommunicationCenter.Forms
             iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramDropped);
             iccCore.TelegramQueued += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramQueued);
             iccCore.TelegramSent += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramSent);
-            iccCore.Logger.EventLogged += EventLogger_EventLogged;
         }
         private void InitialUiSettings()
         {
@@ -339,23 +366,20 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void LoadRecords()
         {
-            if (refreshRecords)
-            {
-                LoadEvents();
-                LoadTransfers();
-            }
+            LoadEvents();
+            LoadTransfers();
         }
         private void LoadMoreRecords()
         {
             LoadMoreEvents();
             LoadMoreTransfers();
-            ChangeRefreshStatus(false);
+            StopRefreshingRecords();
         }
         private void LoadSettings()
         {
             try
             {
-                List<Control> list = new List<Control>
+                List<Control> settingControls = new List<Control>
                 {
                     new RadioButton
                     {
@@ -377,7 +401,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     foreach (IIccAdapter current in iccCore.connectedClients)
                     {
-                        list.Add(new RadioButton
+                        settingControls.Add(new RadioButton
                         {
                             Text = current.Name + " - " + current.PersianDescription,
                             Tag = current
@@ -385,16 +409,16 @@ namespace IRISA.CommunicationCenter.Forms
                     }
                 }
                 settingsPanel.Controls.Clear();
-                foreach (Control current2 in list)
+                foreach (Control settingControl in settingControls)
                 {
-                    current2.Cursor = Cursors.Hand;
-                    current2.AutoSize = true;
-                    current2.Click += new EventHandler(SettingControl_Click);
-                    settingsPanel.Controls.Add(current2);
+                    settingControl.Cursor = Cursors.Hand;
+                    settingControl.AutoSize = true;
+                    settingControl.Click += new EventHandler(SettingControl_Click);
+                    settingsPanel.Controls.Add(settingControl);
                 }
-                if (list.Count > 0)
+                if (settingControls.Count > 0)
                 {
-                    RadioButton radioButton = list.First<Control>() as RadioButton;
+                    RadioButton radioButton = settingControls.First<Control>() as RadioButton;
                     radioButton.Checked = true;
                     SettingControl_Click(radioButton, null);
                 }
@@ -450,10 +474,10 @@ namespace IRISA.CommunicationCenter.Forms
             }
             return result;
         }
-        private void ChangeRefreshStatus(bool newStatus)
+        private void SetRefreshStatus(bool newStatus)
         {
-            refreshRecords = newStatus;
-            if (refreshRecords)
+            refreshingRecordsEnabled = newStatus;
+            if (refreshingRecordsEnabled)
             {
                 transfersRefreshButton.Image = Resources.refresh;
                 eventsRefreshButton.Image = Resources.refresh;
@@ -515,7 +539,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadRecords();
+            StartRefreshingRecords();
         }
         private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -529,11 +553,10 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void RefreshRecordsButton_Click(object sender, EventArgs e)
         {
-            ChangeRefreshStatus(!refreshRecords);
-            if (refreshRecords)
-            {
-                LoadRecords();
-            }
+            if (refreshingRecordsEnabled)
+                StopRefreshingRecords();
+            else
+                StartRefreshingRecords();
         }
         private void MoreRecordsButton_Click(object sender, EventArgs e)
         {
@@ -635,10 +658,6 @@ namespace IRISA.CommunicationCenter.Forms
                 notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
             }
         }
-        private void EventLogger_EventLogged()
-        {
-            LoadRecords();
-        }
         private void TelegramDetails_Click(object sender, EventArgs e)
         {
             try
@@ -658,8 +677,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchButton_Click(object sender, EventArgs e)
         {
             ClearControls(searchFlowLayoutPanel);
-            ChangeRefreshStatus(true);
-            LoadTransfers();
+            StartRefreshingRecords();
         }
         private void MaskedTextBox_Click(object sender, EventArgs e)
         {
@@ -699,18 +717,15 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             ClearControls(eventsSearchflowLayout);
-            ChangeRefreshStatus(true);
-            LoadEvents();
+            StartRefreshingRecords();
         }
 
-        private void StatusTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         public static string ShowPasswordDialog(string caption)
         {
-            PasswordDialogForm passwordDialogForm = new PasswordDialogForm();
-            passwordDialogForm.Text = caption;
+            PasswordDialogForm passwordDialogForm = new PasswordDialogForm
+            {
+                Text = caption
+            };
             passwordDialogForm.ShowDialog();
             return passwordDialogForm.passwordTextBox.Text;
         }

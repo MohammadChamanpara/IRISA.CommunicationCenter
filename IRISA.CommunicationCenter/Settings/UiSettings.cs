@@ -7,6 +7,7 @@ namespace IRISA.CommunicationCenter.Settings
     public class UiSettings
     {
         private readonly DLLSettings<UiSettings> dllSettings = new DLLSettings<UiSettings>();
+        
         [DisplayName("زمان نمایش رویداد بر حسب میلی ثانیه")]
         public int NotifyIconShowTime
         {
@@ -19,6 +20,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconShowTime", value);
             }
         }
+
         [DisplayName("فارسی بودن زبان نمایش رویداد")]
         public bool NotifyIconPersianLanguage
         {
@@ -156,7 +158,7 @@ namespace IRISA.CommunicationCenter.Settings
         {
             get
             {
-                return "Microsoft Visual C# 2010 .Net Framework 4.0, Windows Forms Application. ";
+                return "Microsoft Visual C# .Net Framework 4.8, Windows Forms Application. ";
             }
         }
         [Category("Information"), DisplayName("نوع فایل")]

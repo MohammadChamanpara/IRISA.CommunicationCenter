@@ -29,8 +29,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public char FindCharacterValue(string key, char defaultValue)
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            char result;
-            if (char.TryParse(text, out result))
+            if (char.TryParse(text, out char result))
             {
                 return result;
             }
@@ -43,8 +42,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public int FindIntValue(string key, int defaultValue)
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            int result;
-            if (int.TryParse(text, out result))
+            if (int.TryParse(text, out int result))
             {
                 return result;
             }
@@ -57,8 +55,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public long FindLongValue(string key, long defaultValue)
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            long result;
-            if (long.TryParse(text, out result))
+            if (long.TryParse(text, out long result))
             {
                 return result;
             }
@@ -71,8 +68,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public T FindEnumValue<T>(string key, T defaultValue) where T : struct
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            T result;
-            if (Enum.TryParse(text, out result))
+            if (Enum.TryParse(text, out T result))
             {
                 return result;
             }
@@ -85,12 +81,9 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public bool FindBooleanValue(string key, bool defaultValue)
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            bool result;
-            if (bool.TryParse(text, out result))
-            {
-                return result;
-            }
-            throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بولین معتبر نیست.", new object[]
+            return bool.TryParse(text, out bool result)
+                ? result
+                : throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بولین معتبر نیست.", new object[]
             {
                 key,
                 text
@@ -99,8 +92,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
         public byte FindByteValue(string key, byte defaultValue)
         {
             string text = FindStringValue(key, defaultValue.ToString());
-            byte result;
-            if (byte.TryParse(text, out result))
+            if (byte.TryParse(text, out byte result))
             {
                 return result;
             }
