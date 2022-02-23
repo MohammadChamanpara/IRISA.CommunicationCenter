@@ -48,16 +48,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRISA.CommunicationCenter\IccEventStatus.cs" />
-    <Compile Include="IRISA.CommunicationCenter\MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\PluginUserControl.Designer.cs">
+    <Compile Include="UserControls\PluginUserControl.Designer.cs">
       <DependentUpon>PluginUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\SearchModels\IccEventSearchModel.cs" />
-    <Compile Include="IRISA.CommunicationCenter\SearchModels\ICCTransferSearchModel.cs" />
-    <Compile Include="IRISA.CommunicationCenter\TelegramViewerForm.Designer.cs">
+    <Compile Include="Forms\TelegramViewerForm.Designer.cs">
       <DependentUpon>TelegramViewerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -65,24 +62,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\PluginUserControl.cs">
+    <Compile Include="UserControls\PluginUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\Program.cs" />
-    <Compile Include="IRISA.CommunicationCenter\TelegramViewerForm.cs">
+    <Compile Include="Program.cs" />
+    <Compile Include="Forms\TelegramViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IRISA.CommunicationCenter\UiSettings.cs" />
+    <Compile Include="Settings\UiSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="IRISA.CommunicationCenter\MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

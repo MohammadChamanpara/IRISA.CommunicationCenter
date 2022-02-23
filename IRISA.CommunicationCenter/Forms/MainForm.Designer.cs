@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows.Forms;
 using IRISA.Windows.Components;
+using IRISA.CommunicationCenter.Library.Models;
 
 namespace IRISA.CommunicationCenter
 {
@@ -1749,7 +1750,7 @@ namespace IRISA.CommunicationCenter
             // 
             // iccEventSearchModelBindingSource
             // 
-            this.iccEventSearchModelBindingSource.DataSource = typeof(IRISA.CommunicationCenter.SearchModels.IccEventSearchModel);
+            this.iccEventSearchModelBindingSource.DataSource = typeof(IccEventSearchModel);
             // 
             // label24
             // 

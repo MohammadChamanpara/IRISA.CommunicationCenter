@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Models;
+using IRISA.CommunicationCenter.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

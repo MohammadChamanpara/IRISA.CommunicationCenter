@@ -3,7 +3,7 @@ using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Properties;
-using IRISA.CommunicationCenter.SearchModels;
+using IRISA.CommunicationCenter.Settings;
 using IRISA.Loggers;
 using IRISA.Model;
 using System;
@@ -21,8 +21,6 @@ namespace IRISA.CommunicationCenter
         private IccCore iccCore;
         private UiSettings uiSettings;
         private bool refreshRecords = false;
-
-        public ICCTransferSearchModel IccTransferSearchModel { get; set; }
 
         public IccEventSearchModel IccEventSearchModel { get; set; }
         #endregion
