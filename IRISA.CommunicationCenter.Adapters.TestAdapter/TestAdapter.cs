@@ -67,8 +67,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                                 new IccTelegram()
                                 {
                                     Source = Name,
-                                    //Destination = Name == "Behnam" ? "Mamad" : "Behnam",
-                                    Destination = "Behnam",
+                                    Destination = Name == "Behnam" ? "Mamad" : "Behnam",
                                     Body = new List<string>() { "A", "B" },
                                     TelegramId = Name == "Behnam" ? 1 : 2,
                                     TransferId = id++,

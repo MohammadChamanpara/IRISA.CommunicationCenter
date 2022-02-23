@@ -40,7 +40,7 @@ namespace IRISA.CommunicationCenter.Core
 
         public static List<T> LoadAdapters<T>()
         {
-            return LoadAdapters<T>(AppDomain.CurrentDomain.BaseDirectory + "\\Adapters");
+            return LoadAdapters<T>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Adapters"));
         }
         public static List<T> LoadAdapters<T>(string directory)
         {
@@ -73,18 +73,18 @@ namespace IRISA.CommunicationCenter.Core
                 }
                 result = list;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                string message = ex.Message;
-                if (ex is ReflectionTypeLoadException)
+                string message = exception.Message;
+                if (exception is ReflectionTypeLoadException)
                 {
-                    ReflectionTypeLoadException ex2 = ex as ReflectionTypeLoadException;
-                    if (ex2.LoaderExceptions != null && ex2.LoaderExceptions.Count<Exception>() > 0)
+                    ReflectionTypeLoadException typeLoadException = exception as ReflectionTypeLoadException;
+                    if (typeLoadException?.LoaderExceptions.Count() > 0)
                     {
-                        message = ex2.LoaderExceptions.First<Exception>().Message;
+                        message = typeLoadException.LoaderExceptions.First<Exception>().Message;
                     }
                 }
-                throw IrisaException.Create("خطا هنگام لود کردن پلاگین ها. متن خطا : " + message, new object[0]);
+                throw IrisaException.Create("خطا هنگام لود کردن پلاگین ها. متن خطا : " + message);
             }
             return result;
         }
@@ -374,7 +374,8 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadAdapters()
         {
-            connectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            //connectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            connectedAdapters = LoadAdapters<IIccAdapter>();
 
             if (connectedAdapters.Count == 0)
             {

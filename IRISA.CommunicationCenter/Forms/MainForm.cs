@@ -446,7 +446,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام لود آداپتور ها.");
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
             }
         }
 
