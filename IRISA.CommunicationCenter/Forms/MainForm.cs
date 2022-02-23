@@ -18,6 +18,8 @@ namespace IRISA.CommunicationCenter.Forms
 {
     public partial class MainForm : Form
     {
+        private const string ApplicationPassword = "iccAdmin";
+
         #region Properties
         private IccCore iccCore;
         private UiSettings uiSettings;
@@ -462,18 +464,12 @@ namespace IRISA.CommunicationCenter.Forms
 
         private bool CheckPassword()
         {
-            string a = ShowPasswordDialog(uiSettings.ProgramTitle);
-            bool result;
-            if (a != "iccAdmin")
+            if (ShowPasswordDialog(uiSettings.ProgramTitle) != ApplicationPassword)
             {
                 MessageForm.ShowErrorMessage("کلمه عبور صحیح نمی باشد", new object[0]);
-                result = false;
+                return false;
             }
-            else
-            {
-                result = true;
-            }
-            return result;
+            return true;
         }
         private void SetRefreshStatus(bool newStatus)
         {
