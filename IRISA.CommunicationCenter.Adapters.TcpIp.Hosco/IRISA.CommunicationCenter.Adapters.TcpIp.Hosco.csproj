@@ -36,7 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IRISA.CommunicationCenter.Adapters\HoscoTcpIpAdapter.cs" />
+    <Compile Include="HoscoTcpIpAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IRISA.CommunicationCenter.Library\IRISA.CommunicationCenter.Library.csproj">
