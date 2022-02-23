@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Xml;
 namespace IRISA.CommunicationCenter
 {
-	public class TelegramDefinition : NodeBase
+    public class TelegramDefinition : NodeBase
 	{
 		public int Id
 		{

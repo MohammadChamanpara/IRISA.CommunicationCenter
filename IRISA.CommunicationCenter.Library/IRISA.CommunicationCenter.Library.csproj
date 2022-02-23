@@ -51,12 +51,12 @@
     <Compile Include="Adapters\ReceiveEventArgs.cs" />
     <Compile Include="Adapters\ReceiveEventHandler.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
-    <Compile Include="IRISA.CommunicationCenter\FieldDefinition.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccTelegram.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccTelegramSearchModel.cs" />
-    <Compile Include="IRISA.CommunicationCenter\NodeBase.cs" />
-    <Compile Include="IRISA.CommunicationCenter\TelegramDefinition.cs" />
-    <Compile Include="IRISA.CommunicationCenter\TelegramDefinitions.cs" />
+    <Compile Include="TelegramDefinition\FieldDefinition.cs" />
+    <Compile Include="Models\IccTelegram.cs" />
+    <Compile Include="Models\IccTelegramSearchModel.cs" />
+    <Compile Include="TelegramDefinition\NodeBase.cs" />
+    <Compile Include="TelegramDefinition\TelegramDefinition.cs" />
+    <Compile Include="TelegramDefinition\TelegramDefinitions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IRISA\IRISA.csproj">
