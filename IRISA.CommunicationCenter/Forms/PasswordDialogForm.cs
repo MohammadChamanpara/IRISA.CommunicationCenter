@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace IRISA.CommunicationCenter.Forms
@@ -37,68 +36,89 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void InitializeComponent()
         {
-            ComponentResourceManager resources = new ComponentResourceManager(typeof(PasswordDialogForm));
-            passwordTextBox = new MaskedTextBox();
-            okButton = new Button();
-            label1 = new Label();
-            splitContainer1 = new SplitContainer();
-            ((ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
-            SuspendLayout();
-            passwordTextBox.Location = new Point(22, 32);
-            passwordTextBox.Name = "passwordTextBox";
-            passwordTextBox.PasswordChar = '*';
-            passwordTextBox.Size = new Size(151, 21);
-            passwordTextBox.TabIndex = 0;
-            passwordTextBox.KeyDown += new KeyEventHandler(PasswordTextBox_KeyDown);
-            okButton.Location = new Point(93, 9);
-            okButton.Name = "okButton";
-            okButton.Size = new Size(75, 23);
-            okButton.TabIndex = 1;
-            okButton.Text = "تایید";
-            okButton.UseVisualStyleBackColor = true;
-            okButton.Click += new EventHandler(OkButton_Click);
-            label1.AutoSize = true;
-            label1.Location = new Point(179, 36);
-            label1.Name = "label1";
-            label1.RightToLeft = RightToLeft.Yes;
-            label1.Size = new Size(59, 13);
-            label1.TabIndex = 2;
-            label1.Text = "کلمه عبور :";
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 0);
-            splitContainer1.Name = "splitContainer1";
-            splitContainer1.Orientation = Orientation.Horizontal;
-            splitContainer1.Panel1.BackColor = Color.White;
-            splitContainer1.Panel1.Controls.Add(label1);
-            splitContainer1.Panel1.Controls.Add(passwordTextBox);
-            splitContainer1.Panel2.BackColor = SystemColors.Control;
-            splitContainer1.Panel2.Controls.Add(okButton);
-            splitContainer1.Size = new Size(261, 129);
-            splitContainer1.SplitterDistance = 84;
-            splitContainer1.SplitterWidth = 1;
-            splitContainer1.TabIndex = 3;
-            AutoScaleDimensions = new SizeF(6f, 13f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(261, 129);
-            Controls.Add(splitContainer1);
-            Font = new Font("Tahoma", 8.25f, FontStyle.Regular, GraphicsUnit.Point, 178);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            KeyPreview = true;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "PasswordDialogForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            TopMost = true;
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel1.PerformLayout();
-            splitContainer1.Panel2.ResumeLayout(false);
-            ((ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
-            ResumeLayout(false);
+            this.passwordTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.okButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // passwordTextBox
+            // 
+            this.passwordTextBox.Location = new System.Drawing.Point(22, 32);
+            this.passwordTextBox.Name = "passwordTextBox";
+            this.passwordTextBox.PasswordChar = '*';
+            this.passwordTextBox.Size = new System.Drawing.Size(151, 21);
+            this.passwordTextBox.TabIndex = 0;
+            this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTextBox_KeyDown);
+            // 
+            // okButton
+            // 
+            this.okButton.Location = new System.Drawing.Point(93, 9);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 1;
+            this.okButton.Text = "تایید";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(179, 36);
+            this.label1.Name = "label1";
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label1.Size = new System.Drawing.Size(59, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "کلمه عبور :";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.passwordTextBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel2.Controls.Add(this.okButton);
+            this.splitContainer1.Size = new System.Drawing.Size(261, 129);
+            this.splitContainer1.SplitterDistance = 84;
+            this.splitContainer1.SplitterWidth = 1;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // PasswordDialogForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(261, 129);
+            this.Controls.Add(this.splitContainer1);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "PasswordDialogForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.TopMost = true;
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
+
     }
 }
