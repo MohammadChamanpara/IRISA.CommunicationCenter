@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Forms;
 using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace IRISA.CommunicationCenter
 			Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out flag);
 			if (!flag)
 			{
-				HelperMethods.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا ( {0} ) در حال اجرا می باشد", new object[]
+				MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا ( {0} ) در حال اجرا می باشد", new object[]
 				{
 					"ICC"
 				});

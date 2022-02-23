@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Components;
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Extensions;
@@ -5,7 +6,7 @@ using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Properties;
 using IRISA.CommunicationCenter.Settings;
-using IRISA.Model;
+using IRISA.CommunicationCenter.UserControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Forms
 {
     public partial class MainForm : Form
     {
@@ -437,11 +438,11 @@ namespace IRISA.CommunicationCenter
 
         private bool CheckPassword()
         {
-            string a = HelperMethods.ShowPasswordDialog(this.uiSettings.ProgramTitle);
+            string a = ShowPasswordDialog(this.uiSettings.ProgramTitle);
             bool result;
             if (a != "iccAdmin")
             {
-                HelperMethods.ShowErrorMessage("کلمه عبور صحیح نمی باشد", new object[0]);
+                MessageForm.ShowErrorMessage("کلمه عبور صحیح نمی باشد", new object[0]);
                 result = false;
             }
             else
@@ -651,7 +652,7 @@ namespace IRISA.CommunicationCenter
             }
             catch (Exception ex)
             {
-                HelperMethods.ShowErrorMessage(ex.Message, new object[0]);
+                MessageForm.ShowErrorMessage(ex.Message, new object[0]);
             }
         }
 
@@ -707,18 +708,12 @@ namespace IRISA.CommunicationCenter
         {
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public static string ShowPasswordDialog(string caption)
+        {
+            PasswordDialogForm passwordDialogForm = new PasswordDialogForm();
+            passwordDialogForm.Text = caption;
+            passwordDialogForm.ShowDialog();
+            return passwordDialogForm.passwordTextBox.Text;
+        }
     }
 }

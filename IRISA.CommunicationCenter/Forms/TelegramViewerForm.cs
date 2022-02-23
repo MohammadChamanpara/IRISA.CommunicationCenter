@@ -1,14 +1,12 @@
 using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Settings;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-namespace IRISA.CommunicationCenter
+
+namespace IRISA.CommunicationCenter.Forms
 {
     public partial class TelegramViewerForm : Form
 	{

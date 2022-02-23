@@ -51,27 +51,26 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelperMethods.cs" />
-    <Compile Include="IRISA.Windows.Components\BaseSeparator.cs">
+    <Compile Include="Components\BaseSeparator.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IRISA.Windows.Components\HorizontalSeparator.cs">
+    <Compile Include="Components\HorizontalSeparator.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IRISA.Windows.Components\IrisaDataGrid.cs">
+    <Compile Include="Components\IrisaDataGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IRISA.Windows.Components\VerticalSeparator.cs">
+    <Compile Include="Components\VerticalSeparator.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IRISA.Windows.Forms\MessageForm.cs">
+    <Compile Include="Forms\MessageForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IRISA.Windows.Forms\PasswordDialogForm.cs">
+    <Compile Include="Forms\PasswordDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropertyComparer.cs" />
-    <Compile Include="SortableBindingList.cs" />
+    <Compile Include="Components\PropertyComparer.cs" />
+    <Compile Include="Components\SortableBindingList.cs" />
     <Compile Include="UserControls\PluginUserControl.Designer.cs">
       <DependentUpon>PluginUserControl.cs</DependentUpon>
     </Compile>

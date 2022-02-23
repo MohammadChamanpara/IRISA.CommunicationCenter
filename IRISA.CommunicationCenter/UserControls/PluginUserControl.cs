@@ -2,7 +2,8 @@ using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Windows.Forms;
-namespace IRISA.CommunicationCenter
+
+namespace IRISA.CommunicationCenter.UserControls
 {
     public partial class PluginUserControl : UserControl
 	{

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using IRISA.CommunicationCenter.Components;
+using IRISA.CommunicationCenter.Library.Models;
 using System.ComponentModel;
 using System.Windows.Forms;
-using IRISA.Windows.Components;
-using IRISA.CommunicationCenter.Library.Models;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Forms
 {
     public partial class MainForm
     {
@@ -153,7 +149,7 @@ namespace IRISA.CommunicationCenter
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.TransfersTabPage = new System.Windows.Forms.TabPage();
-            this.transfersDataGrid = new IRISA.Windows.Components.IrisaDataGrid();
+            this.transfersDataGrid = new IrisaDataGrid();
             this.transfersIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sourceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DestinationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -235,7 +231,7 @@ namespace IRISA.CommunicationCenter
             this.TelegramDetailsButton = new System.Windows.Forms.ToolStripButton();
             this.searchTelegramButton = new System.Windows.Forms.ToolStripButton();
             this.eventsTabPage = new System.Windows.Forms.TabPage();
-            this.eventsDataGrid = new IRISA.Windows.Components.IrisaDataGrid();
+            this.eventsDataGrid = new IrisaDataGrid();
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();

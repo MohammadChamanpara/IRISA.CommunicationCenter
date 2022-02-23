@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Forms
 {
     public partial class TelegramViewerForm
     {
