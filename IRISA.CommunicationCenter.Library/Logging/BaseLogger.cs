@@ -7,27 +7,32 @@ namespace IRISA.CommunicationCenter.Library.Logging
     public abstract partial class BaseLogger : ILogger
     {
         public event Action EventLogged;
+
         protected void OnEventLogged()
         {
             EventLogged?.Invoke();
         }
 
-        public void LogSuccess(string successText, params object[] parameters)
+        public void LogDebug(string testText, params object[] parameters)
         {
-            Log(successText, EventType.Success, parameters);
+            Log(testText, EventType.Debug, null, parameters);
         }
-        public void LogInfo(string infoText, params object[] parameters)
+
+        public void LogInformation(string infoText, params object[] parameters)
         {
-            Log(infoText, EventType.Info, parameters);
+            Log(infoText, EventType.Information, parameters);
         }
+
         public void LogWarning(string warningText, params object[] parameters)
         {
             Log(warningText, EventType.Warning, parameters);
         }
+
         public void LogError(string errorText, params object[] parameters)
         {
             Log(errorText, EventType.Error, parameters);
         }
+
         public void LogException(Exception exception, string message)
         {
             string text = 
@@ -37,10 +42,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
             Log(text, EventType.Exception, exception.StackTrace);
         }
-        public void LogTest(string testText, params object[] parameters)
-        {
-            Log(testText, EventType.Debug, null, parameters);
-        }
+        
         private void Log(string eventText, EventType eventType, params object[] parameters)
         {
             try

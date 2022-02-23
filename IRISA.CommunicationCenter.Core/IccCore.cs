@@ -247,7 +247,7 @@ namespace IRISA.CommunicationCenter.Core
 
             IccQueue.Edit(iccTelegram);
 
-            Logger.LogSuccess("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
+            Logger.LogInformation("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
             {
                     iccTelegram.TransferId
             });
@@ -311,7 +311,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 connectedAdapters = new List<IIccAdapter>();
                 dllSettings = new DLLSettings<IccCore>();
-                Logger.LogInfo("اجرای {0} آغاز شد.", new object[]
+                Logger.LogInformation("اجرای {0} آغاز شد.", new object[]
                 {
                         PersianDescription
                 });
@@ -364,7 +364,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             if (Started)
             {
-                Logger.LogInfo("اجرای {0} خاتمه یافت.", new object[]
+                Logger.LogInformation("اجرای {0} خاتمه یافت.", new object[]
                 {
                     PersianDescription
                 });
@@ -445,7 +445,7 @@ namespace IRISA.CommunicationCenter.Core
                     IccQueue.Add(iccTelegram);
                 }
 
-                Logger.LogInfo("تلگرام با شناسه {0} حذف شد.", new object[]
+                Logger.LogInformation("تلگرام با شناسه {0} حذف شد.", new object[]
                 {
                         iccTelegram.TransferId
                 });
@@ -470,7 +470,7 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.Sent = false;
 
                 IccQueue.Add(iccTelegram);
-                Logger.LogSuccess("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
+                Logger.LogInformation("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
                     iccTelegram.TransferId
                 });

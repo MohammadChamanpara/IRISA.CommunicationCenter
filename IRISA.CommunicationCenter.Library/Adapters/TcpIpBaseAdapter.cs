@@ -323,12 +323,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 bool flag = false;
                 if (socket == null)
                 {
-                    Logger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription));
+                    Logger.LogInformation(string.Format("کلاینت {0} متصل شد.", base.PersianDescription));
                     flag = true;
                 }
                 else
                 {
-                    Logger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription));
+                    Logger.LogInformation(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription));
                 }
                 socket = tcpListener.AcceptSocket();
                 socket.SendTimeout = SendTimeout;
@@ -506,7 +506,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 							telegramSize
 						});
                     }
-                    Logger.LogInfo("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
+                    Logger.LogInformation("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
 					{
 						base.Name
 					});

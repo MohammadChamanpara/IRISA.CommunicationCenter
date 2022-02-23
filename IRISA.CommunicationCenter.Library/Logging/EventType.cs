@@ -2,12 +2,11 @@
 {
     public enum EventType
     {
-        Success,
-        Info,
+        Debug,
+        Information,
         Warning,
         Error,
-        Exception,
-        Debug
+        Exception
     }
 
     public static class EventTypeExtensions
@@ -16,18 +15,16 @@
         {
             switch (eventType)
             {
-                case EventType.Success:
+                case EventType.Debug:
+                    return "رفع عیب";
+                case EventType.Information:
                     return "موفقیت";
-                case EventType.Info:
-                    return "اطلاعات";
                 case EventType.Warning:
                     return "هشدار";
                 case EventType.Error:
                     return "اشکال";
                 case EventType.Exception:
                     return "خطا";
-                case EventType.Debug:
-                    return "رفع عیب";
                 default:
                     return "نا مشخص";
             }

@@ -110,7 +110,7 @@ namespace IRISA.CommunicationCenter.Library.Threading
         {
             if (!IsBusy && EventLogger != null)
             {
-                EventLogger.LogSuccess("اجرای {0} توسط پروسه فعال ساز فعال شد.", new object[]
+                EventLogger.LogInformation("اجرای {0} توسط پروسه فعال ساز فعال شد.", new object[]
                 {
                     PersianDescription
                 });
