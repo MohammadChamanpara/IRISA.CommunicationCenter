@@ -48,10 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRISA.CommunicationCenter\IccCore.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccCoreTelegramEventArgs.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccQueueInMemory.cs" />
-    <Compile Include="IRISA.CommunicationCenter\InProcessTelegrams.cs" />
+    <Compile Include="IccCore.cs" />
+    <Compile Include="IccCoreTelegramEventArgs.cs" />
+    <Compile Include="IccQueueInMemory.cs" />
+    <Compile Include="InProcessTelegrams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">
