@@ -94,11 +94,18 @@ namespace IRISA.CommunicationCenter.Forms
 
         private void StopApplication()
         {
-            iccCore.Stop();
-            stopStartApplicationButton.Image = Resources.start;
-            stopStartApplicationButton.ToolTipText = "اجرای برنامه";
-            settingsPropertyGrid.Enabled = true;
-            Application.DoEvents();
+            try
+            {
+                iccCore?.Stop();
+                stopStartApplicationButton.Image = Resources.start;
+                stopStartApplicationButton.ToolTipText = "اجرای برنامه";
+                settingsPropertyGrid.Enabled = true;
+                Application.DoEvents();
+            }
+            catch (Exception exception)
+            {
+                iccCore?.Logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
+            }
         }
         private void RestartApplication()
         {
@@ -466,7 +473,7 @@ namespace IRISA.CommunicationCenter.Forms
         {
             if (ShowPasswordDialog(uiSettings.ProgramTitle) != ApplicationPassword)
             {
-                MessageForm.ShowErrorMessage("کلمه عبور صحیح نمی باشد", new object[0]);
+                MessageForm.ShowErrorMessage("کلمه عبور صحیح نمی باشد");
                 return false;
             }
             return true;
@@ -528,7 +535,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopApplication();
-            iccCore.Logger.LogWarning("اجرای برنامه خاتمه یافت", new object[0]);
+            iccCore?.Logger.LogWarning("اجرای برنامه خاتمه یافت");
         }
         private void SettingControl_Click(object sender, EventArgs e)
         {
@@ -667,7 +674,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception ex)
             {
-                MessageForm.ShowErrorMessage(ex.Message, new object[0]);
+                MessageForm.ShowErrorMessage(ex.Message);
             }
         }
 
