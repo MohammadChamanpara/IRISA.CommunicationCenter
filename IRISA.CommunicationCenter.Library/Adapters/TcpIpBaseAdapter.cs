@@ -1,4 +1,5 @@
 using IRISA.CommunicationCenter.Library.Definitions;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using IRISA.Threading;
@@ -362,7 +363,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             byte[] buffer = this.ConvertStandardTelegramToClientTelegram(iccTelegram);
             if (!this.Connected)
             {
-                throw HelperMethods.CreateException("مقصد تلگرام متصل نمی باشد", new object[0]);
+                throw IrisaException.Create("مقصد تلگرام متصل نمی باشد", new object[0]);
             }
             try
             {
@@ -371,7 +372,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             catch (Exception ex)
             {
-                throw HelperMethods.CreateException("پاسخی از سرور {0} دریافت نشد. متن خطا : {1}", new object[]
+                throw IrisaException.Create("پاسخی از سرور {0} دریافت نشد. متن خطا : {1}", new object[]
 				{
 					base.PersianDescription,
 					ex.Message
@@ -394,7 +395,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             catch
             {
-                throw HelperMethods.CreateException("برنامه دیگری در حال استفاده از پورت {0} مورد استفاده در آداپتور {1} می باشد", new object[]
+                throw IrisaException.Create("برنامه دیگری در حال استفاده از پورت {0} مورد استفاده در آداپتور {1} می باشد", new object[]
 				{
 					this.Port,
 					base.PersianDescription
@@ -469,14 +470,14 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 byte b2 = BitConverter.GetBytes(endCharacter).First<byte>();
                 if (b != 0 && this.receivedBuffer.First<byte>() != b)
                 {
-                    throw HelperMethods.CreateException("پکت دریافتی  با کاراکتر {0} آغاز نشده است.", new object[]
+                    throw IrisaException.Create("پکت دریافتی  با کاراکتر {0} آغاز نشده است.", new object[]
 					{
 						startCharacter
 					});
                 }
                 if (this.receivedBuffer.Count < this.HeaderSize)
                 {
-                    throw HelperMethods.CreateException("طول پکت دریافتی {0} بایت و حداقل طول مجاز {1} بایت می باشد.", new object[]
+                    throw IrisaException.Create("طول پکت دریافتی {0} بایت و حداقل طول مجاز {1} بایت می باشد.", new object[]
 					{
 						this.receivedBuffer.Count,
 						this.HeaderSize
@@ -486,7 +487,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 int telegramSize = this.GetTelegramSize(this.receivedBuffer.ToArray());
                 if (telegramSize < 0)
                 {
-                    throw HelperMethods.CreateException("اندازه تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
+                    throw IrisaException.Create("اندازه تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
 					{
 						telegramSize
 					});
@@ -496,7 +497,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 {
                     if (this.receivedBuffer.Count < 1000 && this.receivedBuffer.Last<byte>() == b2)
                     {
-                        throw HelperMethods.CreateException("طول پکت دریافتی {0} بایت و طول اعلام شده توسط پکت {1} بایت می باشد.", new object[]
+                        throw IrisaException.Create("طول پکت دریافتی {0} بایت و طول اعلام شده توسط پکت {1} بایت می باشد.", new object[]
 						{
 							this.receivedBuffer.Count,
 							telegramSize
@@ -522,7 +523,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     }
                     if (b2 != 0 && completeTelegram.Last<byte>() != b2)
                     {
-                        throw HelperMethods.CreateException("تلگرام دریافتی  با کاراکتر {0} خاتمه نیافته است.", new object[]
+                        throw IrisaException.Create("تلگرام دریافتی  با کاراکتر {0} خاتمه نیافته است.", new object[]
 						{
 							endCharacter
 						});
@@ -538,7 +539,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             int telegramBodySize = this.GetTelegramBodySize(completeTelegram);
             if (telegramBodySize < 0)
             {
-                throw HelperMethods.CreateException("اندازه محتوات تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
+                throw IrisaException.Create("اندازه محتوات تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
 				{
 					telegramBodySize
 				});
@@ -557,7 +558,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 FieldDefinition fieldDefinition = fields[i];
                 if (array.Length < fieldDefinition.Size)
                 {
-                    throw HelperMethods.CreateException("تعداد فیلد های ارسال شده {0} و تعداد فیلد های تعریف شده {1} می باشد.", new object[]
+                    throw IrisaException.Create("تعداد فیلد های ارسال شده {0} و تعداد فیلد های تعریف شده {1} می باشد.", new object[]
 					{
 						i,
 						count
@@ -569,7 +570,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             if (array.Length > 0)
             {
-                throw HelperMethods.CreateException("طول تلگرام ارسال شده {0} بایت بزرگتر از تلگرام تعریف شده در سیستم است.", new object[]
+                throw IrisaException.Create("طول تلگرام ارسال شده {0} بایت بزرگتر از تلگرام تعریف شده در سیستم است.", new object[]
 				{
 					array.Length
 				});
@@ -586,7 +587,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             List<FieldDefinition> fields = telegramDefinition.Fields;
             if (fields.Count != iccTelegram.Body.Count)
             {
-                throw HelperMethods.CreateException("تعداد فیلد های تلگرام ارسالی {0} و تعداد فیلد های تلگرام تعریف شده {1} می باشد.", new object[]
+                throw IrisaException.Create("تعداد فیلد های تلگرام ارسالی {0} و تعداد فیلد های تلگرام تعریف شده {1} می باشد.", new object[]
 				{
 					iccTelegram.Body.Count,
 					fields.Count

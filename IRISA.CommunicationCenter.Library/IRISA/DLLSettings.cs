@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک کاراکتر معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک کاراکتر معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -49,7 +50,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک عدد صحیح معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک عدد صحیح معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -63,7 +64,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک عدد صحیح بزرگ معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک عدد صحیح بزرگ معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -77,7 +78,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان مقدار شمارشی معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان مقدار شمارشی معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -91,7 +92,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بولین معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بولین معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -105,7 +106,7 @@ namespace IRISA
 			{
 				return result;
 			}
-			throw HelperMethods.CreateException("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بایت معتبر نیست.", new object[]
+			throw IrisaException.Create("مقدار تعیین شده برای {0} برابر با {1} می باشد که به عنوان یک مقدار بایت معتبر نیست.", new object[]
 			{
 				key,
 				text
@@ -125,7 +126,7 @@ namespace IRISA
 			}
 			catch (Exception ex)
 			{
-				throw HelperMethods.CreateException("خطا در بازیابی تنظیمات برای {0} . متن خطا : {1}", new object[]
+				throw IrisaException.Create("خطا در بازیابی تنظیمات برای {0} . متن خطا : {1}", new object[]
 				{
 					key,
 					ex.Message
@@ -150,7 +151,7 @@ namespace IRISA
 			}
 			catch (Exception ex)
 			{
-				throw HelperMethods.CreateException("خطا در ذخیره تنظیمات برای {0} . متن خطا : {1}", new object[]
+				throw IrisaException.Create("خطا در ذخیره تنظیمات برای {0} . متن خطا : {1}", new object[]
 				{
 					key,
 					ex.Message
@@ -181,7 +182,7 @@ namespace IRISA
 			}
 			catch (Exception ex)
 			{
-				throw HelperMethods.CreateException("خطا در بازیابی تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
+				throw IrisaException.Create("خطا در بازیابی تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
 			}
 			return connectionString;
 		}
@@ -208,7 +209,7 @@ namespace IRISA
 			}
 			catch (Exception ex)
 			{
-				throw HelperMethods.CreateException("خطا در ذخیره تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
+				throw IrisaException.Create("خطا در ذخیره تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
 			}
 		}
 	}

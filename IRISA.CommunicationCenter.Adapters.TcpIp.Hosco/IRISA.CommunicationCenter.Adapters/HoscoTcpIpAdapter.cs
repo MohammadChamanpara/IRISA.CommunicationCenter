@@ -1,4 +1,5 @@
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
@@ -26,7 +27,7 @@ namespace IRISA.CommunicationCenter.Adapters
 			int num = BitConverter.ToInt32(telegramBytes, 23);
 			if (num != base.Id)
 			{
-				throw HelperMethods.CreateException("شناسه ارسال کننده صحیح نمی باشد. شناسه مورد انتظار {0} و شناسه ارسال شده {1} است.", new object[]
+				throw IrisaException.Create("شناسه ارسال کننده صحیح نمی باشد. شناسه مورد انتظار {0} و شناسه ارسال شده {1} است.", new object[]
 				{
 					base.Id,
 					num

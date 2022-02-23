@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -52,6 +55,22 @@
     <Compile Include="Adapters\ReceiveEventHandler.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="Definitions\FieldDefinition.cs" />
+    <Compile Include="IRISA.Model\EntityBusiness.cs" />
+    <Compile Include="IRISA.Model\PropertyComparer.cs" />
+    <Compile Include="IRISA.Model\SortableBindingList.cs" />
+    <Compile Include="IRISA.Threading\IrisaBackgroundTimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IRISA\DLLSettings.cs" />
+    <Compile Include="IRISA\ExtensionMethods.cs" />
+    <Compile Include="IRISA\PersianDateTime.cs" />
+    <Compile Include="Loggers\BaseLogger.cs" />
+    <Compile Include="Loggers\EventType.cs" />
+    <Compile Include="Loggers\ILogger.cs" />
+    <Compile Include="Loggers\IrisaException.cs" />
+    <Compile Include="Loggers\LogEvent.cs" />
+    <Compile Include="Loggers\LoggerInFile.cs" />
+    <Compile Include="Loggers\LoggerInMemory.cs" />
     <Compile Include="Models\IccEventSearchModel.cs" />
     <Compile Include="Models\IccEventStatus.cs" />
     <Compile Include="Models\IccTelegram.cs" />
@@ -59,12 +78,6 @@
     <Compile Include="Definitions\NodeBase.cs" />
     <Compile Include="Definitions\TelegramDefinition.cs" />
     <Compile Include="Definitions\TelegramDefinitions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IRISA\IRISA.csproj">
-      <Project>{56A6D708-C2BF-49BE-A35C-E637528B5173}</Project>
-      <Name>IRISA</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

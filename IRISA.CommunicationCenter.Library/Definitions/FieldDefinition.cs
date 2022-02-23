@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using System;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("سایز عددی برای تعریف فیلد {0} مشخص نشده است.", new object[]
+                    throw IrisaException.Create("سایز عددی برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
                         Name
                     });
@@ -37,7 +38,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("نوع برای تعریف فیلد {0} مشخص نشده است.", new object[]
+                    throw IrisaException.Create("نوع برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
                         Name
                     });
@@ -82,7 +83,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                             };
                                             return result;
                                         }
-                                        throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 1 بایتی نیست.", new object[]
+                                        throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 1 بایتی نیست.", new object[]
                                         {
                                     Name,
                                     value
@@ -96,7 +97,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                             result = BitConverter.GetBytes(value2);
                                             return result;
                                         }
-                                        throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 2 بایتی نیست.", new object[]
+                                        throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 2 بایتی نیست.", new object[]
                                         {
                                     Name,
                                     value
@@ -112,7 +113,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                             result = BitConverter.GetBytes(value3);
                                             return result;
                                         }
-                                        throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 4 بایتی نیست.", new object[]
+                                        throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 4 بایتی نیست.", new object[]
                                         {
                                     Name,
                                     value
@@ -127,7 +128,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                             result = BitConverter.GetBytes(value4);
                                             return result;
                                         }
-                                        throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 8 بایتی نیست.", new object[]
+                                        throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد صحیح 8 بایتی نیست.", new object[]
                                         {
                                         Name,
                                         value
@@ -152,7 +153,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                             double value5;
                             if (!double.TryParse(value, out value5))
                             {
-                                throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 8 بایتی نیست.", new object[]
+                                throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 8 بایتی نیست.", new object[]
                                 {
                                     Name,
                                     value
@@ -165,7 +166,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                             float value6;
                             if (!float.TryParse(value, out value6))
                             {
-                                throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 4 بایتی نیست.", new object[]
+                                throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 4 بایتی نیست.", new object[]
                                 {
                                     Name,
                                     value
@@ -179,7 +180,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                         bool value7;
                         if (!bool.TryParse(value, out value7))
                         {
-                            throw HelperMethods.CreateException("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به مقدار بولین نیست.", new object[]
+                            throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به مقدار بولین نیست.", new object[]
                             {
                                 Name,
                                 value
@@ -192,7 +193,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 {
                     if (value.Length > Size)
                     {
-                        throw HelperMethods.CreateException("طول رشته محتوای فیلد {0}  برابر با {1} و حداکثر طول مجاز {2} می باشد.", new object[]
+                        throw IrisaException.Create("طول رشته محتوای فیلد {0}  برابر با {1} و حداکثر طول مجاز {2} می باشد.", new object[]
                         {
                             Name,
                             value.Length,
@@ -211,7 +212,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
         {
             if (fieldBytes.Length < Size)
             {
-                throw HelperMethods.CreateException("تعداد فیلد های ارسال شده کمتر از تعداد فیلد های تعریف شده می باشد.", new object[0]);
+                throw IrisaException.Create("تعداد فیلد های ارسال شده کمتر از تعداد فیلد های تعریف شده می باشد.", new object[0]);
             }
             string text = Type.ToLower();
             if (text != null)
@@ -292,7 +293,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
         }
         private Exception CreateFieldTypeException()
         {
-            return HelperMethods.CreateException("نوع داده {0} با سایز {1} در تعریف فیلد {2} صحیح نیست.", new object[]
+            return IrisaException.Create("نوع داده {0} با سایز {1} در تعریف فیلد {2} صحیح نیست.", new object[]
             {
                 Type,
                 Size,

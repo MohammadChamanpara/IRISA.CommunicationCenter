@@ -6,6 +6,8 @@ using System.Data.Objects.DataClasses;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+
 namespace IRISA.Model
 {
 	public class EntityBusiness<TContext, TEntity> : IDisposable where TContext : ObjectContext, new() where TEntity : EntityObject
@@ -39,6 +41,24 @@ namespace IRISA.Model
 				});
 			}
 		}
+		private static void CallWithTimeout(Action action, int timeoutSeconds)
+		{
+			Thread threadToKill = null;
+			Action action2 = delegate
+			{
+				threadToKill = Thread.CurrentThread;
+				action();
+			};
+			IAsyncResult asyncResult = action2.BeginInvoke(null, null);
+			if (asyncResult.AsyncWaitHandle.WaitOne(timeoutSeconds * 1000))
+			{
+				action2.EndInvoke(asyncResult);
+				return;
+			}
+			threadToKill.Abort();
+			throw new TimeoutException();
+		}
+
 		public bool Connected
 		{
 			get
@@ -52,7 +72,7 @@ namespace IRISA.Model
 						context = this.Context;
 						Action arg_5B_0 = new Action(context.Connection.Open);
 						context = this.Context;
-						HelperMethods.CallWithTimeout(arg_5B_0, context.Connection.ConnectionTimeout);
+						CallWithTimeout(arg_5B_0, context.Connection.ConnectionTimeout);
 					}
 					result = true;
 				}

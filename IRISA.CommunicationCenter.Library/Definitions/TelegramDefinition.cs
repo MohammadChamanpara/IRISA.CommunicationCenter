@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -16,7 +17,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("شناسه عددی در تعریف تلگرام {0} مشخص نشده است.", new object[]
+                    throw IrisaException.Create("شناسه عددی در تعریف تلگرام {0} مشخص نشده است.", new object[]
                     {
                         Name
                     });
@@ -35,7 +36,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("مبدا در تعریف تلگرام مشخص نشده است.", new object[0]);
+                    throw IrisaException.Create("مبدا در تعریف تلگرام مشخص نشده است.", new object[0]);
                 }
                 return result;
             }
@@ -51,7 +52,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("مقصد در تعریف تلگرام مشخص نشده است.", new object[0]);
+                    throw IrisaException.Create("مقصد در تعریف تلگرام مشخص نشده است.", new object[0]);
                 }
                 return result;
             }

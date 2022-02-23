@@ -1,11 +1,14 @@
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using IRISA.Threading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace IRISA.CommunicationCenter.Core
 {
@@ -31,6 +34,57 @@ namespace IRISA.CommunicationCenter.Core
             InProcessTelegrams = inProcessTelegrams;
             Logger = logger;
             IccQueue = iccQueue;
+        }
+
+        public static List<T> LoadPlugins<T>()
+        {
+            return LoadPlugins<T>(AppDomain.CurrentDomain.BaseDirectory + "\\Plugins");
+        }
+        public static List<T> LoadPlugins<T>(string directory)
+        {
+            List<T> result;
+            try
+            {
+                List<T> list = new List<T>();
+                if (!Directory.Exists(directory))
+                {
+                    throw IrisaException.Create("مسیر ذخیره پلاگین ها {0} موجود نیست.", new object[]
+                    {
+                        directory
+                    });
+                }
+                Type typeFromHandle = typeof(T);
+                string[] files = Directory.GetFiles(directory, "*.dll");
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string path = files[i];
+                    Type[] types = Assembly.LoadFile(path).GetTypes();
+                    for (int j = 0; j < types.Length; j++)
+                    {
+                        Type type = types[j];
+                        if (typeFromHandle.IsAssignableFrom(type) && typeFromHandle != type && !type.ContainsGenericParameters)
+                        {
+                            T item = (T)((object)Activator.CreateInstance(type));
+                            list.Add(item);
+                        }
+                    }
+                }
+                result = list;
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                if (ex is ReflectionTypeLoadException)
+                {
+                    ReflectionTypeLoadException ex2 = ex as ReflectionTypeLoadException;
+                    if (ex2.LoaderExceptions != null && ex2.LoaderExceptions.Count<Exception>() > 0)
+                    {
+                        message = ex2.LoaderExceptions.First<Exception>().Message;
+                    }
+                }
+                throw IrisaException.Create("خطا هنگام لود کردن پلاگین ها. متن خطا : " + message, new object[0]);
+            }
+            return result;
         }
 
         [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
@@ -315,7 +369,7 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadClients()
         {
-            connectedClients = HelperMethods.LoadPlugins<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            connectedClients = LoadPlugins<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
 
             if (connectedClients.Count == 0)
             {
@@ -348,7 +402,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             if (!iccTelegram.Destination.HasValue())
             {
-                throw HelperMethods.CreateException("مقصد تلگرام مشخص نشده است.", new object[0]);
+                throw IrisaException.Create("مقصد تلگرام مشخص نشده است.", new object[0]);
             }
 
             var destination = connectedClients
@@ -356,12 +410,12 @@ namespace IRISA.CommunicationCenter.Core
 
             if (destination.Count() == 0)
             {
-                throw HelperMethods.CreateException("مقصد مشخص شده وجود ندارد.", new object[0]);
+                throw IrisaException.Create("مقصد مشخص شده وجود ندارد.", new object[0]);
             }
 
             if (destination.Count() > 1)
             {
-                throw HelperMethods.CreateException("چند مقصد با نام داده شده وجود دارد.", new object[0]);
+                throw IrisaException.Create("چند مقصد با نام داده شده وجود دارد.", new object[0]);
             }
         }
         private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)

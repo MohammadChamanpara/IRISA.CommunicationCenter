@@ -1,6 +1,7 @@
 using IRISA.CommunicationCenter.Adapters.Model;
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Definitions;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Loggers;
 using IRISA.Model;
@@ -265,7 +266,7 @@ namespace IRISA.CommunicationCenter.Adapters
                     {
                         this.OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
                     }
-                    throw HelperMethods.CreateException("برنامه قادر به اتصال به پایگاه داده {0} نمی باشد. ", new object[]
+                    throw IrisaException.Create("برنامه قادر به اتصال به پایگاه داده {0} نمی باشد. ", new object[]
 					{
 						base.PersianDescription
 					});

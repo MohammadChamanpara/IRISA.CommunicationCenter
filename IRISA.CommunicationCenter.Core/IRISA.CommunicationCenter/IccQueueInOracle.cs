@@ -1,4 +1,5 @@
 ﻿using IRISA.CommunicationCenter.Core.Model;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Model;
 using System;
@@ -41,7 +42,7 @@ namespace IRISA.CommunicationCenter.Core
         public List<IccTelegram> GetTelegramsToSend()
         {
             if (!Connected)
-                throw HelperMethods.CreateException("برنامه قادر به دسترسی به صف تلگرام ها نمی باشد");
+                throw IrisaException.Create("برنامه قادر به دسترسی به صف تلگرام ها نمی باشد");
 
             return IccTransfers
                 .GetAll()

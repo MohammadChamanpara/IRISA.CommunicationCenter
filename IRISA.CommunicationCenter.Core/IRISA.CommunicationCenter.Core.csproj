@@ -76,10 +76,6 @@
       <Project>{8a4a2be7-9b27-40fc-a037-1579322d5e99}</Project>
       <Name>IRISA.CommunicationCenter.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IRISA\IRISA.csproj">
-      <Project>{56a6d708-c2bf-49be-a35c-e637528b5173}</Project>
-      <Name>IRISA</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

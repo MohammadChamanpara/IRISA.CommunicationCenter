@@ -1,4 +1,5 @@
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
@@ -45,7 +46,7 @@ namespace IRISA.CommunicationCenter.Adapters
             byte sourceCrc = GetTelegramCrc(completeTelegram);
 
             if (destinationCrc != sourceCrc)
-                throw HelperMethods.CreateException("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد."
+                throw IrisaException.Create("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد."
                     , "CRC", destinationCrc, sourceCrc);
         }
         /*------------------------End Wasco--------------------------------------*/
@@ -68,7 +69,7 @@ namespace IRISA.CommunicationCenter.Adapters
         {
             string source = Encoding.ASCII.GetString(telegramBytes, 5, 3);
             if (source != this.Name)
-                throw HelperMethods.CreateException("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد.", source, this.Name);
+                throw IrisaException.Create("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد.", source, this.Name);
             return this.Name;
         }
         protected override byte[] CreateClientBytes(IccTelegram iccTelegram, byte[] body)

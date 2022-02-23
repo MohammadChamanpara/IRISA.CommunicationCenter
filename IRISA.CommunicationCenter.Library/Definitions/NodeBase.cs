@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using System.Xml;
 
 namespace IRISA.CommunicationCenter.Library.Definitions
@@ -20,7 +21,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("نام برای تعریف فیلد مشخص نشده است.", new object[0]);
+                    throw IrisaException.Create("نام برای تعریف فیلد مشخص نشده است.", new object[0]);
                 }
                 return result;
             }
@@ -36,7 +37,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw HelperMethods.CreateException("شرح برای تعریف فیلد {0} مشخص نشده است.", new object[]
+                    throw IrisaException.Create("شرح برای تعریف فیلد {0} مشخص نشده است.", new object[]
                     {
                         Name
                     });

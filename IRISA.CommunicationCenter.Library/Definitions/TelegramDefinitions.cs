@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
             XmlDocument xmlDocument = new XmlDocument();
             if (!File.Exists(telegramDefinitionFilePath))
             {
-                throw HelperMethods.CreateException("فایل تعریف تلگرام ها با نام {0} وجود ندارد.", new object[]
+                throw IrisaException.Create("فایل تعریف تلگرام ها با نام {0} وجود ندارد.", new object[]
                 {
                     telegramDefinitionFilePath
                 });
@@ -42,7 +43,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
             }
             if (list.Count == 0)
             {
-                throw HelperMethods.CreateException("تلگرام دریافت شده در سیستم تعریف نشده است.", new object[0]);
+                throw IrisaException.Create("تلگرام دریافت شده در سیستم تعریف نشده است.", new object[0]);
             }
             list = (
                 from x in list
@@ -50,7 +51,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 select x).ToList();
             if (list.Count() == 0)
             {
-                throw HelperMethods.CreateException("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.", new object[0]);
+                throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.", new object[0]);
             }
             if (iccTelegram.Destination.HasValue())
             {
@@ -63,12 +64,12 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 if (list.Count == 0)
                 {
-                    throw HelperMethods.CreateException("گیرنده تعیین شده برای تلگرام با گیرنده جاری متفاوت است.", new object[0]);
+                    throw IrisaException.Create("گیرنده تعیین شده برای تلگرام با گیرنده جاری متفاوت است.", new object[0]);
                 }
             }
             if (list.Count > 1)
             {
-                throw HelperMethods.CreateException("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.", new object[0]);
+                throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.", new object[0]);
             }
             return list.First();
         }
