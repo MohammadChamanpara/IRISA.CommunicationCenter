@@ -44,13 +44,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRISA.CommunicationCenter.Adapters\BaseAdapter.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\TelegramSendCompletedEventArgs.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\IIccAdapter.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\ReceiveEventArgs.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\ReceiveEventHandler.cs" />
-    <Compile Include="IRISA.CommunicationCenter.Adapters\TcpIpBaseAdapter.cs" />
+    <Compile Include="Adapters\BaseAdapter.cs" />
+    <Compile Include="Adapters\TelegramSendCompletedEventArgs.cs" />
+    <Compile Include="Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
+    <Compile Include="Adapters\IIccAdapter.cs" />
+    <Compile Include="Adapters\ReceiveEventArgs.cs" />
+    <Compile Include="Adapters\ReceiveEventHandler.cs" />
+    <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter\FieldDefinition.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccTelegram.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccTelegramSearchModel.cs" />
