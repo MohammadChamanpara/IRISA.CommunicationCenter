@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter", "IRISA.CommunicationCenter\IRISA.CommunicationCenter.csproj", "{1ABCDE9A-578C-4994-8565-AD2BEED6866E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters.Database.Dynamic", "IRISA.CommunicationCenter.Adapters.Database.Dynamic\IRISA.CommunicationCenter.Adapters.Database.Dynamic.csproj", "{23AC3120-B800-4B53-A20B-49758C777372}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters.Database.Oracle", "IRISA.CommunicationCenter.Adapters.Database.Oracle\IRISA.CommunicationCenter.Adapters.Database.Oracle.csproj", "{23AC3120-B800-4B53-A20B-49758C777372}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRISA.CommunicationCenter.Adapters.TcpIp.Hosco", "IRISA.CommunicationCenter.Adapters.TcpIp.Hosco\IRISA.CommunicationCenter.Adapters.TcpIp.Hosco.csproj", "{9F4961EC-86F1-4BBB-88AD-B28170594455}"
 EndProject
