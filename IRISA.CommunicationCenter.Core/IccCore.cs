@@ -430,7 +430,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 if (!(dropException is IrisaException))
                 {
-                    Logger.LogException(dropException, "بروز خطای پیشبینی نشده.");
+                    Logger.LogException(dropException, "بروز خطا هنگام ارسال تلگرام.");
                 }
                 iccTelegram.Sent = false;
                 iccTelegram.Dropped = true;

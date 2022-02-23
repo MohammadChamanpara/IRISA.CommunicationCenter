@@ -36,6 +36,8 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 lock (sendLocker)
                 {
                     Thread.Sleep(DelayInSend);
+                    if (iccTelegram.TransferId % 3 == 0)
+                        throw new Exception("error");
                     File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
                 }
             }

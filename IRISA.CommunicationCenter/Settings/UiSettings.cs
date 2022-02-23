@@ -34,19 +34,6 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
-        [DisplayName("نمایش رویداد حذف تلگرام")]
-        public bool NotifyIconShowDrop
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("NotifyIconShowDrop", true);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconShowDrop", value);
-            }
-        }
-        
         [DisplayName("نمایش رویداد متصل شدن کلاینت")]
         public bool NotifyIconShowAdapterConnected
         {

@@ -115,7 +115,6 @@ namespace IRISA.CommunicationCenter.Forms
         private void InitialIccCore()
         {
             iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
-            iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramDropped);
         }
         private void InitialUiSettings()
         {
@@ -585,31 +584,6 @@ namespace IRISA.CommunicationCenter.Forms
             else
             {
                 StartApplication();
-            }
-        }
-        private void IccCore_TelegramDropped(IccCoreTelegramEventArgs e)
-        {
-            if (uiSettings.NotifyIconShowDrop)
-            {
-                string destination = " ";
-                string tipText;
-                if (uiSettings.NotifyIconPersianLanguage)
-                {
-                    if (e.IccTelegram.Destination.HasValue())
-                    {
-                        destination = string.Format(" به {0} ", e.IccTelegram.Destination);
-                    }
-                    tipText = string.Format("تلگرام ارسالی از {0} {1}حذف شد.", e.IccTelegram.Source, destination);
-                }
-                else
-                {
-                    if (e.IccTelegram.Destination.HasValue())
-                    {
-                        destination = string.Format(" to {0} ", e.IccTelegram.Destination);
-                    }
-                    tipText = string.Format("Sending Telegram from {0}{1}Dropped.", e.IccTelegram.Source, destination);
-                }
-                notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Error);
             }
         }
         private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
