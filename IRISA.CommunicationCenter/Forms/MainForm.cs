@@ -37,7 +37,8 @@ namespace IRISA.CommunicationCenter.Forms
             LoadClients();
             LoadSettings();
             LoadStatusTypeComboBox();
-            transfersDataGrid.Click += TransfersDataGrid_Click;
+            transfersDataGrid.Click += DataGrid_Click;
+            eventsDataGrid.Click += DataGrid_Click;
             stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
             stopStartApplicationButton.Image = Resources.stop;
             settingsPropertyGrid.Enabled = false;
@@ -61,7 +62,7 @@ namespace IRISA.CommunicationCenter.Forms
             StartRefreshingRecords();
         }
 
-        private void TransfersDataGrid_Click(object sender, EventArgs e)
+        private void DataGrid_Click(object sender, EventArgs e)
         {
             StopRefreshingRecords();
         }
@@ -135,7 +136,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
             }
         }
 
@@ -239,7 +240,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
             }
         }
         public string GroupDigits(int number)
@@ -357,7 +358,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
             }
         }
         private void LoadMoreEvents()
@@ -425,7 +426,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception);
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
             }
         }
         private void LoadClients()
@@ -437,7 +438,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     foreach (IIccAdapter current in iccCore.connectedClients)
                     {
-                        PluginUserControl value = new PluginUserControl(current, iccCore.Logger);
+                        AdapterUserControl value = new AdapterUserControl(current, iccCore.Logger);
                         clientsPanel.Controls.Add(value);
                         current.ConnectionChanged += Client_ConnectionChanged;
                     }
@@ -445,7 +446,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception);
+                iccCore.Logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
             }
         }
 

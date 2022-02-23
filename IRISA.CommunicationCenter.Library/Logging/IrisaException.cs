@@ -6,9 +6,19 @@ namespace IRISA.CommunicationCenter.Library.Loggers
         public IrisaException(string message) : base(message)
         {
         }
+
+        public IrisaException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
         public static IrisaException Create(string messageFormat, params object[] parameters)
         {
             return new IrisaException(string.Format(messageFormat, parameters));
+        }
+
+        public static IrisaException Create(Exception innerException, string message)
+        {
+            return new IrisaException(message, innerException);
         }
     }
 

@@ -72,7 +72,7 @@ namespace IRISA.CommunicationCenter.Library.Threading
                 {
                     if (EventLogger != null)
                     {
-                        EventLogger.LogException(ex);
+                        EventLogger.LogException(ex, $"بروز خطا هنگام اجرای {PersianDescription}");
                     }
                     processStatus = ProcessStatus.ExceptionOccured;
                     Stop();

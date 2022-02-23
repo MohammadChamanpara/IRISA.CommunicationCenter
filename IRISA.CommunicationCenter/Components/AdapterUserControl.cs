@@ -1,11 +1,11 @@
-using IRISA.CommunicationCenter.Library.Adapters;
+﻿using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Windows.Forms;
 
 namespace IRISA.CommunicationCenter.Components
 {
-    public partial class PluginUserControl : UserControl
+    public partial class AdapterUserControl : UserControl
 	{
 		
 		public string Caption
@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Components
 			}
 		}
 
-		public PluginUserControl(IIccAdapter plugin, ILogger eventLogger)
+		public AdapterUserControl(IIccAdapter plugin, ILogger eventLogger)
 		{
 			this.InitializeComponent();
 			this.eventLogger = eventLogger;
@@ -81,7 +81,7 @@ namespace IRISA.CommunicationCenter.Components
 				{
 					throw ex;
 				}
-				this.eventLogger.LogException(ex);
+				this.eventLogger.LogException(ex, "بروز خطا هنگام بررسی وضعیت اتصال کلاینت");
 			}
 		}
 	}

@@ -28,10 +28,14 @@ namespace IRISA.CommunicationCenter.Library.Logging
         {
             Log(errorText, EventType.Error, parameters);
         }
-        public void LogException(Exception exception)
+        public void LogException(Exception exception, string message)
         {
-            string text = $"{exception.InnerExceptionsMessage()}\r\nStackTrace :{exception.StackTrace}\r\n";
-            Log(text, EventType.Exception, exception.StackTrace, new object[0]);
+            string text = 
+                $"{message}\r\n" +
+                $"{exception.InnerExceptionsMessage()}\r\n" +
+                $"StackTrace :{exception.StackTrace}\r\n";
+
+            Log(text, EventType.Exception, exception.StackTrace);
         }
         public void LogTest(string testText, params object[] parameters)
         {

@@ -77,11 +77,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                                 , true
                                 , null
                             )
-                        ); 
+                        );
                     }
                     catch (Exception exception)
                     {
-                        Logger.LogException(exception);
+                        Logger.LogException(exception, $"Receiving telegrams in test adapter {Name} failed");
                     }
                     finally
                     {

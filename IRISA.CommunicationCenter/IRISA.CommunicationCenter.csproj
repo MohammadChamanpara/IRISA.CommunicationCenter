@@ -71,8 +71,8 @@
     </Compile>
     <Compile Include="Components\PropertyComparer.cs" />
     <Compile Include="Components\SortableBindingList.cs" />
-    <Compile Include="Components\PluginUserControl.Designer.cs">
-      <DependentUpon>PluginUserControl.cs</DependentUpon>
+    <Compile Include="Components\AdapterUserControl.Designer.cs">
+      <DependentUpon>AdapterUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TelegramViewerForm.Designer.cs">
       <DependentUpon>TelegramViewerForm.cs</DependentUpon>
@@ -85,7 +85,7 @@
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Components\PluginUserControl.cs">
+    <Compile Include="Components\AdapterUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Program.cs" />

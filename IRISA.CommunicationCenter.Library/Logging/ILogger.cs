@@ -10,7 +10,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
         void LogInfo(string infoText, params object[] parameters);
         void LogWarning(string warningText, params object[] parameters);
         void LogError(string errorText, params object[] parameters);
-        void LogException(Exception exception);
+        void LogException(Exception exception, string message);
         void LogTest(string testText, params object[] parameters);
         IQueryable<LogEvent> GetLogs();
     }

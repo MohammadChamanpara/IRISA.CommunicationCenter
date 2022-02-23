@@ -192,7 +192,7 @@ namespace IRISA.CommunicationCenter.Core
                 return dllSettings.Assembly.Location;
             }
         }
-        private void sendTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void SendTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             lock (sendLocker)
             {
@@ -230,9 +230,9 @@ namespace IRISA.CommunicationCenter.Core
 
                     iccAdapter.Send(telegram);
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    Logger.LogException(ex);
+                    DropTelegram(telegram, exception, true);
                 }
             }
         }
@@ -263,7 +263,7 @@ namespace IRISA.CommunicationCenter.Core
                     .Single();
         }
 
-        private void activatorTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ActivatorTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -278,11 +278,10 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception exception)
             {
-                Logger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
-                Logger.LogException(exception);
+                Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
             }
         }
-        private void client_OnReceive(ReceiveEventArgs e)
+        private void Client_OnReceive(ReceiveEventArgs e)
         {
             lock (receiveLocker)
             {
@@ -321,28 +320,32 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     sendTimer.Stop();
                 }
-                sendTimer = new IrisaBackgroundTimer();
-                sendTimer.Interval = SendTimerInterval;
-                sendTimer.DoWork += new DoWorkEventHandler(sendTimer_DoWork);
-                sendTimer.PersianDescription = SendTimerPersianDescription + " در " + PersianDescription;
-                sendTimer.EventLogger = Logger;
+                sendTimer = new IrisaBackgroundTimer
+                {
+                    Interval = SendTimerInterval,
+                    PersianDescription = SendTimerPersianDescription + " در " + PersianDescription,
+                    EventLogger = Logger
+                };
+                sendTimer.DoWork += new DoWorkEventHandler(SendTimer_DoWork);
                 sendTimer.Start();
                 if (activatorTimer != null)
                 {
                     activatorTimer.Stop();
                 }
-                activatorTimer = new IrisaBackgroundTimer();
-                activatorTimer.Interval = ActivatorTimerInterval;
-                activatorTimer.DoWork += new DoWorkEventHandler(activatorTimer_DoWork);
-                activatorTimer.PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription;
-                activatorTimer.EventLogger = Logger;
+                activatorTimer = new IrisaBackgroundTimer
+                {
+                    Interval = ActivatorTimerInterval,
+                    PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription,
+                    EventLogger = Logger
+                };
+                activatorTimer.DoWork += new DoWorkEventHandler(ActivatorTimer_DoWork);
                 activatorTimer.Start();
                 Started = true;
             }
             catch (Exception exception)
             {
                 Started = false;
-                Logger.LogException(exception);
+                Logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
             }
         }
         public void Stop()
@@ -381,13 +384,13 @@ namespace IRISA.CommunicationCenter.Core
             {
                 try
                 {
-                    adapter.Receive += new ReceiveEventHandler(client_OnReceive);
+                    adapter.Receive += new ReceiveEventHandler(Client_OnReceive);
                     adapter.SendCompleted += Adapter_SendCompleted;
                     adapter.Start(Logger);
                 }
                 catch (Exception exception)
                 {
-                    Logger.LogException(exception);
+                    Logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
                 }
             }
         }
@@ -426,7 +429,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 if (!(dropException is IrisaException))
                 {
-                    Logger.LogException(dropException);
+                    Logger.LogException(dropException, "بروز خطای پیشبینی نشده.");
                 }
                 iccTelegram.Sent = false;
                 iccTelegram.Dropped = true;
@@ -446,14 +449,11 @@ namespace IRISA.CommunicationCenter.Core
                         iccTelegram.TransferId
                 });
 
-                if (TelegramDropped != null)
-                {
-                    TelegramDropped(new IccCoreTelegramEventArgs(iccTelegram));
-                }
+                TelegramDropped?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
             }
             finally
             {
@@ -462,7 +462,6 @@ namespace IRISA.CommunicationCenter.Core
         }
         private void QueueTelegram(IccTelegram iccTelegram)
         {
-            bool flag = false;
             try
             {
                 iccTelegram.Dropped = false;
@@ -478,14 +477,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception ex)
             {
-                if (!flag)
-                {
-                    DropTelegram(iccTelegram, ex, false);
-                }
-                else
-                {
-                    Logger.LogException(ex);
-                }
+                Logger.LogException(ex, "بروز خطا هنگام ثبت تلگرام در صف.");
             }
         }
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)

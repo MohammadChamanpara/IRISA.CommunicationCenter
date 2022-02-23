@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace IRISA.CommunicationCenter.Components
 {
-    public partial class PluginUserControl
+    public partial class AdapterUserControl
     {
         private IContainer components = null;
         public PictureBox disconnectPictureBox;

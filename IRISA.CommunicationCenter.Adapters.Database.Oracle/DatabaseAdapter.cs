@@ -46,7 +46,7 @@ namespace IRISA.CommunicationCenter.Adapters
                     }
                     catch (Exception exception)
                     {
-                        Logger.LogException(exception);
+                        Logger.LogException(exception,"بروز خطا هنگام بررسی اتصال پایگاه داده");
                     }
                 }
                 return base.Started && databaseIsConnected;
@@ -188,8 +188,7 @@ namespace IRISA.CommunicationCenter.Adapters
             }
             catch (Exception exception)
             {
-                Logger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
-                Logger.LogException(exception);
+                Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
             }
         }
         public override void Stop()

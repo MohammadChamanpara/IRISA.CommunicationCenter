@@ -40,7 +40,7 @@ namespace IRISA.CommunicationCenter.Core
 
         public List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount)
         {
-            var transfers = items.AsQueryable();
+            var transfers = items.AsEnumerable();
 
             /*.................... Transfer Id ....................*/
             transfers = searchModel.TransferId.HasValue
@@ -62,7 +62,7 @@ namespace IRISA.CommunicationCenter.Core
             /*.................... Destination ....................*/
 
             transfers = searchModel.Destination.HasValue()
-                ? transfers.Where(x => x.Destination.ToLower().Contains(searchModel.Destination.ToLower()))
+                ? transfers.Where(x => x.Destination?.ToLower()?.Contains(searchModel.Destination.ToLower()) == true)
                 : transfers;
 
             /*.................... Sent ....................*/
@@ -80,7 +80,7 @@ namespace IRISA.CommunicationCenter.Core
             /* ................Drop Reason...................*/
 
             transfers = searchModel.DropReason.HasValue()
-                ? transfers.Where(x => x.DropReason.Contains(searchModel.DropReason))
+                ? transfers.Where(x => x.DropReason?.Contains(searchModel.DropReason) == true)
                 : transfers;
 
             /*....................Send Time....................*/

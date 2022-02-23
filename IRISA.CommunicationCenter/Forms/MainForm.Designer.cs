@@ -149,7 +149,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.TransfersTabPage = new System.Windows.Forms.TabPage();
-            this.transfersDataGrid = new IrisaDataGrid();
+            this.transfersDataGrid = new IRISA.CommunicationCenter.Components.IrisaDataGrid();
             this.transfersIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sourceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DestinationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -231,7 +231,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.TelegramDetailsButton = new System.Windows.Forms.ToolStripButton();
             this.searchTelegramButton = new System.Windows.Forms.ToolStripButton();
             this.eventsTabPage = new System.Windows.Forms.TabPage();
-            this.eventsDataGrid = new IrisaDataGrid();
+            this.eventsDataGrid = new IRISA.CommunicationCenter.Components.IrisaDataGrid();
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -1746,7 +1746,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             // iccEventSearchModelBindingSource
             // 
-            this.iccEventSearchModelBindingSource.DataSource = typeof(IccEventSearchModel);
+            this.iccEventSearchModelBindingSource.DataSource = typeof(IRISA.CommunicationCenter.Library.Models.IccEventSearchModel);
             // 
             // label24
             // 
