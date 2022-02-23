@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace IRISA.CommunicationCenter.Adapters
+namespace IRISA.CommunicationCenter.Library.Adapters
 {
     public abstract class BaseAdapter<DLLT> : IIccAdapter
     {

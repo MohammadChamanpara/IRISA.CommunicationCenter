@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-namespace IRISA.CommunicationCenter.Adapters
+namespace IRISA.CommunicationCenter.Library.Adapters
 {
     public abstract class TcpIpBaseAdapter<DllT> : BaseAdapter<DllT>
     {

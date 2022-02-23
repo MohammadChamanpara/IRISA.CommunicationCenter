@@ -1,5 +1,5 @@
 using System;
-namespace IRISA.CommunicationCenter.Adapters
+namespace IRISA.CommunicationCenter.Library.Adapters
 {
 	public class ReceiveEventArgs
 	{

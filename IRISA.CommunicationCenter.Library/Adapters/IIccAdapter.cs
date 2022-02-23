@@ -1,6 +1,6 @@
 using IRISA.Loggers;
 using System;
-namespace IRISA.CommunicationCenter.Adapters
+namespace IRISA.CommunicationCenter.Library.Adapters
 {
     public interface IIccAdapter
 	{
