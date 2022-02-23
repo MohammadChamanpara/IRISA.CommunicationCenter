@@ -1,11 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-namespace IRISA.CommunicationCenter
+
+namespace IRISA.CommunicationCenter.Library.TelegramDefinition
 {
-	public class TelegramDefinitions
+    public class TelegramDefinitions
 	{
 		public List<TelegramDefinition> List
 		{
