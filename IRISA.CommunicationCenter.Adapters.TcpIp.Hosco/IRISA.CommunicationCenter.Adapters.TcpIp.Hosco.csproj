@@ -35,6 +35,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>IRISA.CommunicationCenter.Adapters.TcpIp.Hosco</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="HoscoTcpIpAdapter.cs" />
   </ItemGroup>
