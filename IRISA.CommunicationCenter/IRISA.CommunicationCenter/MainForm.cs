@@ -77,7 +77,7 @@ namespace IRISA.CommunicationCenter
         }
         private void InitialIccCore()
         {
-            this.iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInOracle());
+            this.iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
             this.iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramDropped);
             this.iccCore.TelegramQueued += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramQueued);
             this.iccCore.TelegramSent += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramSent);
@@ -173,7 +173,7 @@ namespace IRISA.CommunicationCenter
                     {
                         if (this.iccCore.IccQueue.Connected)
                         {
-                            var queryable = this.iccCore.IccQueue.GetTelegrams(showRecordsCount);
+                            var telegrams = this.iccCore.IccQueue.GetTelegrams(showRecordsCount);
                             //if (this.idTextBox.Text.HasValue())
                             //{
                             //    int id = int.Parse(this.idTextBox.Text);
@@ -316,13 +316,11 @@ namespace IRISA.CommunicationCenter
                             //        select x;
                             //}
 
-                            int allRecordsCount = queryable.Count();
+                            int allRecordsCount = iccCore.IccQueue.Count;
+
                             showRecordsCount = Math.Min(showRecordsCount, allRecordsCount);
-                            queryable = (
-                                from t in queryable
-                                orderby t.TransferId descending
-                                select t).Take(showRecordsCount).ToList();
-                            SortableBindingList<IccTelegram> source = new SortableBindingList<IccTelegram>(queryable);
+                            
+                            SortableBindingList<IccTelegram> source = new SortableBindingList<IccTelegram>(telegrams);
                             base.Invoke(new Action(() =>
                             {
                                 this.transfersDataGrid.DataSource = source;

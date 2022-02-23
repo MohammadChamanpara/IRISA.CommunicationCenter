@@ -13,5 +13,6 @@ namespace IRISA.CommunicationCenter.Core
         List<IccTelegram> GetTelegrams(int pagesize = 50);
         string Type { get; }
         bool Connected { get; }
+        int Count { get; }
     }
 }

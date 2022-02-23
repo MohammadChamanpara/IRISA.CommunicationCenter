@@ -53,6 +53,7 @@ namespace IRISA.CommunicationCenter.Core
             return
                 Transfers
                 .GetAll()
+                   .OrderByDescending(x => x.ID)
                    .Take(pageSize)
                    .Select(x => x.ToIccTelegram())
                    .ToList();
@@ -92,5 +93,9 @@ namespace IRISA.CommunicationCenter.Core
                 }
             }
         }
+
+        [Category("Information")]
+        [DisplayName("تعداد تلگرام ها")]
+        public int Count => Transfers.GetAll().Count();
     }
 }

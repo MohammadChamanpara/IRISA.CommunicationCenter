@@ -39,6 +39,7 @@ namespace IRISA.CommunicationCenter.Core
         public List<IccTelegram> GetTelegrams(int pageSize = 50)
         {
             return items
+                .OrderByDescending(x=>x.TransferId)
                 .Take(pageSize)
                 .ToList();
         }
@@ -50,5 +51,9 @@ namespace IRISA.CommunicationCenter.Core
         [Category("Information")]
         [DisplayName("وضعیت اتصال")]
         public bool Connected => true;
+
+        [DisplayName("تعداد تلگرام ها")]
+        [Category("Information")]
+        public int Count => items.Count;
     }
 }
