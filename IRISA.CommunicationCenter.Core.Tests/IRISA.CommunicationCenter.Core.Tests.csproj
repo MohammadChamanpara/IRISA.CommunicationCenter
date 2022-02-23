@@ -105,9 +105,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IRISA.CommunicationCenter.Adapters\IRISA.CommunicationCenter.Adapters.csproj">
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Library\IRISA.CommunicationCenter.Library.csproj">
       <Project>{8a4a2be7-9b27-40fc-a037-1579322d5e99}</Project>
-      <Name>IRISA.CommunicationCenter.Adapters</Name>
+      <Name>IRISA.CommunicationCenter.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\IRISA.CommunicationCenter.Core\IRISA.CommunicationCenter.Core.csproj">
       <Project>{f7ec6e99-1d52-433d-b2dc-6a02a85bb733}</Project>
