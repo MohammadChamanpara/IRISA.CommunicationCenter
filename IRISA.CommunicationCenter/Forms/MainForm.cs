@@ -730,5 +730,10 @@ namespace IRISA.CommunicationCenter.Forms
             passwordDialogForm.ShowDialog();
             return passwordDialogForm.passwordTextBox.Text;
         }
+
+        private void SearchControl_Enter(object sender, EventArgs e)
+        {
+            StartRefreshingRecords();
+        }
     }
 }
