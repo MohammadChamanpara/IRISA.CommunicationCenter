@@ -57,8 +57,7 @@ namespace IRISA.CommunicationCenter.Components
         {
             List<T> list = (List<T>)Items;
             Type propertyType = property.PropertyType;
-            PropertyComparer<T> propertyComparer;
-            if (!comparers.TryGetValue(propertyType, out propertyComparer))
+            if (!comparers.TryGetValue(propertyType, out PropertyComparer<T> propertyComparer))
             {
                 propertyComparer = new PropertyComparer<T>(property, direction);
                 comparers.Add(propertyType, propertyComparer);

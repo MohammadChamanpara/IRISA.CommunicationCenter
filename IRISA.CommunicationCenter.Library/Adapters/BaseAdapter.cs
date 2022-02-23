@@ -15,12 +15,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         #region Variables
         protected TelegramDefinitions telegramDefinitions;
         protected DLLSettings<DLLT> dllSettings;
-        protected ILogger eventLogger;
+        protected ILogger Logger;
         public event ReceiveEventHandler Receive;
         public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
 
-        private Queue<IccTelegram> sendQueue = new Queue<IccTelegram>();
+        private readonly Queue<IccTelegram> sendQueue = new Queue<IccTelegram>();
         #endregion
 
 
@@ -148,7 +148,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected abstract void SendTelegram(IccTelegram iccTelegram);
         public virtual void Start(ILogger eventLogger)
         {
-            eventLogger = eventLogger;
+            Logger = eventLogger;
             dllSettings = new DLLSettings<DLLT>();
             telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
             Started = true;
@@ -168,10 +168,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         public virtual void OnReceive(ReceiveEventArgs e)
         {
-            if (Receive != null)
-            {
-                Receive(e);
-            }
+            Receive?.Invoke(e);
         }
         public virtual void OnConnectionChanged(AdapterConnectionChangedEventArgs e)
         {

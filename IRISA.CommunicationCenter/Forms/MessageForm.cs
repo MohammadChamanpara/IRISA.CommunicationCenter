@@ -7,7 +7,7 @@ namespace IRISA.CommunicationCenter.Forms
 {
     public class MessageForm : Form
     {
-        private IContainer components = null;
+        private readonly IContainer components = null;
         private Panel panel1;
         private Button okButton;
         private Panel panel2;
@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Forms
             messageLabel.Text = string.Format(messageFormat.Trim(), messageArguments);
             pictureBox.Image = icon;
         }
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -72,7 +72,7 @@ namespace IRISA.CommunicationCenter.Forms
             okButton.TabIndex = 0;
             okButton.Text = "تایید";
             okButton.UseVisualStyleBackColor = true;
-            okButton.Click += new EventHandler(okButton_Click);
+            okButton.Click += new EventHandler(OkButton_Click);
             // 
             // messageLabel
             // 

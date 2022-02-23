@@ -9,7 +9,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Hosco
 {
     public class HoscoTcpIpAdapter : TcpIpBaseAdapter<HoscoTcpIpAdapter>
     {
-        private string dateFormat = "yyyyMMddHHmmss";
+        private const string DateFormat = "yyyyMMddHHmmss";
         protected override int GetTelegramId(byte[] telegramBytes)
         {
             return BitConverter.ToInt32(telegramBytes, 1);
@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Hosco
         protected override DateTime GetTelegramSendTime(byte[] telegramBytes)
         {
             string @string = Encoding.ASCII.GetString(telegramBytes, 9, 14);
-            return base.StringToDateTime(@string, dateFormat);
+            return base.StringToDateTime(@string, DateFormat);
         }
         protected override string GetTelegramSource(byte[] telegramBytes)
         {
@@ -42,7 +42,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Hosco
             memoryStream.Write(BitConverter.GetBytes(base.StartCharacter), 0, 1);
             memoryStream.Write(BitConverter.GetBytes(iccTelegram.TelegramId), 0, 4);
             memoryStream.Write(BitConverter.GetBytes(body.Length), 0, 4);
-            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(dateFormat)), 0, dateFormat.Length);
+            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(DateFormat)), 0, DateFormat.Length);
             memoryStream.Write(BitConverter.GetBytes(0), 0, 4);
             memoryStream.Write(body, 0, body.Length);
             memoryStream.Write(BitConverter.GetBytes(base.EndCharacter), 0, 1);

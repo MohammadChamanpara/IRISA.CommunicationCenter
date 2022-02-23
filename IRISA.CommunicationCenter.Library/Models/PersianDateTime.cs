@@ -5,7 +5,7 @@ namespace IRISA.CommunicationCenter.Library.Models
 {
     public class PersianDateTime
     {
-        private DateTime dateTime = default;
+        private readonly DateTime dateTime = default;
         public string DateSparator
         {
             get;

@@ -15,9 +15,8 @@ namespace IRISA.CommunicationCenter
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += new ThreadExceptionEventHandler(Program.Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Program.CurrentDomain_UnhandledException);
-			bool flag;
-			Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out flag);
-			if (!flag)
+            Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp);
+            if (!firstInstanceOfApp)
 			{
 				MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا ( {0} ) در حال اجرا می باشد", new object[]
 				{

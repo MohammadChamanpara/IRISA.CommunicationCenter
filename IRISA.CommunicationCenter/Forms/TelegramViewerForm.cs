@@ -10,7 +10,7 @@ namespace IRISA.CommunicationCenter.Forms
 {
     public partial class TelegramViewerForm : Form
 	{
-		private UiSettings uiSettings = new UiSettings();
+		private readonly UiSettings uiSettings = new UiSettings();
 		public TelegramViewerForm(IccTelegram iccTelegram)
 		{
 			InitializeComponent();
@@ -27,11 +27,6 @@ namespace IRISA.CommunicationCenter.Forms
 			treeNode.Nodes.Add("Source : " + telegramDefinition.Source);
 			treeNode.Nodes.Add("Destination : " + telegramDefinition.Destination);
 			TreeNode parentTreeNode = treeNode.Nodes.Add("Body");
-			List<string> list = new List<string>();
-			if (iccTelegram.Body != null)
-			{
-				list = iccTelegram.Body;
-			}
 			string[] array = iccTelegram.Body.ToArray();
 			MakeTree(parentTreeNode, telegramDefinition.Node, ref array);
 			treeNode.Expand();

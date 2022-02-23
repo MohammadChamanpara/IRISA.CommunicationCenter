@@ -47,7 +47,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
                 throw IrisaException.Create("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد."
                     , "CRC", destinationCrc, sourceCrc);
         }
-        private string dateFormat = "yyyyMMddHHmmss";
+        private const string DateFormat = "yyyyMMddHHmmss";
         protected override int GetTelegramId(byte[] telegramBytes)
         {
             return BitConverter.ToInt16(telegramBytes, 1);
@@ -59,8 +59,8 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
         }
         protected override DateTime GetTelegramSendTime(byte[] telegramBytes)
         {
-            string @string = Encoding.ASCII.GetString(telegramBytes, 8, dateFormat.Length);
-            return base.StringToDateTime(@string, dateFormat);
+            string @string = Encoding.ASCII.GetString(telegramBytes, 8, DateFormat.Length);
+            return base.StringToDateTime(@string, DateFormat);
         }
         protected override string GetTelegramSource(byte[] telegramBytes)
         {
@@ -90,7 +90,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
             memoryStream.Write(Encoding.ASCII.GetBytes(source), 0, 3);
 
             /* Send Time */
-            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(dateFormat)), 0, dateFormat.Length);
+            memoryStream.Write(Encoding.ASCII.GetBytes(iccTelegram.SendTime.ToString(DateFormat)), 0, DateFormat.Length);
 
             /* Body Size */
             memoryStream.Write(BitConverter.GetBytes(body.Length), 0, 2);

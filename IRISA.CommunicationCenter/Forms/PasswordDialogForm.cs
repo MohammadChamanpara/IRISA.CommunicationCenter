@@ -7,7 +7,7 @@ namespace IRISA.CommunicationCenter.Forms
 {
     public class PasswordDialogForm : Form
     {
-        private IContainer components = null;
+        private readonly IContainer components = null;
         private Button okButton;
         private Label label1;
         private SplitContainer splitContainer1;
@@ -16,15 +16,15 @@ namespace IRISA.CommunicationCenter.Forms
         {
             InitializeComponent();
         }
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             Close();
         }
-        private void passwordTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void PasswordTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
             {
-                okButton_Click(null, null);
+                OkButton_Click(null, null);
             }
         }
         protected override void Dispose(bool disposing)
@@ -52,14 +52,14 @@ namespace IRISA.CommunicationCenter.Forms
             passwordTextBox.PasswordChar = '*';
             passwordTextBox.Size = new Size(151, 21);
             passwordTextBox.TabIndex = 0;
-            passwordTextBox.KeyDown += new KeyEventHandler(passwordTextBox_KeyDown);
+            passwordTextBox.KeyDown += new KeyEventHandler(PasswordTextBox_KeyDown);
             okButton.Location = new Point(93, 9);
             okButton.Name = "okButton";
             okButton.Size = new Size(75, 23);
             okButton.TabIndex = 1;
             okButton.Text = "تایید";
             okButton.UseVisualStyleBackColor = true;
-            okButton.Click += new EventHandler(okButton_Click);
+            okButton.Click += new EventHandler(OkButton_Click);
             label1.AutoSize = true;
             label1.Location = new Point(179, 36);
             label1.Name = "label1";

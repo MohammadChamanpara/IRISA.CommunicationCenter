@@ -28,7 +28,7 @@ namespace IRISA.CommunicationCenter.Components
 			this.Caption = plugin.Name + " - " + plugin.PersianDescription;
 			this.connectPictureBox.Click += new EventHandler(this.Plugin_Click);
 			this.disconnectPictureBox.Click += new EventHandler(this.Plugin_Click);
-            plugin.ConnectionChanged += plugin_ConnectionChanged;
+            plugin.ConnectionChanged += Plugin_ConnectionChanged;
 			this.RefreshConnection();
 		}
 
@@ -36,7 +36,7 @@ namespace IRISA.CommunicationCenter.Components
 		{
 			this.RefreshConnection();
 		}
-		private void plugin_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+		private void Plugin_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
 		{
 			this.RefreshConnection();
 		}

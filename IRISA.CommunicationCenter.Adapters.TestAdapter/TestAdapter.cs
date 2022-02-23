@@ -31,7 +31,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             public bool Running = false;
             public override bool Connected => Running;
 
-            private object sendLocker = new object();
+            private readonly object sendLocker = new object();
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 lock (sendLocker)
@@ -81,7 +81,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                     }
                     catch (Exception exception)
                     {
-                        eventLogger.LogException(exception);
+                        Logger.LogException(exception);
                     }
                     finally
                     {

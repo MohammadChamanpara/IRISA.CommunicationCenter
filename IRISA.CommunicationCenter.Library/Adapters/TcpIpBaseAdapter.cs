@@ -256,13 +256,13 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #region Methods
 
-        private void receiverTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ReceiverTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             if (socket != null)
             {
                 if ((DateTime.Now - lastConnectionTime).TotalMilliseconds > (double)TcpIpConnectExpireTime)
                 {
-                    eventLogger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
+                    Logger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
 					{
 						base.PersianDescription
 					});
@@ -277,7 +277,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                         {
                             lastConnectionTime = DateTime.Now;
                             byte[] array = new byte[socket.Available];
-                            int num = socket.Receive(array);
+                            socket.Receive(array);
                             receivedBuffer.AddRange(array);
                             bool flag = false;
                             IccTelegram iccTelegram = new IccTelegram
@@ -294,8 +294,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                                         Source = base.Name,
                                         SendTime = DateTime.Now
                                     };
-                                    byte[] completeTelegram;
-                                    if (retrieveCompleteTelegram(out completeTelegram, ref iccTelegram))
+                                    if (RetrieveCompleteTelegram(out byte[] completeTelegram, ref iccTelegram))
                                     {
                                         ConvertClientTelegramToStandardTelegram(completeTelegram, ref iccTelegram);
                                         OnReceive(new ReceiveEventArgs(iccTelegram, true, null));
@@ -316,7 +315,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 }
             }
         }
-        private void clientDetectTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ClientDetectTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             if (tcpListener.Pending())
             {
@@ -324,12 +323,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 bool flag = false;
                 if (socket == null)
                 {
-                    eventLogger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription), new object[0]);
+                    Logger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription), new object[0]);
                     flag = true;
                 }
                 else
                 {
-                    eventLogger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription), new object[0]);
+                    Logger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription), new object[0]);
                 }
                 socket = tcpListener.AcceptSocket();
                 socket.SendTimeout = SendTimeout;
@@ -348,7 +347,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             catch
             {
-                eventLogger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
+                Logger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
 				{
 					base.PersianDescription,
 					stringDate,
@@ -405,9 +404,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             {
                 clientDetectTimer.Stop();
             }
-            clientDetectTimer = new IrisaBackgroundTimer();
-            clientDetectTimer.Interval = ClientDetectInterval;
-            clientDetectTimer.DoWork += new DoWorkEventHandler(clientDetectTimer_DoWork);
+            clientDetectTimer = new IrisaBackgroundTimer
+            {
+                Interval = ClientDetectInterval
+            };
+            clientDetectTimer.DoWork += new DoWorkEventHandler(ClientDetectTimer_DoWork);
             clientDetectTimer.PersianDescription = ClientDetectTimerPersianDescription + " در آداپتور " + base.PersianDescription;
             clientDetectTimer.EventLogger = eventLogger;
             clientDetectTimer.Start();
@@ -415,9 +416,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             {
                 receiveTimer.Stop();
             }
-            receiveTimer = new IrisaBackgroundTimer();
-            receiveTimer.Interval = ReceiveInterval;
-            receiveTimer.DoWork += new DoWorkEventHandler(receiverTimer_DoWork);
+            receiveTimer = new IrisaBackgroundTimer
+            {
+                Interval = ReceiveInterval
+            };
+            receiveTimer.DoWork += new DoWorkEventHandler(ReceiverTimer_DoWork);
             receiveTimer.PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription;
             receiveTimer.EventLogger = eventLogger;
             receiveTimer.Start();
@@ -454,7 +457,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 clientDetectTimer.Awake();
             }
         }
-        protected virtual bool retrieveCompleteTelegram(out byte[] completeTelegram, ref IccTelegram iccTelegram)
+        protected virtual bool RetrieveCompleteTelegram(out byte[] completeTelegram, ref IccTelegram iccTelegram)
         {
             bool result;
             if (receivedBuffer.Count == 0)
@@ -503,7 +506,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 							telegramSize
 						});
                     }
-                    eventLogger.LogInfo("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
+                    Logger.LogInfo("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
 					{
 						base.Name
 					});

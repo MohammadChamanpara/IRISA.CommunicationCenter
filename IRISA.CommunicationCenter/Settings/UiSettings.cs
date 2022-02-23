@@ -6,7 +6,7 @@ namespace IRISA.CommunicationCenter.Settings
 {
     public class UiSettings
     {
-        private DLLSettings<UiSettings> dllSettings = new DLLSettings<UiSettings>();
+        private readonly DLLSettings<UiSettings> dllSettings = new DLLSettings<UiSettings>();
         [DisplayName("زمان نمایش رویداد بر حسب میلی ثانیه")]
         public int NotifyIconShowTime
         {

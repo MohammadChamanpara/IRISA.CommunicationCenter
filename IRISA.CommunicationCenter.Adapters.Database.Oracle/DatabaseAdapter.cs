@@ -46,7 +46,7 @@ namespace IRISA.CommunicationCenter.Adapters
                     }
                     catch (Exception exception)
                     {
-                        eventLogger.LogException(exception);
+                        Logger.LogException(exception);
                     }
                 }
                 return base.Started && databaseIsConnected;
@@ -153,11 +153,13 @@ namespace IRISA.CommunicationCenter.Adapters
         public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
-            receiveTimer = new IrisaBackgroundTimer();
-            receiveTimer.Interval = ReceiveTimerInterval;
-            receiveTimer.DoWork += new DoWorkEventHandler(receiveTimer_DoWork);
-            receiveTimer.PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription;
-            receiveTimer.EventLogger = eventLogger;
+            receiveTimer = new IrisaBackgroundTimer
+            {
+                Interval = ReceiveTimerInterval,
+                PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription,
+                EventLogger = eventLogger
+            };
+            receiveTimer.DoWork += new DoWorkEventHandler(ReceiveTimer_DoWork);
             receiveTimer.Start();
             if (Connected)
             {
@@ -167,14 +169,16 @@ namespace IRISA.CommunicationCenter.Adapters
             {
                 activatorTimer.Stop();
             }
-            activatorTimer = new IrisaBackgroundTimer();
-            activatorTimer.Interval = ActivatorTimerInterval;
-            activatorTimer.DoWork += new DoWorkEventHandler(activatorTimer_DoWork);
-            activatorTimer.PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription;
-            activatorTimer.EventLogger = eventLogger;
+            activatorTimer = new IrisaBackgroundTimer
+            {
+                Interval = ActivatorTimerInterval,
+                PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription,
+                EventLogger = eventLogger
+            };
+            activatorTimer.DoWork += new DoWorkEventHandler(ActivatorTimer_DoWork);
             activatorTimer.Start();
         }
-        private void activatorTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ActivatorTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -184,8 +188,8 @@ namespace IRISA.CommunicationCenter.Adapters
             }
             catch (Exception exception)
             {
-                eventLogger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
-                eventLogger.LogException(exception);
+                Logger.LogWarning("بروز خطا هنگام فعال سازی پروسه ها", new object[0]);
+                Logger.LogException(exception);
             }
         }
         public override void Stop()
@@ -279,7 +283,7 @@ namespace IRISA.CommunicationCenter.Adapters
                 }
             }
         }
-        private void receiveTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ReceiveTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
             {
