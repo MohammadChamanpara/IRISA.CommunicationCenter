@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Library.Models
 {
     public class IccTelegram
     {
@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter
         public string GetBodyString(char bodySeparator)
         {
             string text = "";
-            foreach (string current in this.Body)
+            foreach (string current in Body)
             {
                 text = text + current + bodySeparator;
             }
@@ -35,11 +35,11 @@ namespace IRISA.CommunicationCenter
         {
             if (bodyString == null)
             {
-                this.Body = new List<string>();
+                Body = new List<string>();
             }
             else
             {
-                this.Body = new List<string>(bodyString.Split(new char[]
+                Body = new List<string>(bodyString.Split(new char[]
                 {
                     separator
                 }));
@@ -49,7 +49,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                var date = this.SendTime;
+                var date = SendTime;
                 string pDate = "";
                 if (date != null)
                 {
@@ -66,7 +66,7 @@ namespace IRISA.CommunicationCenter
         {
             get
             {
-                var date = this.ReceiveTime;
+                var date = ReceiveTime;
                 string pDate = "";
                 if (date != null)
                 {
@@ -79,6 +79,6 @@ namespace IRISA.CommunicationCenter
                 return pDate;
             }
         }
-        public Boolean IsReadyToSend => Sent == false && Dropped == false;
+        public bool IsReadyToSend => Sent == false && Dropped == false;
     }
 }

@@ -1,7 +1,8 @@
+using IRISA.CommunicationCenter.Library.Models;
 using System;
 namespace IRISA.CommunicationCenter.Library.Adapters
 {
-	public class ReceiveEventArgs
+    public class ReceiveEventArgs
 	{
 		public IccTelegram IccTelegram
 		{

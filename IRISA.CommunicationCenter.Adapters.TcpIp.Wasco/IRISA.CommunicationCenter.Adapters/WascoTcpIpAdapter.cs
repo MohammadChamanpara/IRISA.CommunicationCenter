@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
 using System.Text;

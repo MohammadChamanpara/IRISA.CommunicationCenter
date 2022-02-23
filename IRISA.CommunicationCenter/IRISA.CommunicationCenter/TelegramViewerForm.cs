@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 namespace IRISA.CommunicationCenter
 {
-	public partial class TelegramViewerForm : Form
+    public partial class TelegramViewerForm : Form
 	{
 		private UiSettings uiSettings = new UiSettings();
 		public TelegramViewerForm(IccTelegram iccTelegram)

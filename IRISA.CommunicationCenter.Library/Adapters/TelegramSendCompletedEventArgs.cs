@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRISA.CommunicationCenter.Library.Models;
+using System;
 
 namespace IRISA.CommunicationCenter.Library.Adapters
 {

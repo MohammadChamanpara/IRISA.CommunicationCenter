@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRISA.CommunicationCenter.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

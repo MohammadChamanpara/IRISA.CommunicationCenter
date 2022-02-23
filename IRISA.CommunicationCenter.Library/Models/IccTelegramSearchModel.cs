@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IRISA.CommunicationCenter
+namespace IRISA.CommunicationCenter.Library.Models
 {
     public class IccTelegramSearchModel
     {

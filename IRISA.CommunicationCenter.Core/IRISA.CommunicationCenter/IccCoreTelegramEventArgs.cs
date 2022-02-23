@@ -1,3 +1,5 @@
+using IRISA.CommunicationCenter.Library.Models;
+
 namespace IRISA.CommunicationCenter.Core
 {
     public class IccCoreTelegramEventArgs

@@ -1,9 +1,10 @@
+using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
 using System.Text;
 namespace IRISA.CommunicationCenter.Adapters
 {
-	public class HoscoTcpIpAdapter : TcpIpBaseAdapter<HoscoTcpIpAdapter>
+    public class HoscoTcpIpAdapter : TcpIpBaseAdapter<HoscoTcpIpAdapter>
 	{
 		private string dateFormat = "yyyyMMddHHmmss";
 		protected override int GetTelegramId(byte[] telegramBytes)

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using IRISA.CommunicationCenter.Core.Model;
+using IRISA.CommunicationCenter.Library.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 

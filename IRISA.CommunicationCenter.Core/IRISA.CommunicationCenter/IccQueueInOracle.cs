@@ -1,4 +1,5 @@
 ﻿using IRISA.CommunicationCenter.Core.Model;
+using IRISA.CommunicationCenter.Library.Models;
 using IRISA.Model;
 using System;
 using System.Collections.Generic;

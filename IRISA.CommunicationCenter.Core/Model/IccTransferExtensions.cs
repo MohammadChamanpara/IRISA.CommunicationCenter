@@ -1,4 +1,6 @@
-﻿namespace IRISA.CommunicationCenter.Core.Model
+﻿using IRISA.CommunicationCenter.Library.Models;
+
+namespace IRISA.CommunicationCenter.Core.Model
 {
     public static class IccTransferExtensions
     {
