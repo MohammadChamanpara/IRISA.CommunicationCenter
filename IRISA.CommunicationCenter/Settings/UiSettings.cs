@@ -33,6 +33,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconPersianLanguage", value);
             }
         }
+
         [DisplayName("نمایش رویداد حذف تلگرام")]
         public bool NotifyIconShowDrop
         {
@@ -45,30 +46,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconShowDrop", value);
             }
         }
-        [DisplayName("نمایش رویداد در صف قرار گرفتن تلگرام")]
-        public bool NotifyIconShowQueued
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("NotifyIconShowQueued", true);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconShowQueued", value);
-            }
-        }
-        [DisplayName("نمایش رویداد ارسال تلگرام")]
-        public bool NotifyIconShowSent
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("NotifyIconShowSent", true);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconShowSent", value);
-            }
-        }
+        
         [DisplayName("نمایش رویداد متصل شدن کلاینت")]
         public bool NotifyIconShowAdapterConnected
         {

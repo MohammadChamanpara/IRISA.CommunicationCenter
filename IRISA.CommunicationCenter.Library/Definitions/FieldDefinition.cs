@@ -74,8 +74,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                             {
                                 case 1:
                                     {
-                                        byte b;
-                                        if (byte.TryParse(value, out b))
+                                        if (byte.TryParse(value, out byte b))
                                         {
                                             result = new byte[]
                                             {
@@ -91,8 +90,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                     }
                                 case 2:
                                     {
-                                        short value2;
-                                        if (short.TryParse(value, out value2))
+                                        if (short.TryParse(value, out short value2))
                                         {
                                             result = BitConverter.GetBytes(value2);
                                             return result;
@@ -107,8 +105,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                     break;
                                 case 4:
                                     {
-                                        int value3;
-                                        if (int.TryParse(value, out value3))
+                                        if (int.TryParse(value, out int value3))
                                         {
                                             result = BitConverter.GetBytes(value3);
                                             return result;
@@ -122,8 +119,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                 default:
                                     if (size == 8)
                                     {
-                                        long value4;
-                                        if (long.TryParse(value, out value4))
+                                        if (long.TryParse(value, out long value4))
                                         {
                                             result = BitConverter.GetBytes(value4);
                                             return result;
@@ -150,8 +146,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                                 throw CreateFieldTypeException();
                             }
 
-                            double value5;
-                            if (!double.TryParse(value, out value5))
+                            if (!double.TryParse(value, out double value5))
                             {
                                 throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 8 بایتی نیست.", new object[]
                                 {
@@ -163,8 +158,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                         }
                         else
                         {
-                            float value6;
-                            if (!float.TryParse(value, out value6))
+                            if (!float.TryParse(value, out float value6))
                             {
                                 throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به عدد اعشاری 4 بایتی نیست.", new object[]
                                 {
@@ -177,8 +171,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                     }
                     else
                     {
-                        bool value7;
-                        if (!bool.TryParse(value, out value7))
+                        if (!bool.TryParse(value, out bool value7))
                         {
                             throw IrisaException.Create("محتوای فیلد {0} برابر با {1} می باشد و قابل تبدیل به مقدار بولین نیست.", new object[]
                             {

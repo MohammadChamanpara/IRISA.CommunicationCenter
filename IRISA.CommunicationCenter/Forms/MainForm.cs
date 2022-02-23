@@ -116,8 +116,6 @@ namespace IRISA.CommunicationCenter.Forms
         {
             iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
             iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramDropped);
-            iccCore.TelegramQueued += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramQueued);
-            iccCore.TelegramSent += new IccCore.IccCoreTelegramEventHandler(IccCore_TelegramSent);
         }
         private void InitialUiSettings()
         {
@@ -409,12 +407,12 @@ namespace IRISA.CommunicationCenter.Forms
                 };
                 if (iccCore.connectedAdapters != null)
                 {
-                    foreach (IIccAdapter current in iccCore.connectedAdapters)
+                    foreach (IIccAdapter adapter in iccCore.connectedAdapters)
                     {
                         settingControls.Add(new RadioButton
                         {
-                            Text = current.Name + " - " + current.PersianDescription,
-                            Tag = current
+                            Text = adapter.Name + " - " + adapter.PersianDescription,
+                            Tag = adapter
                         });
                     }
                 }
@@ -445,11 +443,11 @@ namespace IRISA.CommunicationCenter.Forms
                 adaptersPanel.Controls.Clear();
                 if (iccCore.connectedAdapters != null)
                 {
-                    foreach (IIccAdapter current in iccCore.connectedAdapters)
+                    foreach (IIccAdapter adapter in iccCore.connectedAdapters)
                     {
-                        AdapterUserControl value = new AdapterUserControl(current, iccCore.Logger);
-                        adaptersPanel.Controls.Add(value);
-                        current.ConnectionChanged += Adapter_ConnectionChanged;
+                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, iccCore.Logger);
+                        adaptersPanel.Controls.Add(adapterUserControl);
+                        adapter.ConnectionChanged += Adapter_ConnectionChanged;
                     }
                 }
             }
@@ -589,59 +587,27 @@ namespace IRISA.CommunicationCenter.Forms
                 StartApplication();
             }
         }
-        private void IccCore_TelegramSent(IccCoreTelegramEventArgs e)
-        {
-            if (uiSettings.NotifyIconShowSent)
-            {
-                string tipText;
-                if (uiSettings.NotifyIconPersianLanguage)
-                {
-                    tipText = string.Format("تلگرام از {0} به {1} موفقیت امیز ارسال شد.", e.IccTelegram.Source, e.IccTelegram.Destination);
-                }
-                else
-                {
-                    tipText = string.Format("Telegram successfuly sent from {0} to {1} .", e.IccTelegram.Source, e.IccTelegram.Destination);
-                }
-                notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
-            }
-        }
-        private void IccCore_TelegramQueued(IccCoreTelegramEventArgs e)
-        {
-            if (uiSettings.NotifyIconShowQueued)
-            {
-                string tipText;
-                if (uiSettings.NotifyIconPersianLanguage)
-                {
-                    tipText = string.Format("تلگرام ارسالی از {0} به {1} در صف انتظار قرار گرفت.", e.IccTelegram.Source, e.IccTelegram.Destination);
-                }
-                else
-                {
-                    tipText = string.Format("Sending telegram from {0} to {1} Queued.", e.IccTelegram.Source, e.IccTelegram.Destination);
-                }
-                notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
-            }
-        }
         private void IccCore_TelegramDropped(IccCoreTelegramEventArgs e)
         {
             if (uiSettings.NotifyIconShowDrop)
             {
-                string arg = " ";
+                string destination = " ";
                 string tipText;
                 if (uiSettings.NotifyIconPersianLanguage)
                 {
                     if (e.IccTelegram.Destination.HasValue())
                     {
-                        arg = string.Format(" به {0} ", e.IccTelegram.Destination);
+                        destination = string.Format(" به {0} ", e.IccTelegram.Destination);
                     }
-                    tipText = string.Format("تلگرام ارسالی از {0} {1}حذف شد.", e.IccTelegram.Source, arg);
+                    tipText = string.Format("تلگرام ارسالی از {0} {1}حذف شد.", e.IccTelegram.Source, destination);
                 }
                 else
                 {
                     if (e.IccTelegram.Destination.HasValue())
                     {
-                        arg = string.Format(" to {0} ", e.IccTelegram.Destination);
+                        destination = string.Format(" to {0} ", e.IccTelegram.Destination);
                     }
-                    tipText = string.Format("Sending Telegram from {0}{1}Dropped.", e.IccTelegram.Source, arg);
+                    tipText = string.Format("Sending Telegram from {0}{1}Dropped.", e.IccTelegram.Source, destination);
                 }
                 notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Error);
             }

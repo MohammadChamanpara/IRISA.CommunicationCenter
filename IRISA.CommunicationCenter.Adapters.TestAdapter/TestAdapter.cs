@@ -28,8 +28,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             }
 
             public override string Type => "TestAdapter";
-            public bool Running = false;
-            public override bool Connected => Running;
+            public override bool Connected => Started;
 
             private readonly object sendLocker = new object();
             protected override void SendTelegram(IccTelegram iccTelegram)
@@ -44,19 +43,13 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             public override void Start(ILogger eventLogger)
             {
                 base.Start(eventLogger);
-                Running = true;
                 Task.Run(() => KeepReceiving());
             }
 
-            public override void Stop()
-            {
-                base.Stop();
-                Running = false;
-            }
             private async Task KeepReceiving()
             {
                 int id = Name == "Behnam" ? 1000 : 2000;
-                while (Running)
+                while (Started)
                 {
                     try
                     {
