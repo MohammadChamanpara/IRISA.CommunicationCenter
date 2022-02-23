@@ -363,7 +363,7 @@ namespace IRISA.CommunicationCenter
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1094, 606);
             this.tabControl.TabIndex = 0;
-            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl_SelectedIndexChanged);
             // 
             // mainTabPage
             // 
@@ -738,7 +738,7 @@ namespace IRISA.CommunicationCenter
             this.clearSearchButton.Size = new System.Drawing.Size(44, 27);
             this.clearSearchButton.Text = "toolStripButton3";
             this.clearSearchButton.ToolTipText = "حذف فیلترینگ";
-            this.clearSearchButton.Click += new System.EventHandler(this.clearSearchButton_Click);
+            this.clearSearchButton.Click += new System.EventHandler(this.ClearSearchButton_Click);
             // 
             // splitter1
             // 
@@ -783,7 +783,7 @@ namespace IRISA.CommunicationCenter
             this.idTextBox.PromptChar = ' ';
             this.idTextBox.Size = new System.Drawing.Size(61, 21);
             this.idTextBox.TabIndex = 2;
-            this.idTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.idTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter2
             // 
@@ -912,7 +912,7 @@ namespace IRISA.CommunicationCenter
             this.telegramIdTextBox.PromptChar = ' ';
             this.telegramIdTextBox.Size = new System.Drawing.Size(71, 21);
             this.telegramIdTextBox.TabIndex = 37;
-            this.telegramIdTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.telegramIdTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter5
             // 
@@ -977,7 +977,7 @@ namespace IRISA.CommunicationCenter
             this.sendSecondTextBox.PromptChar = ' ';
             this.sendSecondTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendSecondTextBox.TabIndex = 3;
-            this.sendSecondTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.sendSecondTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label10
             // 
@@ -1000,7 +1000,7 @@ namespace IRISA.CommunicationCenter
             this.sendMinuteTextBox.PromptChar = ' ';
             this.sendMinuteTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendMinuteTextBox.TabIndex = 2;
-            this.sendMinuteTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.sendMinuteTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label9
             // 
@@ -1023,7 +1023,7 @@ namespace IRISA.CommunicationCenter
             this.sendHourTextBox.PromptChar = ' ';
             this.sendHourTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendHourTextBox.TabIndex = 1;
-            this.sendHourTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.sendHourTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label7
             // 
@@ -1058,7 +1058,7 @@ namespace IRISA.CommunicationCenter
             this.sendDateTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.sendDateTextBox.Size = new System.Drawing.Size(77, 21);
             this.sendDateTextBox.TabIndex = 0;
-            this.sendDateTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.sendDateTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter6
             // 
@@ -1122,7 +1122,7 @@ namespace IRISA.CommunicationCenter
             this.receiveSecondTextBox.PromptChar = ' ';
             this.receiveSecondTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveSecondTextBox.TabIndex = 3;
-            this.receiveSecondTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.receiveSecondTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label11
             // 
@@ -1145,7 +1145,7 @@ namespace IRISA.CommunicationCenter
             this.receiveMinuteTextBox.PromptChar = ' ';
             this.receiveMinuteTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveMinuteTextBox.TabIndex = 2;
-            this.receiveMinuteTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.receiveMinuteTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label12
             // 
@@ -1168,7 +1168,7 @@ namespace IRISA.CommunicationCenter
             this.receiveHourTextBox.PromptChar = ' ';
             this.receiveHourTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveHourTextBox.TabIndex = 1;
-            this.receiveHourTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.receiveHourTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label13
             // 
@@ -1192,7 +1192,7 @@ namespace IRISA.CommunicationCenter
             this.receiveDateTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.receiveDateTextBox.Size = new System.Drawing.Size(77, 21);
             this.receiveDateTextBox.TabIndex = 0;
-            this.receiveDateTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.receiveDateTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter7
             // 
@@ -1463,7 +1463,7 @@ namespace IRISA.CommunicationCenter
             this.transfersRefreshButton.Size = new System.Drawing.Size(28, 28);
             this.transfersRefreshButton.Text = "toolStripButton3";
             this.transfersRefreshButton.ToolTipText = "بازیابی مجدد رکورد ها";
-            this.transfersRefreshButton.Click += new System.EventHandler(this.refreshRecordsButton_Click);
+            this.transfersRefreshButton.Click += new System.EventHandler(this.RefreshRecordsButton_Click);
             // 
             // transfersMoreButton
             // 
@@ -1475,7 +1475,7 @@ namespace IRISA.CommunicationCenter
             this.transfersMoreButton.Size = new System.Drawing.Size(28, 28);
             this.transfersMoreButton.Text = "toolStripButton4";
             this.transfersMoreButton.ToolTipText = "بازیابی رکورد های بیشتر";
-            this.transfersMoreButton.Click += new System.EventHandler(this.moreRecordsButton_Click);
+            this.transfersMoreButton.Click += new System.EventHandler(this.MoreRecordsButton_Click);
             // 
             // TelegramDetailsButton
             // 
@@ -1498,7 +1498,7 @@ namespace IRISA.CommunicationCenter
             this.searchTelegramButton.Name = "searchTelegramButton";
             this.searchTelegramButton.Size = new System.Drawing.Size(28, 28);
             this.searchTelegramButton.Text = "جستجو";
-            this.searchTelegramButton.Click += new System.EventHandler(this.searchTelegramButton_Click);
+            this.searchTelegramButton.Click += new System.EventHandler(this.SearchTelegramButton_Click);
             // 
             // eventsTabPage
             // 
@@ -1635,7 +1635,7 @@ namespace IRISA.CommunicationCenter
             this.clearSearchEventsPanel.Size = new System.Drawing.Size(44, 40);
             this.clearSearchEventsPanel.Text = "toolStripButton3";
             this.clearSearchEventsPanel.ToolTipText = "حذف فیلترینگ";
-            this.clearSearchEventsPanel.Click += new System.EventHandler(this.clearSearchEventsPanel_Click);
+            this.clearSearchEventsPanel.Click += new System.EventHandler(this.ClearSearchEventsPanel_Click);
             // 
             // splitter12
             // 
@@ -1745,7 +1745,7 @@ namespace IRISA.CommunicationCenter
             this.secondFromTextBox.PromptChar = ' ';
             this.secondFromTextBox.Size = new System.Drawing.Size(24, 21);
             this.secondFromTextBox.TabIndex = 3;
-            this.secondFromTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.secondFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // iccEventSearchModelBindingSource
             // 
@@ -1773,7 +1773,7 @@ namespace IRISA.CommunicationCenter
             this.minuteFromTextBox.PromptChar = ' ';
             this.minuteFromTextBox.Size = new System.Drawing.Size(24, 21);
             this.minuteFromTextBox.TabIndex = 2;
-            this.minuteFromTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.minuteFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label25
             // 
@@ -1797,7 +1797,7 @@ namespace IRISA.CommunicationCenter
             this.hourFromTextBox.PromptChar = ' ';
             this.hourFromTextBox.Size = new System.Drawing.Size(24, 21);
             this.hourFromTextBox.TabIndex = 1;
-            this.hourFromTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.hourFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label26
             // 
@@ -1833,7 +1833,7 @@ namespace IRISA.CommunicationCenter
             this.eventDateFromTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.eventDateFromTextBox.Size = new System.Drawing.Size(77, 21);
             this.eventDateFromTextBox.TabIndex = 0;
-            this.eventDateFromTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.eventDateFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter17
             // 
@@ -1898,7 +1898,7 @@ namespace IRISA.CommunicationCenter
             this.secondToTextBox.PromptChar = ' ';
             this.secondToTextBox.Size = new System.Drawing.Size(24, 21);
             this.secondToTextBox.TabIndex = 3;
-            this.secondToTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.secondToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label29
             // 
@@ -1922,7 +1922,7 @@ namespace IRISA.CommunicationCenter
             this.minuteToTextBox.PromptChar = ' ';
             this.minuteToTextBox.Size = new System.Drawing.Size(24, 21);
             this.minuteToTextBox.TabIndex = 2;
-            this.minuteToTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.minuteToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label30
             // 
@@ -1946,7 +1946,7 @@ namespace IRISA.CommunicationCenter
             this.hourToTextBox.PromptChar = ' ';
             this.hourToTextBox.Size = new System.Drawing.Size(24, 21);
             this.hourToTextBox.TabIndex = 1;
-            this.hourToTextBox.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.hourToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label31
             // 
@@ -1971,7 +1971,7 @@ namespace IRISA.CommunicationCenter
             this.EventDateTo.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.EventDateTo.Size = new System.Drawing.Size(77, 21);
             this.EventDateTo.TabIndex = 0;
-            this.EventDateTo.Click += new System.EventHandler(this.maskedTextBox_Click);
+            this.EventDateTo.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter18
             // 
@@ -2118,7 +2118,7 @@ namespace IRISA.CommunicationCenter
             this.eventsRefreshButton.Size = new System.Drawing.Size(28, 28);
             this.eventsRefreshButton.Text = "toolStripButton1";
             this.eventsRefreshButton.ToolTipText = "بازیابی مجدد رکورد ها";
-            this.eventsRefreshButton.Click += new System.EventHandler(this.refreshRecordsButton_Click);
+            this.eventsRefreshButton.Click += new System.EventHandler(this.RefreshRecordsButton_Click);
             // 
             // eventsMoreButton
             // 
@@ -2130,7 +2130,7 @@ namespace IRISA.CommunicationCenter
             this.eventsMoreButton.Size = new System.Drawing.Size(28, 28);
             this.eventsMoreButton.Text = "toolStripButton2";
             this.eventsMoreButton.ToolTipText = "بازیابی رکورد های بیشتر";
-            this.eventsMoreButton.Click += new System.EventHandler(this.moreRecordsButton_Click);
+            this.eventsMoreButton.Click += new System.EventHandler(this.MoreRecordsButton_Click);
             // 
             // iccEventSearchButton
             // 
@@ -2141,7 +2141,7 @@ namespace IRISA.CommunicationCenter
             this.iccEventSearchButton.Name = "iccEventSearchButton";
             this.iccEventSearchButton.Size = new System.Drawing.Size(28, 28);
             this.iccEventSearchButton.Text = "جستجو";
-            this.iccEventSearchButton.Click += new System.EventHandler(this.iccEventSearchButton_Click);
+            this.iccEventSearchButton.Click += new System.EventHandler(this.IccEventSearchButton_Click);
             // 
             // imageList
             // 
@@ -2239,7 +2239,7 @@ namespace IRISA.CommunicationCenter
             this.minimizeApplicationButton.Size = new System.Drawing.Size(36, 36);
             this.minimizeApplicationButton.Text = "toolStripButton4";
             this.minimizeApplicationButton.ToolTipText = "پنهان سازی برنامه";
-            this.minimizeApplicationButton.Click += new System.EventHandler(this.minimizeButton_Click);
+            this.minimizeApplicationButton.Click += new System.EventHandler(this.MinimizeButton_Click);
             // 
             // toolStripSeparator5
             // 
@@ -2250,7 +2250,7 @@ namespace IRISA.CommunicationCenter
             // 
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Visible = true;
-            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
             // 
             // MainForm
             // 

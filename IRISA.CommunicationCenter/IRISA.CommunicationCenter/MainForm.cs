@@ -16,7 +16,6 @@ namespace IRISA.CommunicationCenter
     public partial class MainForm : Form
     {
         #region Properties
-        private const string ApplicationPassword = "iccAdmin";
         private IccCore iccCore;
         private UiSettings uiSettings;
         private bool refreshRecords = false;
@@ -78,10 +77,10 @@ namespace IRISA.CommunicationCenter
         private void InitialIccCore()
         {
             this.iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
-            this.iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramDropped);
-            this.iccCore.TelegramQueued += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramQueued);
-            this.iccCore.TelegramSent += new IccCore.IccCoreTelegramEventHandler(this.iccCore_TelegramSent);
-            this.iccCore.Logger.EventLogged += eventLogger_EventLogged;
+            this.iccCore.TelegramDropped += new IccCore.IccCoreTelegramEventHandler(this.IccCore_TelegramDropped);
+            this.iccCore.TelegramQueued += new IccCore.IccCoreTelegramEventHandler(this.IccCore_TelegramQueued);
+            this.iccCore.TelegramSent += new IccCore.IccCoreTelegramEventHandler(this.IccCore_TelegramSent);
+            this.iccCore.Logger.EventLogged += EventLogger_EventLogged;
         }
         private void InitialUiSettings()
         {
@@ -95,8 +94,10 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                var eventStatuses = new List<KeyValuePair<string, string>>();
-                eventStatuses.Add(new KeyValuePair<string, string>("", "همه"));
+                var eventStatuses = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("", "همه")
+                };
                 foreach (int value in Enum.GetValues(typeof(IccEventStatus)))
                     eventStatuses.Add(new KeyValuePair<string, string>(GetEnumDescription((IccEventStatus)value), GetEnumDescription((IccEventStatus)value)));
                 statusTypeComboBox.DataSource = eventStatuses;
@@ -337,22 +338,24 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                List<Control> list = new List<Control>();
-                list.Add(new RadioButton
+                List<Control> list = new List<Control>
                 {
-                    Text = this.iccCore.PersianDescription,
-                    Tag = this.iccCore
-                });
-                list.Add(new RadioButton
-                {
-                    Text = this.uiSettings.UiInterfacePersianDescription,
-                    Tag = this.uiSettings
-                });
-                list.Add(new RadioButton
-                {
-                    Text = "صف تلگرام ها",
-                    Tag = this.iccCore.IccQueue
-                });
+                    new RadioButton
+                    {
+                        Text = this.iccCore.PersianDescription,
+                        Tag = this.iccCore
+                    },
+                    new RadioButton
+                    {
+                        Text = this.uiSettings.UiInterfacePersianDescription,
+                        Tag = this.uiSettings
+                    },
+                    new RadioButton
+                    {
+                        Text = "صف تلگرام ها",
+                        Tag = this.iccCore.IccQueue
+                    }
+                };
                 if (this.iccCore.connectedClients != null)
                 {
                     foreach (IIccAdapter current in this.iccCore.connectedClients)
@@ -369,14 +372,14 @@ namespace IRISA.CommunicationCenter
                 {
                     current2.Cursor = Cursors.Hand;
                     current2.AutoSize = true;
-                    current2.Click += new EventHandler(this.settingControl_Click);
+                    current2.Click += new EventHandler(this.SettingControl_Click);
                     this.settingsPanel.Controls.Add(current2);
                 }
                 if (list.Count > 0)
                 {
                     RadioButton radioButton = list.First<Control>() as RadioButton;
                     radioButton.Checked = true;
-                    this.settingControl_Click(radioButton, null);
+                    this.SettingControl_Click(radioButton, null);
                 }
             }
             catch (Exception exception)
@@ -395,7 +398,7 @@ namespace IRISA.CommunicationCenter
                     {
                         PluginUserControl value = new PluginUserControl(current, this.iccCore.Logger);
                         this.clientsPanel.Controls.Add(value);
-                        current.ConnectionChanged += client_ConnectionChanged;
+                        current.ConnectionChanged += Client_ConnectionChanged;
                     }
                 }
             }
@@ -489,15 +492,15 @@ namespace IRISA.CommunicationCenter
             this.StopApplication();
             this.iccCore.Logger.LogWarning("اجرای برنامه خاتمه یافت", new object[0]);
         }
-        private void settingControl_Click(object sender, EventArgs e)
+        private void SettingControl_Click(object sender, EventArgs e)
         {
             this.settingsPropertyGrid.SelectedObject = (sender as Control).Tag;
         }
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadRecords();
         }
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (!base.Visible)
             {
@@ -507,7 +510,7 @@ namespace IRISA.CommunicationCenter
                 }
             }
         }
-        private void refreshRecordsButton_Click(object sender, EventArgs e)
+        private void RefreshRecordsButton_Click(object sender, EventArgs e)
         {
             this.ChangeRefreshStatus(!this.refreshRecords);
             if (this.refreshRecords)
@@ -515,7 +518,7 @@ namespace IRISA.CommunicationCenter
                 this.LoadRecords();
             }
         }
-        private void moreRecordsButton_Click(object sender, EventArgs e)
+        private void MoreRecordsButton_Click(object sender, EventArgs e)
         {
             this.LoadMoreRecords();
         }
@@ -527,7 +530,7 @@ namespace IRISA.CommunicationCenter
         {
             this.RestartApplication();
         }
-        private void minimizeButton_Click(object sender, EventArgs e)
+        private void MinimizeButton_Click(object sender, EventArgs e)
         {
             base.Hide();
         }
@@ -542,7 +545,7 @@ namespace IRISA.CommunicationCenter
                 this.StartApplication();
             }
         }
-        private void iccCore_TelegramSent(IccCoreTelegramEventArgs e)
+        private void IccCore_TelegramSent(IccCoreTelegramEventArgs e)
         {
             if (this.uiSettings.NotifyIconShowSent)
             {
@@ -558,7 +561,7 @@ namespace IRISA.CommunicationCenter
                 this.notifyIcon.ShowBalloonTip(this.uiSettings.NotifyIconShowTime, this.uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
             }
         }
-        private void iccCore_TelegramQueued(IccCoreTelegramEventArgs e)
+        private void IccCore_TelegramQueued(IccCoreTelegramEventArgs e)
         {
             if (this.uiSettings.NotifyIconShowQueued)
             {
@@ -574,7 +577,7 @@ namespace IRISA.CommunicationCenter
                 this.notifyIcon.ShowBalloonTip(this.uiSettings.NotifyIconShowTime, this.uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
             }
         }
-        private void iccCore_TelegramDropped(IccCoreTelegramEventArgs e)
+        private void IccCore_TelegramDropped(IccCoreTelegramEventArgs e)
         {
             if (this.uiSettings.NotifyIconShowDrop)
             {
@@ -599,7 +602,7 @@ namespace IRISA.CommunicationCenter
                 this.notifyIcon.ShowBalloonTip(this.uiSettings.NotifyIconShowTime, this.uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Error);
             }
         }
-        private void client_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+        private void Client_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
         {
             if (this.uiSettings.NotifyIconShowClientConnected)
             {
@@ -615,7 +618,7 @@ namespace IRISA.CommunicationCenter
                 this.notifyIcon.ShowBalloonTip(this.uiSettings.NotifyIconShowTime, this.uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
             }
         }
-        private void eventLogger_EventLogged()
+        private void EventLogger_EventLogged()
         {
             this.LoadRecords();
         }
@@ -635,25 +638,25 @@ namespace IRISA.CommunicationCenter
             }
         }
 
-        private void clearSearchButton_Click(object sender, EventArgs e)
+        private void ClearSearchButton_Click(object sender, EventArgs e)
         {
             this.ClearControls(this.searchFlowLayoutPanel);
             this.ChangeRefreshStatus(true);
             this.LoadTransfers();
         }
-        private void maskedTextBox_Click(object sender, EventArgs e)
+        private void MaskedTextBox_Click(object sender, EventArgs e)
         {
             if (sender is MaskedTextBox)
             {
                 (sender as MaskedTextBox).SelectAll();
             }
         }
-        private void searchTelegramButton_Click(object sender, EventArgs e)
+        private void SearchTelegramButton_Click(object sender, EventArgs e)
         {
             this.telegramSearchGroupbox.Visible = !this.telegramSearchGroupbox.Visible;
             if (!this.telegramSearchGroupbox.Visible)
             {
-                this.clearSearchButton_Click(null, null);
+                this.ClearSearchButton_Click(null, null);
             }
         }
 
@@ -662,12 +665,12 @@ namespace IRISA.CommunicationCenter
             this.LoadTransfers();
         }
 
-        private void iccEventSearchButton_Click(object sender, EventArgs e)
+        private void IccEventSearchButton_Click(object sender, EventArgs e)
         {
             this.iccEventSearchGroupBox.Visible = !this.iccEventSearchGroupBox.Visible;
             if (!this.iccEventSearchGroupBox.Visible)
             {
-                this.clearSearchButton_Click(null, null);
+                this.ClearSearchButton_Click(null, null);
             }
         }
 
@@ -676,14 +679,14 @@ namespace IRISA.CommunicationCenter
             this.LoadEvents();
         }
 
-        private void clearSearchEventsPanel_Click(object sender, EventArgs e)
+        private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             this.ClearControls(this.eventsSearchflowLayout);
             this.ChangeRefreshStatus(true);
             this.LoadEvents();
         }
 
-        private void statusTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void StatusTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
