@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IRISA.CommunicationCenter.Core
 {
@@ -10,9 +7,8 @@ namespace IRISA.CommunicationCenter.Core
         List<IccTelegram> GetTelegramsToSend();
         void Edit(IccTelegram iccTelegram);
         void Add(IccTelegram iccTelegram);
-        List<IccTelegram> GetTelegrams(int pagesize = 50);
+        List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount);
         string Type { get; }
         bool Connected { get; }
-        int Count { get; }
     }
 }

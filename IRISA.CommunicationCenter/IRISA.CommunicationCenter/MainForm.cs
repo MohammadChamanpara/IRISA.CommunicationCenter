@@ -122,220 +122,92 @@ namespace IRISA.CommunicationCenter
                 ? attributes[0].Description
                 : enumValue.ToString();
         }
-
-
-        private DateTime GetLatinDate(string pDate)
+        private void CopySearchControlsToSearchModel(IccTelegramSearchModel searchModel)
         {
-            int year = 0;
-            int month = 0;
-            int day = 0;
-            PersianCalendar persianCalendar = new PersianCalendar();
-            try
+            if (long.TryParse(idTextBox.Text, out long transferId))
+                searchModel.TransferId = transferId;
+
+            if (int.TryParse(telegramIdTextBox.Text, out int telegramId))
+                searchModel.TelegramId = telegramId;
+
+            searchModel.Source = sourceTextBox.Text;
+            searchModel.Destination = destinationTextbox.Text;
+
+            /*.................... Send Time....................*/
+            if (!sendDateTextBox.Text.Contains(' ') && sendDateTextBox.Text.Length == 10)
             {
-                year = int.Parse(pDate.Substring(0, 4));
-                month = int.Parse(pDate.Substring(5, 2));
-                day = int.Parse(pDate.Substring(8, 2));
-            }
-            catch (Exception)
-            {
-                throw new Exception("تاریخ به اشتباه وارد شده است");
-            }
-            if (!(year < 1404 && year > 1385))
-            {
-                string error = "سال باید بین 1385 تا 1404 باشد";
-                throw new Exception(error);
+                PersianCalendar persianCalendar = new PersianCalendar();
+
+                int persianYear = int.Parse(sendDateTextBox.Text.Substring(0, 4));
+                int persianMonth = int.Parse(sendDateTextBox.Text.Substring(5, 2));
+                int persianDay = int.Parse(sendDateTextBox.Text.Substring(8, 2));
+                int hour = sendHourTextBox.Text.HasValue() ? int.Parse(sendHourTextBox.Text) : 0;
+                int minute = sendMinuteTextBox.Text.HasValue() ? int.Parse(sendMinuteTextBox.Text) : 0;
+                int second = sendSecondTextBox.Text.HasValue() ? int.Parse(sendSecondTextBox.Text) : 0;
+
+                searchModel.SendTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
             }
 
-            if (!(month >= 1 && month <= 12))
+            /*.................... Receive Time....................*/
+            if (!receiveDateTextBox.Text.Contains(' ') && receiveDateTextBox.Text.Length == 10)
             {
-                string error = "ماه باید بین 1 تا 12 باشد";
-                throw new Exception(error);
+                PersianCalendar persianCalendar = new PersianCalendar();
+
+                int persianYear = int.Parse(receiveDateTextBox.Text.Substring(0, 4));
+                int persianMonth = int.Parse(receiveDateTextBox.Text.Substring(5, 2));
+                int persianDay = int.Parse(receiveDateTextBox.Text.Substring(8, 2));
+                int hour = receiveHourTextBox.Text.HasValue() ? int.Parse(receiveHourTextBox.Text) : 0;
+                int minute = receiveMinuteTextBox.Text.HasValue() ? int.Parse(receiveMinuteTextBox.Text) : 0;
+                int second = receiveSecondTextBox.Text.HasValue() ? int.Parse(receiveSecondTextBox.Text) : 0;
+
+                searchModel.ReceiveTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
             }
 
-            if (!(day >= 1 && day <= 31))
-            {
-                string error = "روز باید بین 1 تا 31 باشد";
-                throw new Exception(error);
-            }
+            searchModel.DropReason = dropReasonTextBox.Text;
 
-            DateTime searchDate = persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
-            return searchDate;
+            if (sentCheckBox.CheckState != CheckState.Indeterminate)
+                searchModel.Sent = sentCheckBox.Checked;
 
+            if (droppedCheckBox.CheckState != CheckState.Indeterminate)
+                searchModel.Dropped = droppedCheckBox.Checked;
         }
 
-        private void LoadTransfers(int showRecordsCount)
+        private void LoadTransfers(int pageSize)
         {
             try
             {
-                if (base.Visible)
+                if (!this.Visible)
+                    return;
+
+                if (GetSelectedTab() != TransfersTabPage)
+                    return;
+
+                if (!iccCore.IccQueue.Connected)
+                    return;
+
+                IccTelegramSearchModel searchModel = new IccTelegramSearchModel();
+
+                if (telegramSearchGroupbox.Visible)
+                    Invoke(new Action(() => { CopySearchControlsToSearchModel(searchModel); }));
+
+                var telegrams = iccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
+
+                pageSize = Math.Min(pageSize, resultsCount);
+
+                SortableBindingList<IccTelegram> source = new SortableBindingList<IccTelegram>(telegrams);
+                base.Invoke(new Action(() =>
                 {
-                    if (this.GetSelectedTab() == this.TransfersTabPage)
-                    {
-                        if (this.iccCore.IccQueue.Connected)
-                        {
-                            var telegrams = this.iccCore.IccQueue.GetTelegrams(showRecordsCount);
-                            //if (this.idTextBox.Text.HasValue())
-                            //{
-                            //    int id = int.Parse(this.idTextBox.Text);
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.ID == (long)id
-                            //        select x;
-                            //}
-                            //if (this.telegramIdTextBox.Text.HasValue())
-                            //{
-                            //    int telegramId = int.Parse(this.telegramIdTextBox.Text);
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.TELEGRAM_ID == (int?)telegramId
-                            //        select x;
-                            //}
-                            //if (this.sourceTextBox.Text.HasValue())
-                            //{
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.SOURCE.ToLower().Contains(this.sourceTextBox.Text.ToLower())
-                            //        select x;
-                            //}
-                            //if (this.destinationTextbox.Text.HasValue())
-                            //{
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.DESTINATION.ToLower().Contains(this.destinationTextbox.Text.ToLower())
-                            //        select x;
-                            //}
-                            //if (this.sentCheckBox.CheckState == CheckState.Checked)
-                            //{
-                            //    var sent = this.sentCheckBox.Checked ? true : false;
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.SENT == sent
-                            //        select x;
-                            //}
-                            //if (this.droppedCheckBox.CheckState == CheckState.Checked)
-                            //{
-                            //    var dropped = this.droppedCheckBox.Checked ? true : false;
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.DROPPED == dropped
-                            //        select x;
-                            //}
-                            //if (this.sendHourTextBox.Text.HasValue())
-                            //{
-                            //    int hour = int.Parse(this.sendHourTextBox.Text);
-                            //    if (!(hour >= 0 && hour <= 23))
-                            //    {
-                            //        string error = "ساعت باید بین 0 تا 23 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.SEND_TIME.Hour == hour
-                            //        select x;
-                            //}
-                            //if (this.sendMinuteTextBox.Text.HasValue())
-                            //{
-                            //    int minute = int.Parse(this.sendMinuteTextBox.Text);
-                            //    if (!(minute >= 0 && minute <= 59))
-                            //    {
-                            //        string error = "دقیقه باید بین 0 تا 59 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.SEND_TIME.Minute == minute
-                            //        select x;
-                            //}
-                            //if (this.sendSecondTextBox.Text.HasValue())
-                            //{
-                            //    int second = int.Parse(this.sendSecondTextBox.Text);
-                            //    if (!(second >= 0 && second <= 59))
-                            //    {
-                            //        string error = "ثانیه باید بین 0 تا 59 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.SEND_TIME.Second == second
-                            //        select x;
-                            //}
-                            //if (!this.sendDateTextBox.Text.Contains(' ') && this.sendDateTextBox.Text.Length == 10)
-                            //{
-                            //    DateTime searchDate = GetLatinDate(this.sendDateTextBox.Text);
-                            //    queryable = queryable.Where(x => x.SEND_TIME.Year == searchDate.Year && x.SEND_TIME.Month == searchDate.Month && x.SEND_TIME.Day == searchDate.Day);
-                            //}
-                            //if (!this.receiveDateTextBox.Text.Contains(' ') && this.receiveDateTextBox.Text.Length == 10)
-                            //{
-                            //    DateTime searchDate = GetLatinDate(this.receiveDateTextBox.Text);
-                            //    queryable = queryable.Where(x => x.RECEIVE_TIME.Value.Year == searchDate.Year && x.RECEIVE_TIME.Value.Month == searchDate.Month &&x.RECEIVE_TIME.Value.Day == searchDate.Day);
-                            //}
-                            //if (this.receiveHourTextBox.Text.HasValue())
-                            //{
-                            //    int hour = int.Parse(this.receiveHourTextBox.Text);
-                            //    if (!(hour >= 0 && hour <= 23))
-                            //    {
-                            //        string error = "ساعت باید بین 0 تا 23 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.RECEIVE_TIME.HasValue && x.RECEIVE_TIME.Value.Hour == hour
-                            //        select x;
-                            //}
-                            //if (this.receiveMinuteTextBox.Text.HasValue())
-                            //{
-                            //    int minute = int.Parse(this.receiveMinuteTextBox.Text);
-                            //    if (!(minute >= 0 && minute <= 59))
-                            //    {
-                            //        string error = "دقیقه باید بین 0 تا 59 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.RECEIVE_TIME.HasValue && x.RECEIVE_TIME.Value.Minute == minute
-                            //        select x;
-                            //}
-                            //if (this.receiveSecondTextBox.Text.HasValue())
-                            //{
-                            //    int second = int.Parse(this.receiveSecondTextBox.Text);
-                            //    if (!(second >= 0 && second <= 59))
-                            //    {
-                            //        string error = "ثانیه باید بین 0 تا 59 باشد";
-                            //        throw new Exception(error);
-                            //    }
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.RECEIVE_TIME.HasValue && x.RECEIVE_TIME.Value.Second == second
-                            //        select x;
-                            //}
-                            //if (this.dropReasonTextBox.Text.HasValue())
-                            //{
-                            //    queryable =
-                            //        from x in queryable
-                            //        where x.DROP_REASON.Contains(this.dropReasonTextBox.Text)
-                            //        select x;
-                            //}
+                    this.transfersDataGrid.DataSource = source;
+                }));
 
-                            int allRecordsCount = iccCore.IccQueue.Count;
-
-                            showRecordsCount = Math.Min(showRecordsCount, allRecordsCount);
-                            
-                            SortableBindingList<IccTelegram> source = new SortableBindingList<IccTelegram>(telegrams);
-                            base.Invoke(new Action(() =>
-                            {
-                                this.transfersDataGrid.DataSource = source;
-                            }));
-                            base.Invoke(new Action(() =>
-                            {
-                                this.allRecordsCountLabel.Text = allRecordsCount.DigitGrouping();
-                            }));
-                            base.Invoke(new Action(() =>
-                            {
-                                this.showRecordsCountLabel.Text = showRecordsCount.DigitGrouping();
-                            }));
-                        }
-                    }
-                }
+                base.Invoke(new Action(() =>
+                {
+                    this.resultsCountLabel.Text = resultsCount.DigitGrouping();
+                }));
+                base.Invoke(new Action(() =>
+                {
+                    this.pageSizeLabel.Text = pageSize.DigitGrouping();
+                }));
             }
             catch (Exception exception)
             {
@@ -362,7 +234,7 @@ namespace IRISA.CommunicationCenter
 
                         if (!string.IsNullOrEmpty(IccEventSearchModel.EventDateFrom))
                         {
-                            var date = this.GetLatinDate(IccEventSearchModel.EventDateFrom);
+                            var date = IccEventSearchModel.EventDateFrom.ToEnglishDate();
                             query = query.Where(x => x.Time >= date);
                         }
                         if (IccEventSearchModel.HourFrom.HasValue)
@@ -394,7 +266,7 @@ namespace IRISA.CommunicationCenter
                         }
                         if (!string.IsNullOrEmpty(IccEventSearchModel.EventDateTo))
                         {
-                            var date = this.GetLatinDate(IccEventSearchModel.EventDateTo);
+                            var date = this.IccEventSearchModel.EventDateTo.ToEnglishDate();
                             query = query.Where(x => x.Time <= date);
                         }
                         if (IccEventSearchModel.HourTo.HasValue)
@@ -532,6 +404,7 @@ namespace IRISA.CommunicationCenter
                 this.iccCore.Logger.LogException(exception);
             }
         }
+
         private TabPage GetSelectedTab()
         {
             TabPage selectedTab = null;
@@ -541,6 +414,7 @@ namespace IRISA.CommunicationCenter
             }));
             return selectedTab;
         }
+
         private bool CheckPassword()
         {
             string a = HelperMethods.ShowPasswordDialog(this.uiSettings.ProgramTitle);

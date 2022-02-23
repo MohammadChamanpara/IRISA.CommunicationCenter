@@ -53,6 +53,7 @@
     <Compile Include="IRISA.CommunicationCenter.Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="IRISA.CommunicationCenter\FieldDefinition.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccTelegram.cs" />
+    <Compile Include="IRISA.CommunicationCenter\IccTelegramSearchModel.cs" />
     <Compile Include="IRISA.CommunicationCenter\NodeBase.cs" />
     <Compile Include="IRISA.CommunicationCenter\TelegramDefinition.cs" />
     <Compile Include="IRISA.CommunicationCenter\TelegramDefinitions.cs" />
