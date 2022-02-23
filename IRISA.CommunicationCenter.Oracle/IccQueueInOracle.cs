@@ -1,13 +1,13 @@
-﻿using IRISA.CommunicationCenter.Core.Model;
+﻿using IRISA.CommunicationCenter.Core;
+using IRISA.CommunicationCenter.Core.Model;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace IRISA.CommunicationCenter.Core
+namespace IRISA.CommunicationCenter.Oracle
 {
     public class IccQueueInOracle : IIccQueue
     {
