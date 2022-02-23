@@ -70,6 +70,8 @@
     <Compile Include="IRISA.Windows.Forms\PasswordDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="PropertyComparer.cs" />
+    <Compile Include="SortableBindingList.cs" />
     <Compile Include="UserControls\PluginUserControl.Designer.cs">
       <DependentUpon>PluginUserControl.cs</DependentUpon>
     </Compile>

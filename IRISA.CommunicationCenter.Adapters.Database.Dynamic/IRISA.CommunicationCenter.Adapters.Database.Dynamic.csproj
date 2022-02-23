@@ -60,6 +60,10 @@
       <Project>{8A4A2BE7-9B27-40FC-A037-1579322D5E99}</Project>
       <Name>IRISA.CommunicationCenter.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Oracle\IRISA.CommunicationCenter.Oracle.csproj">
+      <Project>{aa48f5d5-a5df-4843-a1f9-6df1d39b3b0d}</Project>
+      <Name>IRISA.CommunicationCenter.Oracle</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

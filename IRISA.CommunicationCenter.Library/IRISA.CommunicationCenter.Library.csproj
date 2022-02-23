@@ -41,8 +41,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -55,9 +53,7 @@
     <Compile Include="Adapters\ReceiveEventHandler.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="Definitions\FieldDefinition.cs" />
-    <Compile Include="IRISA.Model\EntityBusiness.cs" />
-    <Compile Include="IRISA.Model\PropertyComparer.cs" />
-    <Compile Include="IRISA.Model\SortableBindingList.cs" />
+    <Compile Include="IIccQueue.cs" />
     <Compile Include="IRISA.Threading\IrisaBackgroundTimer.cs">
       <SubType>Component</SubType>
     </Compile>

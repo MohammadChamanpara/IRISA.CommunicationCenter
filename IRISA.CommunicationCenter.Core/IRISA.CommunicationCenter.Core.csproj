@@ -51,30 +51,22 @@
     <Compile Include="IRISA.CommunicationCenter\IccCore.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccCoreTelegramEventArgs.cs" />
     <Compile Include="IRISA.CommunicationCenter\IccQueueInMemory.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IccQueueInOracle.cs" />
-    <Compile Include="IRISA.CommunicationCenter\IIccQueue.cs" />
     <Compile Include="IRISA.CommunicationCenter\InProcessTelegrams.cs" />
-    <Compile Include="Model\IccModel1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IccModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\IccTransferExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Model\IccModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>IccModel1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="Properties\DataSources\IRISA.CommunicationCenter.Model.Entities.datasource" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IRISA.CommunicationCenter.Library\IRISA.CommunicationCenter.Library.csproj">
       <Project>{8a4a2be7-9b27-40fc-a037-1579322d5e99}</Project>
       <Name>IRISA.CommunicationCenter.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Oracle\IRISA.CommunicationCenter.Oracle.csproj">
+      <Project>{aa48f5d5-a5df-4843-a1f9-6df1d39b3b0d}</Project>
+      <Name>IRISA.CommunicationCenter.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
