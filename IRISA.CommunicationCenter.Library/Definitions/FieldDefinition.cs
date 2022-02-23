@@ -212,7 +212,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
         {
             if (fieldBytes.Length < Size)
             {
-                throw IrisaException.Create("تعداد فیلد های ارسال شده کمتر از تعداد فیلد های تعریف شده می باشد.", new object[0]);
+                throw IrisaException.Create("تعداد فیلد های ارسال شده کمتر از تعداد فیلد های تعریف شده می باشد.");
             }
             string text = Type.ToLower();
             if (text != null)

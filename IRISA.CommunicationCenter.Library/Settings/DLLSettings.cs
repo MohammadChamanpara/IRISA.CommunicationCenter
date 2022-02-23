@@ -172,7 +172,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
             }
             catch (Exception ex)
             {
-                throw IrisaException.Create("خطا در بازیابی تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
+                throw IrisaException.Create("خطا در بازیابی تنظیمات برای " + key + " متن خطا : " + ex.Message);
             }
             return connectionString;
         }
@@ -199,7 +199,7 @@ namespace IRISA.CommunicationCenter.Library.Settings
             }
             catch (Exception ex)
             {
-                throw IrisaException.Create("خطا در ذخیره تنظیمات برای " + key + " متن خطا : " + ex.Message, new object[0]);
+                throw IrisaException.Create("خطا در ذخیره تنظیمات برای " + key + " متن خطا : " + ex.Message);
             }
         }
     }

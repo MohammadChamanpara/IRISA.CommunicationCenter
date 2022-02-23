@@ -44,7 +44,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
             }
             if (list.Count == 0)
             {
-                throw IrisaException.Create("تلگرام دریافت شده در سیستم تعریف نشده است.", new object[0]);
+                throw IrisaException.Create("تلگرام دریافت شده در سیستم تعریف نشده است.");
             }
             list = (
                 from x in list
@@ -52,7 +52,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 select x).ToList();
             if (list.Count() == 0)
             {
-                throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.", new object[0]);
+                throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.");
             }
             if (iccTelegram.Destination.HasValue())
             {
@@ -65,12 +65,12 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 if (list.Count == 0)
                 {
-                    throw IrisaException.Create("گیرنده تعیین شده برای تلگرام با گیرنده جاری متفاوت است.", new object[0]);
+                    throw IrisaException.Create("گیرنده تعیین شده برای تلگرام با گیرنده جاری متفاوت است.");
                 }
             }
             if (list.Count > 1)
             {
-                throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.", new object[0]);
+                throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
             }
             return list.First();
         }

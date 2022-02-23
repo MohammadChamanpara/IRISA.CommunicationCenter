@@ -379,7 +379,7 @@ namespace IRISA.CommunicationCenter.Core
 
             if (connectedAdapters.Count == 0)
             {
-                Logger.LogWarning("کلاینتی برای اتصال یافت نشد.", new object[0]);
+                Logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
             }
             foreach (IIccAdapter adapter in connectedAdapters)
             {
@@ -408,7 +408,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             if (!iccTelegram.Destination.HasValue())
             {
-                throw IrisaException.Create("مقصد تلگرام مشخص نشده است.", new object[0]);
+                throw IrisaException.Create("مقصد تلگرام مشخص نشده است.");
             }
 
             var destination = connectedAdapters
@@ -416,12 +416,12 @@ namespace IRISA.CommunicationCenter.Core
 
             if (destination.Count() == 0)
             {
-                throw IrisaException.Create("مقصد مشخص شده وجود ندارد.", new object[0]);
+                throw IrisaException.Create("مقصد مشخص شده وجود ندارد.");
             }
 
             if (destination.Count() > 1)
             {
-                throw IrisaException.Create("چند مقصد با نام داده شده وجود دارد.", new object[0]);
+                throw IrisaException.Create("چند مقصد با نام داده شده وجود دارد.");
             }
         }
         private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)

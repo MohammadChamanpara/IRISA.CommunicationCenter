@@ -323,12 +323,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 bool flag = false;
                 if (socket == null)
                 {
-                    Logger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription), new object[0]);
+                    Logger.LogInfo(string.Format("کلاینت {0} متصل شد.", base.PersianDescription));
                     flag = true;
                 }
                 else
                 {
-                    Logger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription), new object[0]);
+                    Logger.LogInfo(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription));
                 }
                 socket = tcpListener.AcceptSocket();
                 socket.SendTimeout = SendTimeout;
@@ -362,7 +362,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             byte[] buffer = ConvertStandardTelegramToClientTelegram(iccTelegram);
             if (!Connected)
             {
-                throw IrisaException.Create("مقصد تلگرام متصل نمی باشد", new object[0]);
+                throw IrisaException.Create("مقصد تلگرام متصل نمی باشد");
             }
             try
             {

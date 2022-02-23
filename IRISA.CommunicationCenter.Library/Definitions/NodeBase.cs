@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 }
                 catch
                 {
-                    throw IrisaException.Create("نام برای تعریف فیلد مشخص نشده است.", new object[0]);
+                    throw IrisaException.Create("نام برای تعریف فیلد مشخص نشده است.");
                 }
                 return result;
             }

@@ -28,7 +28,7 @@ namespace IRISA.CommunicationCenter.Components
                     text = text.Remove(num);
                     text += "...";
                 }
-                MessageForm.ShowInformationMessage(text, new object[0]);
+                MessageForm.ShowInformationMessage(text);
             }
         }
     }
