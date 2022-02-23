@@ -4,11 +4,11 @@ using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.IO;
 using System.Text;
-namespace IRISA.CommunicationCenter.Adapters
+
+namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
 {
     public class WascoTcpIpAdapter : TcpIpBaseAdapter<WascoTcpIpAdapter>
     {
-        /*----------------------Start Wasco-------------------*/
         protected byte CalculateCrc(byte[] body)
         {
             byte crc = this.CrcDivisor;
@@ -22,8 +22,6 @@ namespace IRISA.CommunicationCenter.Adapters
         {
             return completeTelegram[this.HeaderSize - 1];
         }
-        /*------------------------End Wasco----------------------------------*/
-        /*------------------------Wasco--------------------------------------*/
 
         public Byte CrcDivisor
         {
@@ -49,7 +47,6 @@ namespace IRISA.CommunicationCenter.Adapters
                 throw IrisaException.Create("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد."
                     , "CRC", destinationCrc, sourceCrc);
         }
-        /*------------------------End Wasco--------------------------------------*/
         private string dateFormat = "yyyyMMddHHmmss";
         protected override int GetTelegramId(byte[] telegramBytes)
         {
