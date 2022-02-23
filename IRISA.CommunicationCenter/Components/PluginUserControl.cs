@@ -3,7 +3,7 @@ using IRISA.CommunicationCenter.Library.Logging;
 using System;
 using System.Windows.Forms;
 
-namespace IRISA.CommunicationCenter.UserControls
+namespace IRISA.CommunicationCenter.Components
 {
     public partial class PluginUserControl : UserControl
 	{

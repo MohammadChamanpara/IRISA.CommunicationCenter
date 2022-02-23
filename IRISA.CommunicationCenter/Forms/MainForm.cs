@@ -6,7 +6,6 @@ using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Properties;
 using IRISA.CommunicationCenter.Settings;
-using IRISA.CommunicationCenter.UserControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
