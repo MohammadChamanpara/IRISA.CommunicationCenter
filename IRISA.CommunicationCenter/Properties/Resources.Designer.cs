@@ -63,6 +63,16 @@ namespace IRISA.CommunicationCenter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap adapter {
+            get {
+                object obj = ResourceManager.GetObject("adapter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close {
             get {
                 object obj = ResourceManager.GetObject("close", resourceCulture);
@@ -146,16 +156,6 @@ namespace IRISA.CommunicationCenter.Properties {
         internal static System.Drawing.Bitmap more {
             get {
                 object obj = ResourceManager.GetObject("more", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap plugin {
-            get {
-                object obj = ResourceManager.GetObject("plugin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

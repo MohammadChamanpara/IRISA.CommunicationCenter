@@ -40,9 +40,9 @@ namespace IRISA.CommunicationCenter.Forms
         private ToolStripLabel toolStripLabel1;
         private ToolStripButton toolStripButton1;
         private ToolStripLabel toolStripLabel2;
-        private FlowLayoutPanel clientsPanel;
-        private SplitContainer clientsSplitContainer;
-        private ToolStrip clientsToolStrip;
+        private FlowLayoutPanel adaptersPanel;
+        private SplitContainer adaptersSplitContainer;
+        private ToolStrip adaptersToolStrip;
         private ToolStripLabel toolStripLabel3;
         private ToolStripButton toolStripButton2;
         private ToolStripLabel toolStripLabel4;
@@ -134,9 +134,9 @@ namespace IRISA.CommunicationCenter.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
-            this.clientsSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.clientsPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.clientsToolStrip = new System.Windows.Forms.ToolStrip();
+            this.adaptersSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.adaptersPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.adaptersToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
@@ -298,10 +298,10 @@ namespace IRISA.CommunicationCenter.Forms
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.clientsSplitContainer)).BeginInit();
-            this.clientsSplitContainer.Panel1.SuspendLayout();
-            this.clientsSplitContainer.SuspendLayout();
-            this.clientsToolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.adaptersSplitContainer)).BeginInit();
+            this.adaptersSplitContainer.Panel1.SuspendLayout();
+            this.adaptersSplitContainer.SuspendLayout();
+            this.adaptersToolStrip.SuspendLayout();
             this.settingsTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.settingsSplitContainer)).BeginInit();
             this.settingsSplitContainer.Panel1.SuspendLayout();
@@ -365,8 +365,8 @@ namespace IRISA.CommunicationCenter.Forms
             // mainTabPage
             // 
             this.mainTabPage.BackColor = System.Drawing.Color.White;
-            this.mainTabPage.Controls.Add(this.clientsSplitContainer);
-            this.mainTabPage.Controls.Add(this.clientsToolStrip);
+            this.mainTabPage.Controls.Add(this.adaptersSplitContainer);
+            this.mainTabPage.Controls.Add(this.adaptersToolStrip);
             this.mainTabPage.ImageIndex = 0;
             this.mainTabPage.Location = new System.Drawing.Point(4, 31);
             this.mainTabPage.Name = "mainTabPage";
@@ -375,51 +375,51 @@ namespace IRISA.CommunicationCenter.Forms
             this.mainTabPage.TabIndex = 3;
             this.mainTabPage.Text = "کلاینت ها";
             // 
-            // clientsSplitContainer
+            // adaptersSplitContainer
             // 
-            this.clientsSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.clientsSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clientsSplitContainer.Location = new System.Drawing.Point(3, 47);
-            this.clientsSplitContainer.Name = "clientsSplitContainer";
+            this.adaptersSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.adaptersSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.adaptersSplitContainer.Location = new System.Drawing.Point(3, 47);
+            this.adaptersSplitContainer.Name = "adaptersSplitContainer";
             // 
-            // clientsSplitContainer.Panel1
+            // adaptersSplitContainer.Panel1
             // 
-            this.clientsSplitContainer.Panel1.Controls.Add(this.clientsPanel);
-            this.clientsSplitContainer.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.adaptersSplitContainer.Panel1.Controls.Add(this.adaptersPanel);
+            this.adaptersSplitContainer.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             // 
-            // clientsSplitContainer.Panel2
+            // adaptersSplitContainer.Panel2
             // 
-            this.clientsSplitContainer.Panel2.BackColor = System.Drawing.Color.White;
-            this.clientsSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.clientsSplitContainer.Size = new System.Drawing.Size(1080, 521);
-            this.clientsSplitContainer.SplitterDistance = 381;
-            this.clientsSplitContainer.SplitterWidth = 10;
-            this.clientsSplitContainer.TabIndex = 1;
+            this.adaptersSplitContainer.Panel2.BackColor = System.Drawing.Color.White;
+            this.adaptersSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.adaptersSplitContainer.Size = new System.Drawing.Size(1080, 521);
+            this.adaptersSplitContainer.SplitterDistance = 381;
+            this.adaptersSplitContainer.SplitterWidth = 10;
+            this.adaptersSplitContainer.TabIndex = 1;
             // 
-            // clientsPanel
+            // adaptersPanel
             // 
-            this.clientsPanel.AutoScroll = true;
-            this.clientsPanel.BackColor = System.Drawing.Color.White;
-            this.clientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clientsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.clientsPanel.Location = new System.Drawing.Point(0, 0);
-            this.clientsPanel.Name = "clientsPanel";
-            this.clientsPanel.Size = new System.Drawing.Size(379, 519);
-            this.clientsPanel.TabIndex = 0;
+            this.adaptersPanel.AutoScroll = true;
+            this.adaptersPanel.BackColor = System.Drawing.Color.White;
+            this.adaptersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.adaptersPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.adaptersPanel.Location = new System.Drawing.Point(0, 0);
+            this.adaptersPanel.Name = "adaptersPanel";
+            this.adaptersPanel.Size = new System.Drawing.Size(379, 519);
+            this.adaptersPanel.TabIndex = 0;
             // 
-            // clientsToolStrip
+            // adaptersToolStrip
             // 
-            this.clientsToolStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.clientsToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.clientsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.adaptersToolStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.adaptersToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.adaptersToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel3,
             this.toolStripButton2,
             this.toolStripLabel4});
-            this.clientsToolStrip.Location = new System.Drawing.Point(3, 3);
-            this.clientsToolStrip.Name = "clientsToolStrip";
-            this.clientsToolStrip.Size = new System.Drawing.Size(1080, 44);
-            this.clientsToolStrip.TabIndex = 2;
-            this.clientsToolStrip.Text = "toolStrip1";
+            this.adaptersToolStrip.Location = new System.Drawing.Point(3, 3);
+            this.adaptersToolStrip.Name = "adaptersToolStrip";
+            this.adaptersToolStrip.Size = new System.Drawing.Size(1080, 44);
+            this.adaptersToolStrip.TabIndex = 2;
+            this.adaptersToolStrip.Text = "toolStrip1";
             // 
             // toolStripLabel3
             // 
@@ -2144,7 +2144,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "plugin.png");
+            this.imageList.Images.SetKeyName(0, "adapter.png");
             this.imageList.Images.SetKeyName(1, "1331643511_setting.png");
             this.imageList.Images.SetKeyName(2, "transfers.png");
             this.imageList.Images.SetKeyName(3, "events (5).png");
@@ -2265,11 +2265,11 @@ namespace IRISA.CommunicationCenter.Forms
             this.tabControl.ResumeLayout(false);
             this.mainTabPage.ResumeLayout(false);
             this.mainTabPage.PerformLayout();
-            this.clientsSplitContainer.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.clientsSplitContainer)).EndInit();
-            this.clientsSplitContainer.ResumeLayout(false);
-            this.clientsToolStrip.ResumeLayout(false);
-            this.clientsToolStrip.PerformLayout();
+            this.adaptersSplitContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.adaptersSplitContainer)).EndInit();
+            this.adaptersSplitContainer.ResumeLayout(false);
+            this.adaptersToolStrip.ResumeLayout(false);
+            this.adaptersToolStrip.PerformLayout();
             this.settingsTabPage.ResumeLayout(false);
             this.settingsTabPage.PerformLayout();
             this.settingsSplitContainer.Panel1.ResumeLayout(false);

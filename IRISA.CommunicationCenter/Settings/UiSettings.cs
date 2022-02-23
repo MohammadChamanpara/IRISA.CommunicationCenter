@@ -70,7 +70,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
         [DisplayName("نمایش رویداد متصل شدن کلاینت")]
-        public bool NotifyIconShowClientConnected
+        public bool NotifyIconShowAdapterConnected
         {
             get
             {

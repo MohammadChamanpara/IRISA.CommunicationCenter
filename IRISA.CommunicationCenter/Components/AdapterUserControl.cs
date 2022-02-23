@@ -20,23 +20,23 @@ namespace IRISA.CommunicationCenter.Components
 			}
 		}
 
-		public AdapterUserControl(IIccAdapter plugin, ILogger eventLogger)
+		public AdapterUserControl(IIccAdapter adapter, ILogger eventLogger)
 		{
 			this.InitializeComponent();
 			this.eventLogger = eventLogger;
-			this.Plugin = plugin;
-			this.Caption = plugin.Name + " - " + plugin.PersianDescription;
-			this.connectPictureBox.Click += new EventHandler(this.Plugin_Click);
-			this.disconnectPictureBox.Click += new EventHandler(this.Plugin_Click);
-            plugin.ConnectionChanged += Plugin_ConnectionChanged;
+			this.Adapter = adapter;
+			this.Caption = adapter.Name + " - " + adapter.PersianDescription;
+			this.connectPictureBox.Click += new EventHandler(this.Adapter_Click);
+			this.disconnectPictureBox.Click += new EventHandler(this.Adapter_Click);
+            adapter.ConnectionChanged += Adapter_ConnectionChanged;
 			this.RefreshConnection();
 		}
 
-        private void Plugin_Click(object sender, EventArgs e)
+        private void Adapter_Click(object sender, EventArgs e)
 		{
 			this.RefreshConnection();
 		}
-		private void Plugin_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+		private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
 		{
 			this.RefreshConnection();
 		}
@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter.Components
 				}
 				if (base.IsHandleCreated)
 				{
-					if (this.Plugin.Connected)
+					if (this.Adapter.Connected)
 					{
 						base.Invoke(new Action(()=>
 						{

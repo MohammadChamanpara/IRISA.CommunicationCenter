@@ -34,7 +34,7 @@ namespace IRISA.CommunicationCenter.Forms
             InitialIccCore();
             InitialUiSettings();
             iccCore.Start();
-            LoadClients();
+            LoadAdapters();
             LoadSettings();
             LoadStatusTypeComboBox();
             transfersDataGrid.Click += DataGrid_Click;
@@ -398,9 +398,9 @@ namespace IRISA.CommunicationCenter.Forms
                         Tag = iccCore.IccQueue
                     }
                 };
-                if (iccCore.connectedClients != null)
+                if (iccCore.connectedAdapters != null)
                 {
-                    foreach (IIccAdapter current in iccCore.connectedClients)
+                    foreach (IIccAdapter current in iccCore.connectedAdapters)
                     {
                         settingControls.Add(new RadioButton
                         {
@@ -429,18 +429,18 @@ namespace IRISA.CommunicationCenter.Forms
                 iccCore.Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
             }
         }
-        private void LoadClients()
+        private void LoadAdapters()
         {
             try
             {
-                clientsPanel.Controls.Clear();
-                if (iccCore.connectedClients != null)
+                adaptersPanel.Controls.Clear();
+                if (iccCore.connectedAdapters != null)
                 {
-                    foreach (IIccAdapter current in iccCore.connectedClients)
+                    foreach (IIccAdapter current in iccCore.connectedAdapters)
                     {
                         AdapterUserControl value = new AdapterUserControl(current, iccCore.Logger);
-                        clientsPanel.Controls.Add(value);
-                        current.ConnectionChanged += Client_ConnectionChanged;
+                        adaptersPanel.Controls.Add(value);
+                        current.ConnectionChanged += Adapter_ConnectionChanged;
                     }
                 }
             }
@@ -643,9 +643,9 @@ namespace IRISA.CommunicationCenter.Forms
                 notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Error);
             }
         }
-        private void Client_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+        private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
         {
-            if (uiSettings.NotifyIconShowClientConnected)
+            if (uiSettings.NotifyIconShowAdapterConnected)
             {
                 string tipText;
                 if (uiSettings.NotifyIconPersianLanguage)

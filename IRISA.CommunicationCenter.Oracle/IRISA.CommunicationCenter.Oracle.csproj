@@ -65,5 +65,10 @@
       <LastGenOutput>IccModel1.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

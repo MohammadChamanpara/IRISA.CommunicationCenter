@@ -14,7 +14,7 @@ namespace IRISA.CommunicationCenter.Components
         private Panel panel1;
         private Label captionLabel;
         private ILogger eventLogger;
-        public IIccAdapter Plugin
+        public IIccAdapter Adapter
         {
             get;
             set;
@@ -100,9 +100,9 @@ namespace IRISA.CommunicationCenter.Components
             this.captionLabel.Size = new System.Drawing.Size(53, 13);
             this.captionLabel.TabIndex = 4;
             this.captionLabel.Text = "نام کلاینت";
-            this.captionLabel.Click += new System.EventHandler(this.Plugin_Click);
+            this.captionLabel.Click += new System.EventHandler(this.Adapter_Click);
             // 
-            // PluginUserControl
+            // AdapterUserControl
             // 
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,7 +110,7 @@ namespace IRISA.CommunicationCenter.Components
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.flowLayoutPanel);
-            this.Name = "PluginUserControl";
+            this.Name = "AdapterUserControl";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Size = new System.Drawing.Size(105, 41);
             this.flowLayoutPanel.ResumeLayout(false);
