@@ -1,4 +1,4 @@
-using IRISA.CommunicationCenter.Adapters.Model;
+using IRISA.CommunicationCenter.Adapters.Database.Oracle.Model;
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Extensions;
@@ -11,7 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-namespace IRISA.CommunicationCenter.Adapters
+
+namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 {
     public class DatabaseAdapter : BaseAdapter<DatabaseAdapter>
     {

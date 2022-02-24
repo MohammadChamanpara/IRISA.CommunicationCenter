@@ -11,8 +11,8 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 15/02/2022 11:30:42 AM
-namespace IRISA.CommunicationCenter.Adapters.Model
+// Generation date: 24/02/2022 5:26:25 PM
+namespace IRISA.CommunicationCenter.Adapters.Database.Oracle.Model
 {
     
     /// <summary>
