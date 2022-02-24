@@ -146,29 +146,13 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                //var logLevels = new List<KeyValuePair<int, string>>
-                //{
-                //    new KeyValuePair<int, string>(-1, "همه")
-                //};
-                //foreach (int logLevel in Enum.GetValues(typeof(LogLevel)))
-                //{
-                //    var value = ((LogLevel)logLevel).ToPersian();
-                //    logLevels.Add(new KeyValuePair<int, string>(logLevel, value));
-                //}
-
-                var logLevels = new List<string>
-                {
-                };
+                var logLevels = new List<string>();
                 foreach (int logLevel in Enum.GetValues(typeof(LogLevel)))
                 {
-                    var value = ((LogLevel)logLevel).ToPersian();
-                    logLevels.Add(value);
+                    logLevels.Add(((LogLevel)logLevel).ToPersian());
                 }
 
                 LogLevelComboBox.DataSource = logLevels;
-                //LogLevelComboBox.ValueMember = "Key";
-                //LogLevelComboBox.DisplayMember = "Value";
-
                 LogLevelComboBox.SelectedIndex = -1;
             }
             catch (Exception exception)
