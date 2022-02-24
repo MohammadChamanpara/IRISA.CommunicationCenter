@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Library.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
     {
         private string LogFileAddress => $"Events\\Events {DateTime.Now.ToPersianDate("-")}.txt";
 
-        protected override void Log(string eventText, EventType eventType)
+        protected override void Log(string eventText, LogLevel logLevel)
         {
             string logText = string.Concat(new string[]
             {
@@ -18,7 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
                 "\r\n Persian Time : ",
                 DateTime.Now.ToPersianDateTime("/"),
                 "\r\n Type : ",
-                eventType.ToPersian(),
+                logLevel.ToPersian(),
                 "\r\n Event : ",
                 eventText,
                 "\r\n"
@@ -34,7 +35,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
             File.AppendAllText(fileAddress, logText);
         }
 
-        public override IQueryable<LogEvent> GetLogs()
+        public override List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
         {
             throw new NotSupportedException($"Getting logs is not supported in {nameof(LoggerInFile)}");
         }

@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Library.Loggers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Logging
@@ -15,22 +16,22 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
         public void LogDebug(string testText, params object[] parameters)
         {
-            Log(testText, EventType.Debug, null, parameters);
+            Log(testText, LogLevel.Debug, null, parameters);
         }
 
         public void LogInformation(string infoText, params object[] parameters)
         {
-            Log(infoText, EventType.Information, parameters);
+            Log(infoText, LogLevel.Information, parameters);
         }
 
         public void LogWarning(string warningText, params object[] parameters)
         {
-            Log(warningText, EventType.Warning, parameters);
+            Log(warningText, LogLevel.Warning, parameters);
         }
 
         public void LogError(string errorText, params object[] parameters)
         {
-            Log(errorText, EventType.Error, parameters);
+            Log(errorText, LogLevel.Error, parameters);
         }
 
         public void LogException(Exception exception, string message)
@@ -40,15 +41,15 @@ namespace IRISA.CommunicationCenter.Library.Logging
                 $"{exception.InnerExceptionsMessage()}\r\n" +
                 $"StackTrace :{exception.StackTrace}\r\n";
 
-            Log(text, EventType.Exception, exception.StackTrace);
+            Log(text, LogLevel.Exception, exception.StackTrace);
         }
         
-        private void Log(string eventText, EventType eventType, params object[] parameters)
+        private void Log(string eventText, LogLevel logLevel, params object[] parameters)
         {
             try
             {
                 eventText = string.Format(eventText, parameters);
-                Log(eventText, eventType);
+                Log(eventText, logLevel);
                 OnEventLogged();
             }
             catch
@@ -56,8 +57,8 @@ namespace IRISA.CommunicationCenter.Library.Logging
             }
         }
 
-        protected abstract void Log(string eventText, EventType eventType);
+        protected abstract void Log(string eventText, LogLevel logLevel);
 
-        public abstract IQueryable<LogEvent> GetLogs();
+        public abstract List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount);
     }
 }

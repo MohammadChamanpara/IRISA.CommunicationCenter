@@ -15,11 +15,10 @@ namespace IRISA.CommunicationCenter.Library.Models
         {
             get
             {
-                string result;
                 try
                 {
                     PersianCalendar persianCalendar = new PersianCalendar();
-                    result = string.Format("{0}\u00a0{1:00}:{2:00}:{3:00}", new object[]
+                    return string.Format("{0}-{1:00}:{2:00}:{3:00}", new object[]
                     {
                         PersianDateString,
                         persianCalendar.GetHour(dateTime),
@@ -29,20 +28,18 @@ namespace IRISA.CommunicationCenter.Library.Models
                 }
                 catch
                 {
-                    result = "";
+                    return string.Empty;
                 }
-                return result;
             }
         }
         public string PersianDateString
         {
             get
             {
-                string result;
                 try
                 {
                     PersianCalendar persianCalendar = new PersianCalendar();
-                    result = string.Format("{0:0000}{3}{1:00}{3}{2:00}", new object[]
+                    return string.Format("{0:0000}{3}{1:00}{3}{2:00}", new object[]
                     {
                         persianCalendar.GetYear(dateTime),
                         persianCalendar.GetMonth(dateTime),
@@ -52,9 +49,8 @@ namespace IRISA.CommunicationCenter.Library.Models
                 }
                 catch
                 {
-                    result = "";
+                    return string.Empty;
                 }
-                return result;
             }
         }
         public PersianDateTime(DateTime dateTime)
@@ -95,6 +91,7 @@ namespace IRISA.CommunicationCenter.Library.Models
                 DateSparator = separator
             }.PersianDateString;
         }
+
         public static DateTime ToEnglishDate(this string persianDate)
         {
             int year;

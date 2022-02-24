@@ -1,6 +1,6 @@
 ﻿namespace IRISA.CommunicationCenter.Library.Logging
 {
-    public enum EventType
+    public enum LogLevel
     {
         Debug,
         Information,
@@ -9,21 +9,21 @@
         Exception
     }
 
-    public static class EventTypeExtensions
+    public static class LogLevelExtensions
     {
-        public static string ToPersian(this EventType eventType)
+        public static string ToPersian(this LogLevel logLevel)
         {
-            switch (eventType)
+            switch (logLevel)
             {
-                case EventType.Debug:
+                case LogLevel.Debug:
                     return "رفع عیب";
-                case EventType.Information:
-                    return "موفقیت";
-                case EventType.Warning:
+                case LogLevel.Information:
+                    return "اطلاعات";
+                case LogLevel.Warning:
                     return "هشدار";
-                case EventType.Error:
+                case LogLevel.Error:
                     return "اشکال";
-                case EventType.Exception:
+                case LogLevel.Exception:
                     return "خطا";
                 default:
                     return "نا مشخص";

@@ -1,4 +1,5 @@
 ﻿using IRISA.CommunicationCenter.Components;
+using IRISA.CommunicationCenter.Library.Logging;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -109,9 +110,9 @@ namespace IRISA.CommunicationCenter.Forms
         private Splitter splitter10;
         private Splitter splitter11;
         private FlowLayoutPanel flowLayoutPanel13;
-        private Label resultsCountLabel;
+        private Label TransfersResultsCountLabel;
         private Label label20;
-        private Label pageSizeLabel;
+        private Label TransfersPageSizeLabel;
         private ToolStripButton searchTelegramButton;
 
         protected override void Dispose(bool disposing)
@@ -125,12 +126,12 @@ namespace IRISA.CommunicationCenter.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
             this.adaptersSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -218,9 +219,9 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
             this.label17 = new System.Windows.Forms.Label();
             this.flowLayoutPanel13 = new System.Windows.Forms.FlowLayoutPanel();
-            this.resultsCountLabel = new System.Windows.Forms.Label();
+            this.TransfersResultsCountLabel = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.pageSizeLabel = new System.Windows.Forms.Label();
+            this.TransfersPageSizeLabel = new System.Windows.Forms.Label();
             this.splitter11 = new System.Windows.Forms.Splitter();
             this.DoTelegramSearch = new System.Windows.Forms.Button();
             this.transfersToolStrip = new System.Windows.Forms.ToolStrip();
@@ -231,52 +232,39 @@ namespace IRISA.CommunicationCenter.Forms
             this.searchTelegramButton = new System.Windows.Forms.ToolStripButton();
             this.eventsTabPage = new System.Windows.Forms.TabPage();
             this.eventsDataGrid = new IRISA.CommunicationCenter.Components.IrisaDataGrid();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iccEventSearchGroupBox = new System.Windows.Forms.GroupBox();
+            this.LogsSearchGroupBox = new System.Windows.Forms.GroupBox();
             this.eventsSearchflowLayout = new System.Windows.Forms.FlowLayoutPanel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.ClearFiltersToolStrip = new System.Windows.Forms.ToolStrip();
             this.clearSearchEventsPanel = new System.Windows.Forms.ToolStripButton();
             this.splitter12 = new System.Windows.Forms.Splitter();
             this.flowLayoutPanel15 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel16 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel17 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel18 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel22 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label19 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel30 = new System.Windows.Forms.FlowLayoutPanel();
+            this.LogTimeTextBox = new System.Windows.Forms.MaskedTextBox();
             this.flowLayoutPanel19 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label23 = new System.Windows.Forms.Label();
             this.flowLayoutPanel20 = new System.Windows.Forms.FlowLayoutPanel();
-            this.secondFromTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.iccEventSearchModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label24 = new System.Windows.Forms.Label();
-            this.minuteFromTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.hourFromTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.eventDateFromTextBox = new System.Windows.Forms.MaskedTextBox();
             this.splitter17 = new System.Windows.Forms.Splitter();
             this.flowLayoutPanel21 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label28 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel22 = new System.Windows.Forms.FlowLayoutPanel();
-            this.secondToTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.minuteToTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.hourToTextBox = new System.Windows.Forms.MaskedTextBox();
-            this.label31 = new System.Windows.Forms.Label();
-            this.EventDateTo = new System.Windows.Forms.MaskedTextBox();
-            this.splitter18 = new System.Windows.Forms.Splitter();
             this.flowLayoutPanel23 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
             this.label34 = new System.Windows.Forms.Label();
             this.flowLayoutPanel27 = new System.Windows.Forms.FlowLayoutPanel();
-            this.statusTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.LogLevelComboBox = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel24 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel25 = new System.Windows.Forms.FlowLayoutPanel();
             this.splitter21 = new System.Windows.Forms.Splitter();
             this.flowLayoutPanel26 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel28 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label18 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel29 = new System.Windows.Forms.FlowLayoutPanel();
+            this.LogsResultsCountLabel = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.LogsPageSizeLabel = new System.Windows.Forms.Label();
+            this.splitter13 = new System.Windows.Forms.Splitter();
             this.DoIccEventSearch = new System.Windows.Forms.Button();
             this.eventsToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel6 = new System.Windows.Forms.ToolStripLabel();
@@ -295,6 +283,10 @@ namespace IRISA.CommunicationCenter.Forms
             this.minimizeApplicationButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LogLevelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.adaptersSplitContainer)).BeginInit();
@@ -328,16 +320,16 @@ namespace IRISA.CommunicationCenter.Forms
             this.transfersToolStrip.SuspendLayout();
             this.eventsTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventsDataGrid)).BeginInit();
-            this.iccEventSearchGroupBox.SuspendLayout();
+            this.LogsSearchGroupBox.SuspendLayout();
             this.eventsSearchflowLayout.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.flowLayoutPanel19.SuspendLayout();
-            this.flowLayoutPanel20.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iccEventSearchModelBindingSource)).BeginInit();
-            this.flowLayoutPanel21.SuspendLayout();
+            this.ClearFiltersToolStrip.SuspendLayout();
             this.flowLayoutPanel22.SuspendLayout();
+            this.flowLayoutPanel30.SuspendLayout();
+            this.flowLayoutPanel19.SuspendLayout();
             this.flowLayoutPanel14.SuspendLayout();
             this.flowLayoutPanel27.SuspendLayout();
+            this.flowLayoutPanel28.SuspendLayout();
+            this.flowLayoutPanel29.SuspendLayout();
             this.eventsToolStrip.SuspendLayout();
             this.bottomToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -554,8 +546,8 @@ namespace IRISA.CommunicationCenter.Forms
             this.transfersDataGrid.AllowUserToAddRows = false;
             this.transfersDataGrid.AllowUserToDeleteRows = false;
             this.transfersDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.AliceBlue;
-            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
+            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.transfersDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.transfersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.transfersDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -618,10 +610,10 @@ namespace IRISA.CommunicationCenter.Forms
             // SendTimeColumn
             // 
             this.SendTimeColumn.DataPropertyName = "PersianSendTime";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.Format = "G";
-            dataGridViewCellStyle9.NullValue = null;
-            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "G";
+            dataGridViewCellStyle2.NullValue = null;
+            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.SendTimeColumn.HeaderText = "زمان ارسال";
             this.SendTimeColumn.Name = "SendTimeColumn";
             this.SendTimeColumn.ReadOnly = true;
@@ -630,10 +622,10 @@ namespace IRISA.CommunicationCenter.Forms
             // ReceiveTimeColumn
             // 
             this.ReceiveTimeColumn.DataPropertyName = "PersianReceiveTime";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.Format = "G";
-            dataGridViewCellStyle10.NullValue = null;
-            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "G";
+            dataGridViewCellStyle3.NullValue = null;
+            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.ReceiveTimeColumn.HeaderText = "زمان دریافت";
             this.ReceiveTimeColumn.Name = "ReceiveTimeColumn";
             this.ReceiveTimeColumn.ReadOnly = true;
@@ -1362,9 +1354,9 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.flowLayoutPanel13.AutoSize = true;
             this.flowLayoutPanel13.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel13.Controls.Add(this.resultsCountLabel);
+            this.flowLayoutPanel13.Controls.Add(this.TransfersResultsCountLabel);
             this.flowLayoutPanel13.Controls.Add(this.label20);
-            this.flowLayoutPanel13.Controls.Add(this.pageSizeLabel);
+            this.flowLayoutPanel13.Controls.Add(this.TransfersPageSizeLabel);
             this.flowLayoutPanel13.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel13.Location = new System.Drawing.Point(11, 22);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
@@ -1372,18 +1364,18 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel13.TabIndex = 64;
             this.flowLayoutPanel13.WrapContents = false;
             // 
-            // resultsCountLabel
+            // TransfersResultsCountLabel
             // 
-            this.resultsCountLabel.AutoSize = true;
-            this.resultsCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.resultsCountLabel.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.resultsCountLabel.Location = new System.Drawing.Point(3, 3);
-            this.resultsCountLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.resultsCountLabel.Name = "resultsCountLabel";
-            this.resultsCountLabel.Size = new System.Drawing.Size(15, 15);
-            this.resultsCountLabel.TabIndex = 61;
-            this.resultsCountLabel.Text = "0";
-            this.resultsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.TransfersResultsCountLabel.AutoSize = true;
+            this.TransfersResultsCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TransfersResultsCountLabel.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.TransfersResultsCountLabel.Location = new System.Drawing.Point(3, 3);
+            this.TransfersResultsCountLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.TransfersResultsCountLabel.Name = "TransfersResultsCountLabel";
+            this.TransfersResultsCountLabel.Size = new System.Drawing.Size(15, 15);
+            this.TransfersResultsCountLabel.TabIndex = 61;
+            this.TransfersResultsCountLabel.Text = "0";
+            this.TransfersResultsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label20
             // 
@@ -1395,18 +1387,18 @@ namespace IRISA.CommunicationCenter.Forms
             this.label20.TabIndex = 60;
             this.label20.Text = "از";
             // 
-            // pageSizeLabel
+            // TransfersPageSizeLabel
             // 
-            this.pageSizeLabel.AutoSize = true;
-            this.pageSizeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pageSizeLabel.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.pageSizeLabel.Location = new System.Drawing.Point(44, 3);
-            this.pageSizeLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.pageSizeLabel.Name = "pageSizeLabel";
-            this.pageSizeLabel.Size = new System.Drawing.Size(15, 15);
-            this.pageSizeLabel.TabIndex = 62;
-            this.pageSizeLabel.Text = "0";
-            this.pageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.TransfersPageSizeLabel.AutoSize = true;
+            this.TransfersPageSizeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TransfersPageSizeLabel.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.TransfersPageSizeLabel.Location = new System.Drawing.Point(44, 3);
+            this.TransfersPageSizeLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.TransfersPageSizeLabel.Name = "TransfersPageSizeLabel";
+            this.TransfersPageSizeLabel.Size = new System.Drawing.Size(15, 15);
+            this.TransfersPageSizeLabel.TabIndex = 62;
+            this.TransfersPageSizeLabel.Text = "0";
+            this.TransfersPageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // splitter11
             // 
@@ -1501,7 +1493,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.eventsTabPage.BackColor = System.Drawing.Color.White;
             this.eventsTabPage.Controls.Add(this.eventsDataGrid);
-            this.eventsTabPage.Controls.Add(this.iccEventSearchGroupBox);
+            this.eventsTabPage.Controls.Add(this.LogsSearchGroupBox);
             this.eventsTabPage.Controls.Add(this.eventsToolStrip);
             this.eventsTabPage.ImageIndex = 3;
             this.eventsTabPage.Location = new System.Drawing.Point(4, 31);
@@ -1515,13 +1507,13 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.AllowUserToAddRows = false;
             this.eventsDataGrid.AllowUserToDeleteRows = false;
             this.eventsDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.AliceBlue;
-            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.AliceBlue;
+            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.eventsDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.eventsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IdColumn,
             this.TimeColumn,
-            this.TypeColumn,
+            this.LogLevelColumn,
             this.TextColumn});
             this.eventsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.eventsDataGrid.Location = new System.Drawing.Point(0, 116);
@@ -1531,76 +1523,41 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.Size = new System.Drawing.Size(1086, 455);
             this.eventsDataGrid.TabIndex = 0;
             // 
-            // IdColumn
+            // LogsSearchGroupBox
             // 
-            this.IdColumn.DataPropertyName = "Id";
-            this.IdColumn.HeaderText = "شناسه";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.ReadOnly = true;
-            this.IdColumn.Width = 67;
-            // 
-            // TimeColumn
-            // 
-            this.TimeColumn.DataPropertyName = "PersianTime";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Format = "G";
-            dataGridViewCellStyle7.NullValue = null;
-            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle7;
-            this.TimeColumn.HeaderText = "زمان رویداد";
-            this.TimeColumn.Name = "TimeColumn";
-            this.TimeColumn.ReadOnly = true;
-            this.TimeColumn.Width = 130;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.DataPropertyName = "PersianType";
-            this.TypeColumn.HeaderText = "نوع رویداد";
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.ReadOnly = true;
-            this.TypeColumn.Width = 76;
-            // 
-            // TextColumn
-            // 
-            this.TextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TextColumn.DataPropertyName = "Text";
-            this.TextColumn.HeaderText = "متن رویداد";
-            this.TextColumn.MinimumWidth = 150;
-            this.TextColumn.Name = "TextColumn";
-            this.TextColumn.ReadOnly = true;
-            // 
-            // iccEventSearchGroupBox
-            // 
-            this.iccEventSearchGroupBox.Controls.Add(this.eventsSearchflowLayout);
-            this.iccEventSearchGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.iccEventSearchGroupBox.Location = new System.Drawing.Point(0, 31);
-            this.iccEventSearchGroupBox.Name = "iccEventSearchGroupBox";
-            this.iccEventSearchGroupBox.Size = new System.Drawing.Size(1086, 85);
-            this.iccEventSearchGroupBox.TabIndex = 15;
-            this.iccEventSearchGroupBox.TabStop = false;
-            this.iccEventSearchGroupBox.Text = "جستجو";
-            this.iccEventSearchGroupBox.Visible = false;
+            this.LogsSearchGroupBox.Controls.Add(this.eventsSearchflowLayout);
+            this.LogsSearchGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LogsSearchGroupBox.Location = new System.Drawing.Point(0, 31);
+            this.LogsSearchGroupBox.Name = "LogsSearchGroupBox";
+            this.LogsSearchGroupBox.Size = new System.Drawing.Size(1086, 85);
+            this.LogsSearchGroupBox.TabIndex = 15;
+            this.LogsSearchGroupBox.TabStop = false;
+            this.LogsSearchGroupBox.Text = "جستجو";
+            this.LogsSearchGroupBox.Visible = false;
             // 
             // eventsSearchflowLayout
             // 
             this.eventsSearchflowLayout.AutoScroll = true;
             this.eventsSearchflowLayout.AutoSize = true;
             this.eventsSearchflowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.eventsSearchflowLayout.Controls.Add(this.toolStrip1);
+            this.eventsSearchflowLayout.Controls.Add(this.ClearFiltersToolStrip);
             this.eventsSearchflowLayout.Controls.Add(this.splitter12);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel15);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel16);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel17);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel18);
+            this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel22);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel19);
             this.eventsSearchflowLayout.Controls.Add(this.splitter17);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel21);
-            this.eventsSearchflowLayout.Controls.Add(this.splitter18);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel23);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel14);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel24);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel25);
             this.eventsSearchflowLayout.Controls.Add(this.splitter21);
             this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel26);
+            this.eventsSearchflowLayout.Controls.Add(this.flowLayoutPanel28);
+            this.eventsSearchflowLayout.Controls.Add(this.splitter13);
             this.eventsSearchflowLayout.Controls.Add(this.DoIccEventSearch);
             this.eventsSearchflowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.eventsSearchflowLayout.Location = new System.Drawing.Point(3, 17);
@@ -1609,19 +1566,19 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsSearchflowLayout.TabIndex = 2;
             this.eventsSearchflowLayout.WrapContents = false;
             // 
-            // toolStrip1
+            // ClearFiltersToolStrip
             // 
-            this.toolStrip1.BackColor = System.Drawing.Color.Transparent;
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ClearFiltersToolStrip.BackColor = System.Drawing.Color.Transparent;
+            this.ClearFiltersToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClearFiltersToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.ClearFiltersToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearSearchEventsPanel});
-            this.toolStrip1.Location = new System.Drawing.Point(1024, 22);
-            this.toolStrip1.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(56, 43);
-            this.toolStrip1.TabIndex = 37;
-            this.toolStrip1.Text = "toolStrip1";
+            this.ClearFiltersToolStrip.Location = new System.Drawing.Point(1024, 22);
+            this.ClearFiltersToolStrip.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
+            this.ClearFiltersToolStrip.Name = "ClearFiltersToolStrip";
+            this.ClearFiltersToolStrip.Size = new System.Drawing.Size(56, 43);
+            this.ClearFiltersToolStrip.TabIndex = 37;
+            this.ClearFiltersToolStrip.Text = "ClearFiltersToolStrip";
             // 
             // clearSearchEventsPanel
             // 
@@ -1688,154 +1645,74 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel18.TabIndex = 3;
             this.flowLayoutPanel18.WrapContents = false;
             // 
+            // flowLayoutPanel22
+            // 
+            this.flowLayoutPanel22.Controls.Add(this.label19);
+            this.flowLayoutPanel22.Controls.Add(this.flowLayoutPanel30);
+            this.flowLayoutPanel22.Location = new System.Drawing.Point(896, 3);
+            this.flowLayoutPanel22.Name = "flowLayoutPanel22";
+            this.flowLayoutPanel22.Size = new System.Drawing.Size(100, 59);
+            this.flowLayoutPanel22.TabIndex = 73;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label19.Location = new System.Drawing.Point(8, 3);
+            this.label19.Margin = new System.Windows.Forms.Padding(3);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(89, 13);
+            this.label19.TabIndex = 71;
+            this.label19.Text = "تاریخ یا زمان رویداد";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // flowLayoutPanel30
+            // 
+            this.flowLayoutPanel30.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.flowLayoutPanel30.Controls.Add(this.LogTimeTextBox);
+            this.flowLayoutPanel30.Location = new System.Drawing.Point(1, 22);
+            this.flowLayoutPanel30.Name = "flowLayoutPanel30";
+            this.flowLayoutPanel30.Size = new System.Drawing.Size(96, 24);
+            this.flowLayoutPanel30.TabIndex = 72;
+            // 
+            // LogTimeTextBox
+            // 
+            this.LogTimeTextBox.Location = new System.Drawing.Point(11, 3);
+            this.LogTimeTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.LogTimeTextBox.Name = "LogTimeTextBox";
+            this.LogTimeTextBox.PromptChar = ' ';
+            this.LogTimeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.LogTimeTextBox.Size = new System.Drawing.Size(85, 21);
+            this.LogTimeTextBox.TabIndex = 0;
+            this.LogTimeTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
+            // 
             // flowLayoutPanel19
             // 
             this.flowLayoutPanel19.AutoSize = true;
             this.flowLayoutPanel19.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel19.Controls.Add(this.label23);
             this.flowLayoutPanel19.Controls.Add(this.flowLayoutPanel20);
             this.flowLayoutPanel19.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel19.Location = new System.Drawing.Point(815, 3);
+            this.flowLayoutPanel19.Location = new System.Drawing.Point(890, 3);
             this.flowLayoutPanel19.Name = "flowLayoutPanel19";
-            this.flowLayoutPanel19.Size = new System.Drawing.Size(181, 46);
+            this.flowLayoutPanel19.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel19.TabIndex = 4;
             this.flowLayoutPanel19.WrapContents = false;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label23.Location = new System.Drawing.Point(3, 3);
-            this.label23.Margin = new System.Windows.Forms.Padding(3);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(175, 13);
-            this.label23.TabIndex = 45;
-            this.label23.Text = "زمان رویداد از";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // flowLayoutPanel20
             // 
             this.flowLayoutPanel20.AutoSize = true;
             this.flowLayoutPanel20.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel20.Controls.Add(this.secondFromTextBox);
-            this.flowLayoutPanel20.Controls.Add(this.label24);
-            this.flowLayoutPanel20.Controls.Add(this.minuteFromTextBox);
-            this.flowLayoutPanel20.Controls.Add(this.label25);
-            this.flowLayoutPanel20.Controls.Add(this.hourFromTextBox);
-            this.flowLayoutPanel20.Controls.Add(this.label26);
-            this.flowLayoutPanel20.Controls.Add(this.label27);
-            this.flowLayoutPanel20.Controls.Add(this.eventDateFromTextBox);
-            this.flowLayoutPanel20.Location = new System.Drawing.Point(0, 19);
+            this.flowLayoutPanel20.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel20.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel20.Name = "flowLayoutPanel20";
-            this.flowLayoutPanel20.Size = new System.Drawing.Size(181, 27);
+            this.flowLayoutPanel20.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel20.TabIndex = 44;
             this.flowLayoutPanel20.WrapContents = false;
-            // 
-            // secondFromTextBox
-            // 
-            this.secondFromTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "SecondFrom", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.secondFromTextBox.Location = new System.Drawing.Point(157, 3);
-            this.secondFromTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.secondFromTextBox.Mask = "00";
-            this.secondFromTextBox.Name = "secondFromTextBox";
-            this.secondFromTextBox.PromptChar = ' ';
-            this.secondFromTextBox.Size = new System.Drawing.Size(24, 21);
-            this.secondFromTextBox.TabIndex = 3;
-            this.secondFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // iccEventSearchModelBindingSource
-            // 
-            this.iccEventSearchModelBindingSource.DataSource = typeof(IRISA.CommunicationCenter.Library.Models.IccEventSearchModel);
-            // 
-            // label24
-            // 
-            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(146, 0);
-            this.label24.Margin = new System.Windows.Forms.Padding(0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(11, 27);
-            this.label24.TabIndex = 42;
-            this.label24.Text = ":";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // minuteFromTextBox
-            // 
-            this.minuteFromTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "MinuteTo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.minuteFromTextBox.Location = new System.Drawing.Point(122, 3);
-            this.minuteFromTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.minuteFromTextBox.Mask = "00";
-            this.minuteFromTextBox.Name = "minuteFromTextBox";
-            this.minuteFromTextBox.PromptChar = ' ';
-            this.minuteFromTextBox.Size = new System.Drawing.Size(24, 21);
-            this.minuteFromTextBox.TabIndex = 2;
-            this.minuteFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // label25
-            // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(111, 0);
-            this.label25.Margin = new System.Windows.Forms.Padding(0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(11, 27);
-            this.label25.TabIndex = 41;
-            this.label25.Text = ":";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // hourFromTextBox
-            // 
-            this.hourFromTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "HourFrom", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.hourFromTextBox.Location = new System.Drawing.Point(87, 3);
-            this.hourFromTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.hourFromTextBox.Mask = "00";
-            this.hourFromTextBox.Name = "hourFromTextBox";
-            this.hourFromTextBox.PromptChar = ' ';
-            this.hourFromTextBox.Size = new System.Drawing.Size(24, 21);
-            this.hourFromTextBox.TabIndex = 1;
-            this.hourFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // label26
-            // 
-            this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(87, 0);
-            this.label26.Margin = new System.Windows.Forms.Padding(0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(0, 27);
-            this.label26.TabIndex = 43;
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label27
-            // 
-            this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(77, 0);
-            this.label27.Margin = new System.Windows.Forms.Padding(0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(10, 27);
-            this.label27.TabIndex = 44;
-            this.label27.Text = " ";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // eventDateFromTextBox
-            // 
-            this.eventDateFromTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "EventDateFrom", true));
-            this.eventDateFromTextBox.Location = new System.Drawing.Point(0, 3);
-            this.eventDateFromTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.eventDateFromTextBox.Mask = "1400/00/00";
-            this.eventDateFromTextBox.Name = "eventDateFromTextBox";
-            this.eventDateFromTextBox.PromptChar = ' ';
-            this.eventDateFromTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.eventDateFromTextBox.Size = new System.Drawing.Size(77, 21);
-            this.eventDateFromTextBox.TabIndex = 0;
-            this.eventDateFromTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter17
             // 
             this.splitter17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter17.Location = new System.Drawing.Point(811, 0);
+            this.splitter17.Location = new System.Drawing.Point(886, 0);
             this.splitter17.Margin = new System.Windows.Forms.Padding(0);
             this.splitter17.Name = "splitter17";
             this.splitter17.Size = new System.Drawing.Size(1, 65);
@@ -1846,146 +1723,19 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.flowLayoutPanel21.AutoSize = true;
             this.flowLayoutPanel21.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel21.Controls.Add(this.label28);
-            this.flowLayoutPanel21.Controls.Add(this.flowLayoutPanel22);
             this.flowLayoutPanel21.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel21.Location = new System.Drawing.Point(627, 3);
+            this.flowLayoutPanel21.Location = new System.Drawing.Point(883, 3);
             this.flowLayoutPanel21.Name = "flowLayoutPanel21";
-            this.flowLayoutPanel21.Size = new System.Drawing.Size(181, 46);
+            this.flowLayoutPanel21.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel21.TabIndex = 5;
             this.flowLayoutPanel21.WrapContents = false;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label28.Location = new System.Drawing.Point(3, 3);
-            this.label28.Margin = new System.Windows.Forms.Padding(3);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(175, 13);
-            this.label28.TabIndex = 45;
-            this.label28.Text = "زمان رویداد تا";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // flowLayoutPanel22
-            // 
-            this.flowLayoutPanel22.AutoSize = true;
-            this.flowLayoutPanel22.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel22.Controls.Add(this.secondToTextBox);
-            this.flowLayoutPanel22.Controls.Add(this.label29);
-            this.flowLayoutPanel22.Controls.Add(this.minuteToTextBox);
-            this.flowLayoutPanel22.Controls.Add(this.label30);
-            this.flowLayoutPanel22.Controls.Add(this.hourToTextBox);
-            this.flowLayoutPanel22.Controls.Add(this.label31);
-            this.flowLayoutPanel22.Controls.Add(this.EventDateTo);
-            this.flowLayoutPanel22.Location = new System.Drawing.Point(0, 19);
-            this.flowLayoutPanel22.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel22.Name = "flowLayoutPanel22";
-            this.flowLayoutPanel22.Size = new System.Drawing.Size(181, 27);
-            this.flowLayoutPanel22.TabIndex = 44;
-            this.flowLayoutPanel22.WrapContents = false;
-            // 
-            // secondToTextBox
-            // 
-            this.secondToTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "SecondTo", true));
-            this.secondToTextBox.Location = new System.Drawing.Point(157, 3);
-            this.secondToTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.secondToTextBox.Mask = "00";
-            this.secondToTextBox.Name = "secondToTextBox";
-            this.secondToTextBox.PromptChar = ' ';
-            this.secondToTextBox.Size = new System.Drawing.Size(24, 21);
-            this.secondToTextBox.TabIndex = 3;
-            this.secondToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(146, 0);
-            this.label29.Margin = new System.Windows.Forms.Padding(0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(11, 27);
-            this.label29.TabIndex = 42;
-            this.label29.Text = ":";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // minuteToTextBox
-            // 
-            this.minuteToTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "MinuteTo", true));
-            this.minuteToTextBox.Location = new System.Drawing.Point(122, 3);
-            this.minuteToTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.minuteToTextBox.Mask = "00";
-            this.minuteToTextBox.Name = "minuteToTextBox";
-            this.minuteToTextBox.PromptChar = ' ';
-            this.minuteToTextBox.Size = new System.Drawing.Size(24, 21);
-            this.minuteToTextBox.TabIndex = 2;
-            this.minuteToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // label30
-            // 
-            this.label30.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(111, 0);
-            this.label30.Margin = new System.Windows.Forms.Padding(0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(11, 27);
-            this.label30.TabIndex = 41;
-            this.label30.Text = ":";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // hourToTextBox
-            // 
-            this.hourToTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "HourTo", true));
-            this.hourToTextBox.Location = new System.Drawing.Point(87, 3);
-            this.hourToTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.hourToTextBox.Mask = "00";
-            this.hourToTextBox.Name = "hourToTextBox";
-            this.hourToTextBox.PromptChar = ' ';
-            this.hourToTextBox.Size = new System.Drawing.Size(24, 21);
-            this.hourToTextBox.TabIndex = 1;
-            this.hourToTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // label31
-            // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(77, 0);
-            this.label31.Margin = new System.Windows.Forms.Padding(0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(10, 27);
-            this.label31.TabIndex = 43;
-            this.label31.Text = " ";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // EventDateTo
-            // 
-            this.EventDateTo.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.iccEventSearchModelBindingSource, "EventDateTo", true));
-            this.EventDateTo.Location = new System.Drawing.Point(0, 3);
-            this.EventDateTo.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.EventDateTo.Mask = "1400/00/00";
-            this.EventDateTo.Name = "EventDateTo";
-            this.EventDateTo.PromptChar = ' ';
-            this.EventDateTo.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.EventDateTo.Size = new System.Drawing.Size(77, 21);
-            this.EventDateTo.TabIndex = 0;
-            this.EventDateTo.Click += new System.EventHandler(this.MaskedTextBox_Click);
-            // 
-            // splitter18
-            // 
-            this.splitter18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter18.Location = new System.Drawing.Point(623, 0);
-            this.splitter18.Margin = new System.Windows.Forms.Padding(0);
-            this.splitter18.Name = "splitter18";
-            this.splitter18.Size = new System.Drawing.Size(1, 65);
-            this.splitter18.TabIndex = 57;
-            this.splitter18.TabStop = false;
             // 
             // flowLayoutPanel23
             // 
             this.flowLayoutPanel23.AutoSize = true;
             this.flowLayoutPanel23.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel23.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel23.Location = new System.Drawing.Point(620, 3);
+            this.flowLayoutPanel23.Location = new System.Drawing.Point(877, 3);
             this.flowLayoutPanel23.Name = "flowLayoutPanel23";
             this.flowLayoutPanel23.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel23.TabIndex = 6;
@@ -1995,16 +1745,16 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.flowLayoutPanel14.Controls.Add(this.label34);
             this.flowLayoutPanel14.Controls.Add(this.flowLayoutPanel27);
-            this.flowLayoutPanel14.Location = new System.Drawing.Point(455, 3);
+            this.flowLayoutPanel14.Location = new System.Drawing.Point(734, 3);
             this.flowLayoutPanel14.Name = "flowLayoutPanel14";
-            this.flowLayoutPanel14.Size = new System.Drawing.Size(159, 59);
+            this.flowLayoutPanel14.Size = new System.Drawing.Size(137, 59);
             this.flowLayoutPanel14.TabIndex = 65;
             // 
             // label34
             // 
             this.label34.AutoSize = true;
             this.label34.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label34.Location = new System.Drawing.Point(105, 3);
+            this.label34.Location = new System.Drawing.Point(83, 3);
             this.label34.Margin = new System.Windows.Forms.Padding(3);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(51, 13);
@@ -2015,28 +1765,26 @@ namespace IRISA.CommunicationCenter.Forms
             // flowLayoutPanel27
             // 
             this.flowLayoutPanel27.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.flowLayoutPanel27.Controls.Add(this.statusTypeComboBox);
-            this.flowLayoutPanel27.Location = new System.Drawing.Point(0, 22);
+            this.flowLayoutPanel27.Controls.Add(this.LogLevelComboBox);
+            this.flowLayoutPanel27.Location = new System.Drawing.Point(-22, 22);
             this.flowLayoutPanel27.Name = "flowLayoutPanel27";
             this.flowLayoutPanel27.Size = new System.Drawing.Size(156, 24);
             this.flowLayoutPanel27.TabIndex = 72;
             // 
-            // statusTypeComboBox
+            // LogLevelComboBox
             // 
-            this.statusTypeComboBox.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.iccEventSearchModelBindingSource, "Type", true));
-            this.statusTypeComboBox.DataSource = this.iccEventSearchModelBindingSource;
-            this.statusTypeComboBox.FormattingEnabled = true;
-            this.statusTypeComboBox.Location = new System.Drawing.Point(32, 3);
-            this.statusTypeComboBox.Name = "statusTypeComboBox";
-            this.statusTypeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.statusTypeComboBox.TabIndex = 73;
+            this.LogLevelComboBox.FormattingEnabled = true;
+            this.LogLevelComboBox.Location = new System.Drawing.Point(32, 3);
+            this.LogLevelComboBox.Name = "LogLevelComboBox";
+            this.LogLevelComboBox.Size = new System.Drawing.Size(121, 21);
+            this.LogLevelComboBox.TabIndex = 73;
             // 
             // flowLayoutPanel24
             // 
             this.flowLayoutPanel24.AutoSize = true;
             this.flowLayoutPanel24.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel24.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel24.Location = new System.Drawing.Point(449, 3);
+            this.flowLayoutPanel24.Location = new System.Drawing.Point(728, 3);
             this.flowLayoutPanel24.Name = "flowLayoutPanel24";
             this.flowLayoutPanel24.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel24.TabIndex = 7;
@@ -2047,7 +1795,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel25.AutoSize = true;
             this.flowLayoutPanel25.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel25.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel25.Location = new System.Drawing.Point(443, 3);
+            this.flowLayoutPanel25.Location = new System.Drawing.Point(722, 3);
             this.flowLayoutPanel25.Name = "flowLayoutPanel25";
             this.flowLayoutPanel25.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel25.TabIndex = 8;
@@ -2056,7 +1804,7 @@ namespace IRISA.CommunicationCenter.Forms
             // splitter21
             // 
             this.splitter21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter21.Location = new System.Drawing.Point(439, 0);
+            this.splitter21.Location = new System.Drawing.Point(718, 0);
             this.splitter21.Margin = new System.Windows.Forms.Padding(0);
             this.splitter21.Name = "splitter21";
             this.splitter21.Size = new System.Drawing.Size(1, 65);
@@ -2068,15 +1816,99 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel26.AutoSize = true;
             this.flowLayoutPanel26.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel26.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel26.Location = new System.Drawing.Point(436, 3);
+            this.flowLayoutPanel26.Location = new System.Drawing.Point(715, 3);
             this.flowLayoutPanel26.Name = "flowLayoutPanel26";
             this.flowLayoutPanel26.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel26.TabIndex = 60;
             this.flowLayoutPanel26.WrapContents = false;
             // 
+            // flowLayoutPanel28
+            // 
+            this.flowLayoutPanel28.AutoSize = true;
+            this.flowLayoutPanel28.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel28.Controls.Add(this.label18);
+            this.flowLayoutPanel28.Controls.Add(this.flowLayoutPanel29);
+            this.flowLayoutPanel28.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel28.Location = new System.Drawing.Point(633, 3);
+            this.flowLayoutPanel28.Name = "flowLayoutPanel28";
+            this.flowLayoutPanel28.Size = new System.Drawing.Size(76, 46);
+            this.flowLayoutPanel28.TabIndex = 66;
+            this.flowLayoutPanel28.WrapContents = false;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(3, 3);
+            this.label18.Margin = new System.Windows.Forms.Padding(3);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(70, 13);
+            this.label18.TabIndex = 60;
+            this.label18.Text = "تعداد رکورد ها";
+            // 
+            // flowLayoutPanel29
+            // 
+            this.flowLayoutPanel29.AutoSize = true;
+            this.flowLayoutPanel29.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel29.Controls.Add(this.LogsResultsCountLabel);
+            this.flowLayoutPanel29.Controls.Add(this.label21);
+            this.flowLayoutPanel29.Controls.Add(this.LogsPageSizeLabel);
+            this.flowLayoutPanel29.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel29.Location = new System.Drawing.Point(11, 22);
+            this.flowLayoutPanel29.Name = "flowLayoutPanel29";
+            this.flowLayoutPanel29.Size = new System.Drawing.Size(62, 21);
+            this.flowLayoutPanel29.TabIndex = 64;
+            this.flowLayoutPanel29.WrapContents = false;
+            // 
+            // LogsResultsCountLabel
+            // 
+            this.LogsResultsCountLabel.AutoSize = true;
+            this.LogsResultsCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LogsResultsCountLabel.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.LogsResultsCountLabel.Location = new System.Drawing.Point(3, 3);
+            this.LogsResultsCountLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.LogsResultsCountLabel.Name = "LogsResultsCountLabel";
+            this.LogsResultsCountLabel.Size = new System.Drawing.Size(15, 15);
+            this.LogsResultsCountLabel.TabIndex = 61;
+            this.LogsResultsCountLabel.Text = "0";
+            this.LogsResultsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(24, 3);
+            this.label21.Margin = new System.Windows.Forms.Padding(3);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(14, 13);
+            this.label21.TabIndex = 60;
+            this.label21.Text = "از";
+            // 
+            // LogsPageSizeLabel
+            // 
+            this.LogsPageSizeLabel.AutoSize = true;
+            this.LogsPageSizeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LogsPageSizeLabel.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.LogsPageSizeLabel.Location = new System.Drawing.Point(44, 3);
+            this.LogsPageSizeLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.LogsPageSizeLabel.Name = "LogsPageSizeLabel";
+            this.LogsPageSizeLabel.Size = new System.Drawing.Size(15, 15);
+            this.LogsPageSizeLabel.TabIndex = 62;
+            this.LogsPageSizeLabel.Text = "0";
+            this.LogsPageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // splitter13
+            // 
+            this.splitter13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitter13.Location = new System.Drawing.Point(629, 0);
+            this.splitter13.Margin = new System.Windows.Forms.Padding(0);
+            this.splitter13.Name = "splitter13";
+            this.splitter13.Size = new System.Drawing.Size(1, 65);
+            this.splitter13.TabIndex = 67;
+            this.splitter13.TabStop = false;
+            // 
             // DoIccEventSearch
             // 
-            this.DoIccEventSearch.Location = new System.Drawing.Point(355, 3);
+            this.DoIccEventSearch.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DoIccEventSearch.Location = new System.Drawing.Point(551, 21);
             this.DoIccEventSearch.Name = "DoIccEventSearch";
             this.DoIccEventSearch.Size = new System.Drawing.Size(75, 23);
             this.DoIccEventSearch.TabIndex = 64;
@@ -2249,6 +2081,42 @@ namespace IRISA.CommunicationCenter.Forms
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
             // 
+            // IdColumn
+            // 
+            this.IdColumn.DataPropertyName = "Id";
+            this.IdColumn.HeaderText = "شناسه";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.ReadOnly = true;
+            this.IdColumn.Width = 67;
+            // 
+            // TimeColumn
+            // 
+            this.TimeColumn.DataPropertyName = "PersianTime";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.NullValue = null;
+            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            this.TimeColumn.HeaderText = "زمان رویداد";
+            this.TimeColumn.Name = "TimeColumn";
+            this.TimeColumn.ReadOnly = true;
+            this.TimeColumn.Width = 130;
+            // 
+            // LogLevelColumn
+            // 
+            this.LogLevelColumn.DataPropertyName = "PersianLogLevel";
+            this.LogLevelColumn.HeaderText = "نوع رویداد";
+            this.LogLevelColumn.Name = "LogLevelColumn";
+            this.LogLevelColumn.ReadOnly = true;
+            this.LogLevelColumn.Width = 76;
+            // 
+            // TextColumn
+            // 
+            this.TextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TextColumn.DataPropertyName = "Text";
+            this.TextColumn.HeaderText = "متن رویداد";
+            this.TextColumn.MinimumWidth = 150;
+            this.TextColumn.Name = "TextColumn";
+            this.TextColumn.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2319,24 +2187,25 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsTabPage.ResumeLayout(false);
             this.eventsTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventsDataGrid)).EndInit();
-            this.iccEventSearchGroupBox.ResumeLayout(false);
-            this.iccEventSearchGroupBox.PerformLayout();
+            this.LogsSearchGroupBox.ResumeLayout(false);
+            this.LogsSearchGroupBox.PerformLayout();
             this.eventsSearchflowLayout.ResumeLayout(false);
             this.eventsSearchflowLayout.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.flowLayoutPanel19.ResumeLayout(false);
-            this.flowLayoutPanel19.PerformLayout();
-            this.flowLayoutPanel20.ResumeLayout(false);
-            this.flowLayoutPanel20.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.iccEventSearchModelBindingSource)).EndInit();
-            this.flowLayoutPanel21.ResumeLayout(false);
-            this.flowLayoutPanel21.PerformLayout();
+            this.ClearFiltersToolStrip.ResumeLayout(false);
+            this.ClearFiltersToolStrip.PerformLayout();
             this.flowLayoutPanel22.ResumeLayout(false);
             this.flowLayoutPanel22.PerformLayout();
+            this.flowLayoutPanel30.ResumeLayout(false);
+            this.flowLayoutPanel30.PerformLayout();
+            this.flowLayoutPanel19.ResumeLayout(false);
+            this.flowLayoutPanel19.PerformLayout();
             this.flowLayoutPanel14.ResumeLayout(false);
             this.flowLayoutPanel14.PerformLayout();
             this.flowLayoutPanel27.ResumeLayout(false);
+            this.flowLayoutPanel28.ResumeLayout(false);
+            this.flowLayoutPanel28.PerformLayout();
+            this.flowLayoutPanel29.ResumeLayout(false);
+            this.flowLayoutPanel29.PerformLayout();
             this.eventsToolStrip.ResumeLayout(false);
             this.eventsToolStrip.PerformLayout();
             this.bottomToolStrip.ResumeLayout(false);
@@ -2347,10 +2216,9 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private Button DoTelegramSearch;
         private ToolStripButton iccEventSearchButton;
-        private BindingSource iccEventSearchModelBindingSource;
-        private GroupBox iccEventSearchGroupBox;
+        private GroupBox LogsSearchGroupBox;
         private FlowLayoutPanel eventsSearchflowLayout;
-        private ToolStrip toolStrip1;
+        private ToolStrip ClearFiltersToolStrip;
         private ToolStripButton clearSearchEventsPanel;
         private Splitter splitter12;
         private FlowLayoutPanel flowLayoutPanel15;
@@ -2358,28 +2226,10 @@ namespace IRISA.CommunicationCenter.Forms
         private FlowLayoutPanel flowLayoutPanel17;
         private FlowLayoutPanel flowLayoutPanel18;
         private FlowLayoutPanel flowLayoutPanel19;
-        private Label label23;
         private FlowLayoutPanel flowLayoutPanel20;
-        private MaskedTextBox secondFromTextBox;
-        private Label label24;
-        private MaskedTextBox minuteFromTextBox;
-        private Label label25;
-        private MaskedTextBox hourFromTextBox;
-        private Label label26;
-        private Label label27;
-        private MaskedTextBox eventDateFromTextBox;
+        private MaskedTextBox LogTimeTextBox;
         private Splitter splitter17;
         private FlowLayoutPanel flowLayoutPanel21;
-        private Label label28;
-        private FlowLayoutPanel flowLayoutPanel22;
-        private MaskedTextBox secondToTextBox;
-        private Label label29;
-        private MaskedTextBox minuteToTextBox;
-        private Label label30;
-        private MaskedTextBox hourToTextBox;
-        private Label label31;
-        private MaskedTextBox EventDateTo;
-        private Splitter splitter18;
         private FlowLayoutPanel flowLayoutPanel23;
         private FlowLayoutPanel flowLayoutPanel24;
         private FlowLayoutPanel flowLayoutPanel25;
@@ -2389,11 +2239,7 @@ namespace IRISA.CommunicationCenter.Forms
         private FlowLayoutPanel flowLayoutPanel14;
         private Label label34;
         private FlowLayoutPanel flowLayoutPanel27;
-        private ComboBox statusTypeComboBox;
-        private DataGridViewTextBoxColumn IdColumn;
-        private DataGridViewTextBoxColumn TimeColumn;
-        private DataGridViewTextBoxColumn TypeColumn;
-        private DataGridViewTextBoxColumn TextColumn;
+        private ComboBox LogLevelComboBox;
         private DataGridViewTextBoxColumn transfersIdColumn;
         private DataGridViewTextBoxColumn sourceColumn;
         private DataGridViewTextBoxColumn DestinationColumn;
@@ -2404,5 +2250,19 @@ namespace IRISA.CommunicationCenter.Forms
         private DataGridViewTextBoxColumn SentColumn;
         private DataGridViewTextBoxColumn DroppedColumn;
         private DataGridViewTextBoxColumn DropReasonColumn;
+        private FlowLayoutPanel flowLayoutPanel28;
+        private Label label18;
+        private FlowLayoutPanel flowLayoutPanel29;
+        private Label LogsResultsCountLabel;
+        private Label label21;
+        private Label LogsPageSizeLabel;
+        private Splitter splitter13;
+        private FlowLayoutPanel flowLayoutPanel22;
+        private Label label19;
+        private FlowLayoutPanel flowLayoutPanel30;
+        private DataGridViewTextBoxColumn IdColumn;
+        private DataGridViewTextBoxColumn TimeColumn;
+        private DataGridViewTextBoxColumn LogLevelColumn;
+        private DataGridViewTextBoxColumn TextColumn;
     }
 }

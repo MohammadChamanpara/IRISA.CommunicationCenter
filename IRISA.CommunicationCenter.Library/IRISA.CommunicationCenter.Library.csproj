@@ -63,13 +63,12 @@
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Models\PersianDateTime.cs" />
     <Compile Include="Logging\BaseLogger.cs" />
-    <Compile Include="Logging\EventType.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LogEvent.cs" />
     <Compile Include="Logging\LoggerInFile.cs" />
     <Compile Include="Logging\LoggerInMemory.cs" />
-    <Compile Include="Models\IccEventSearchModel.cs" />
-    <Compile Include="Models\IccEventStatus.cs" />
+    <Compile Include="Logging\LogSearchModel.cs" />
     <Compile Include="Models\IccTelegram.cs" />
     <Compile Include="Models\IccTelegramSearchModel.cs" />
     <Compile Include="Definitions\NodeBase.cs" />

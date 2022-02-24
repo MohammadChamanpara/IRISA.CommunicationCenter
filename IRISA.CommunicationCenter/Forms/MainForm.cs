@@ -24,44 +24,46 @@ namespace IRISA.CommunicationCenter.Forms
         private IccCore iccCore;
         private UiSettings uiSettings;
         private bool refreshingRecordsEnabled = false;
-        public IccEventSearchModel IccEventSearchModel { get; set; }
         #endregion
 
         public MainForm()
         {
             InitializeComponent();
         }
+
         private void StartApplication()
         {
-            InitialIccCore();
-            InitialUiSettings();
-            iccCore.Start();
-            LoadAdapters();
-            LoadSettings();
-            LoadStatusTypeComboBox();
-            transfersDataGrid.Click += DataGrid_Click;
-            eventsDataGrid.Click += DataGrid_Click;
-            stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
-            stopStartApplicationButton.Image = Resources.stop;
-            settingsPropertyGrid.Enabled = false;
-            Text = uiSettings.ProgramTitle;
-            notifyIcon.Text = uiSettings.ProgramTitle;
-            Application.DoEvents();
-            if (!iccCore.Started)
+            try
             {
-                StopApplication();
+                InitialIccCore();
+                InitialUiSettings();
+                iccCore.Start();
+                LoadAdapters();
+                LoadSettings();
+                LoadLogLevelComboBox();
+                transfersDataGrid.Click += DataGrid_Click;
+                eventsDataGrid.Click += DataGrid_Click;
+                stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
+                stopStartApplicationButton.Image = Resources.stop;
+                settingsPropertyGrid.Enabled = false;
+                Text = uiSettings.ProgramTitle;
+                notifyIcon.Text = uiSettings.ProgramTitle;
+                Application.DoEvents();
+                if (!iccCore.Started)
+                {
+                    StopApplication();
+                }
+                StartRefreshingRecords();
             }
-            if (IccEventSearchModel == null)
+            catch (Exception exception)
             {
-                IccEventSearchModel = new IccEventSearchModel();
+                iccCore?.Logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
             }
-            if (iccEventSearchModelBindingSource == null)
+            finally
             {
-                iccEventSearchModelBindingSource = new BindingSource();
+                if (!iccCore.Started)
+                    StopApplication();
             }
-            iccEventSearchModelBindingSource.DataSource = typeof(IccEventSearchModel);
-            iccEventSearchModelBindingSource.Add(IccEventSearchModel);
-            StartRefreshingRecords();
         }
 
         private void DataGrid_Click(object sender, EventArgs e)
@@ -92,6 +94,22 @@ namespace IRISA.CommunicationCenter.Forms
             SetRefreshStatus(false);
         }
 
+        private void SetRefreshStatus(bool newStatus)
+        {
+            refreshingRecordsEnabled = newStatus;
+            if (refreshingRecordsEnabled)
+            {
+                transfersRefreshButton.Image = Resources.refresh;
+                eventsRefreshButton.Image = Resources.refresh;
+            }
+            else
+            {
+                transfersRefreshButton.Image = Resources.refresh_disable;
+                eventsRefreshButton.Image = Resources.refresh_disable;
+            }
+            Application.DoEvents();
+        }
+
         private void StopApplication()
         {
             try
@@ -107,38 +125,51 @@ namespace IRISA.CommunicationCenter.Forms
                 iccCore?.Logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
             }
         }
+
         private void RestartApplication()
         {
             StopApplication();
             StartApplication();
         }
+
         private void InitialIccCore()
         {
             iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
         }
+
         private void InitialUiSettings()
         {
             uiSettings = new UiSettings();
         }
-        private void LoadTransfers()
-        {
-            LoadTransfers(uiSettings.RecordsLoadCount);
-        }
-        private void LoadStatusTypeComboBox()
+
+        private void LoadLogLevelComboBox()
         {
             try
             {
-                var eventStatuses = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("", "همه")
-                };
-                foreach (int value in Enum.GetValues(typeof(IccEventStatus)))
-                    eventStatuses.Add(new KeyValuePair<string, string>(GetEnumDescription((IccEventStatus)value), GetEnumDescription((IccEventStatus)value)));
-                statusTypeComboBox.DataSource = eventStatuses;
-                statusTypeComboBox.ValueMember = "Key";
-                statusTypeComboBox.DisplayMember = "Value";
+                //var logLevels = new List<KeyValuePair<int, string>>
+                //{
+                //    new KeyValuePair<int, string>(-1, "همه")
+                //};
+                //foreach (int logLevel in Enum.GetValues(typeof(LogLevel)))
+                //{
+                //    var value = ((LogLevel)logLevel).ToPersian();
+                //    logLevels.Add(new KeyValuePair<int, string>(logLevel, value));
+                //}
 
-                statusTypeComboBox.SelectedIndex = -1;
+                var logLevels = new List<string>
+                {
+                };
+                foreach (int logLevel in Enum.GetValues(typeof(LogLevel)))
+                {
+                    var value = ((LogLevel)logLevel).ToPersian();
+                    logLevels.Add(value);
+                }
+
+                LogLevelComboBox.DataSource = logLevels;
+                //LogLevelComboBox.ValueMember = "Key";
+                //LogLevelComboBox.DisplayMember = "Value";
+
+                LogLevelComboBox.SelectedIndex = -1;
             }
             catch (Exception exception)
             {
@@ -146,17 +177,6 @@ namespace IRISA.CommunicationCenter.Forms
             }
         }
 
-        public string GetEnumDescription(Enum enumValue)
-        {
-            System.Reflection.FieldInfo fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
-            DescriptionAttribute[] attributes =
-                (DescriptionAttribute[])fieldInfo.GetCustomAttributes
-                (typeof(DescriptionAttribute), false);
-
-            return (attributes.Length > 0)
-                ? attributes[0].Description
-                : enumValue.ToString();
-        }
         private void CopySearchControlsToSearchModel(IccTelegramSearchModel searchModel)
         {
             if (long.TryParse(idTextBox.Text, out long transferId))
@@ -207,6 +227,33 @@ namespace IRISA.CommunicationCenter.Forms
                 searchModel.Dropped = droppedCheckBox.Checked;
         }
 
+        private void CopyEventSearchControlsToSearchModel(LogSearchModel searchModel)
+        {
+            if (LogTimeTextBox.Text.HasValue())
+                searchModel.PersianTime = LogTimeTextBox.Text;
+
+            if (LogLevelComboBox.SelectedIndex > -1)
+                searchModel.LogLevel = (LogLevel)LogLevelComboBox.SelectedIndex;
+        }
+
+        private void LoadRecords()
+        {
+            LoadEvents();
+            LoadTransfers();
+        }
+
+        private void LoadMoreRecords()
+        {
+            LoadMoreEvents();
+            LoadMoreTransfers();
+            StopRefreshingRecords();
+        }
+
+        private void LoadTransfers()
+        {
+            LoadTransfers(uiSettings.RecordsLoadCount);
+        }
+
         private void LoadTransfers(int pageSize)
         {
             try
@@ -230,158 +277,69 @@ namespace IRISA.CommunicationCenter.Forms
                 pageSize = Math.Min(pageSize, resultsCount);
 
                 SortableBindingList<IccTelegram> source = new SortableBindingList<IccTelegram>(telegrams);
-                base.Invoke(new Action(() =>
-                {
-                    transfersDataGrid.DataSource = source;
-                }));
 
                 base.Invoke(new Action(() =>
                 {
-                    resultsCountLabel.Text = GroupDigits(resultsCount);
+                    transfersDataGrid.DataSource = source;
+                    TransfersResultsCountLabel.Text = GroupDigits(resultsCount);
+                    TransfersPageSizeLabel.Text = GroupDigits(pageSize);
                 }));
-                base.Invoke(new Action(() =>
-                {
-                    pageSizeLabel.Text = GroupDigits(pageSize);
-                }));
+
             }
             catch (Exception exception)
             {
                 iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
             }
         }
-        public string GroupDigits(int number)
-        {
-            string text = number.ToString();
-            if (text.Length > 3)
-            {
-                text = text.Insert(text.Length - 3, ",");
-            }
-            if (text.Length > 7)
-            {
-                text = text.Insert(text.Length - 7, ",");
-            }
-            if (text.Length > 11)
-            {
-                text = text.Insert(text.Length - 11, ",");
-            }
-            return text;
-        }
+
         private void LoadMoreTransfers()
         {
             LoadTransfers(transfersDataGrid.Rows.Count + uiSettings.RecordsIncrementCount);
         }
+
         private void LoadEvents()
         {
             LoadEvents(uiSettings.RecordsLoadCount);
         }
-        private void LoadEvents(int recordCount)
+
+        private void LoadEvents(int pageSize)
         {
             try
             {
-                if (base.Visible)
+                if (!base.Visible)
+                    return;
+
+                if (GetSelectedTab() != eventsTabPage)
+                    return;
+
+                LogSearchModel searchModel = new LogSearchModel();
+
+                if (LogsSearchGroupBox.Visible)
+                    Invoke(new Action(() => { CopyEventSearchControlsToSearchModel(searchModel); }));
+
+                var query = iccCore.Logger.GetLogs(searchModel, pageSize, out int resultsCount);
+
+                pageSize = Math.Min(pageSize, resultsCount);
+
+                SortableBindingList<LogEvent> source = new SortableBindingList<LogEvent>(query);
+                base.Invoke(new Action(() =>
                 {
-                    if (GetSelectedTab() == eventsTabPage)
-                    {
-                        var query = iccCore.Logger.GetLogs();
-
-                        if (!string.IsNullOrEmpty(IccEventSearchModel.EventDateFrom))
-                        {
-                            var date = IccEventSearchModel.EventDateFrom.ToEnglishDate();
-                            query = query.Where(x => x.Time >= date);
-                        }
-                        if (IccEventSearchModel.HourFrom.HasValue)
-                        {
-                            if (!(IccEventSearchModel.HourFrom >= 0 && IccEventSearchModel.HourFrom <= 23))
-                            {
-                                string error = "ساعت باید بین 0 تا 23 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Hour >= IccEventSearchModel.HourFrom);
-                        }
-                        if (IccEventSearchModel.MinuteFrom.HasValue)
-                        {
-                            if (!(IccEventSearchModel.MinuteFrom >= 0 && IccEventSearchModel.MinuteFrom <= 59))
-                            {
-                                string error = "دقیقه باید بین 0 تا 59 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Minute >= IccEventSearchModel.MinuteFrom);
-                        }
-                        if (IccEventSearchModel.SecondFrom.HasValue)
-                        {
-                            if (!(IccEventSearchModel.SecondFrom >= 0 && IccEventSearchModel.SecondFrom <= 59))
-                            {
-                                string error = "ثانیه باید بین 0 تا 59 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Second >= IccEventSearchModel.SecondFrom);
-                        }
-                        if (!string.IsNullOrEmpty(IccEventSearchModel.EventDateTo))
-                        {
-                            var date = IccEventSearchModel.EventDateTo.ToEnglishDate();
-                            query = query.Where(x => x.Time <= date);
-                        }
-                        if (IccEventSearchModel.HourTo.HasValue)
-                        {
-                            if (!(IccEventSearchModel.HourTo >= 0 && IccEventSearchModel.HourTo <= 23))
-                            {
-                                string error = "ساعت باید بین 0 تا 23 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Hour <= IccEventSearchModel.HourTo);
-                        }
-                        if (IccEventSearchModel.MinuteTo.HasValue)
-                        {
-                            if (!(IccEventSearchModel.MinuteTo >= 0 && IccEventSearchModel.MinuteTo <= 59))
-                            {
-                                string error = "دقیقه باید بین 0 تا 59 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Minute <= IccEventSearchModel.MinuteTo);
-                        }
-                        if (IccEventSearchModel.SecondTo.HasValue)
-                        {
-                            if (!(IccEventSearchModel.SecondTo >= 0 && IccEventSearchModel.SecondTo <= 59))
-                            {
-                                string error = "ثانیه باید بین 0 تا 59 باشد";
-                                throw new Exception(error);
-                            }
-                            query = query.Where(x => x.Time.Second <= IccEventSearchModel.SecondTo);
-                        }
-                        if (!string.IsNullOrEmpty(IccEventSearchModel.Type))
-                        {
-                            query = query.Where(x => x.PersianType.Contains(IccEventSearchModel.Type));
-                        }
-
-                        query = query.OrderByDescending(x => x.Id).Take(recordCount);
-                        SortableBindingList<LogEvent> source = new SortableBindingList<LogEvent>(query);
-                        base.Invoke(new Action(() =>
-                        {
-                            eventsDataGrid.DataSource = source;
-                        }));
-                    }
-                }
+                    eventsDataGrid.DataSource = source;
+                    LogsResultsCountLabel.Text = GroupDigits(resultsCount);
+                    LogsPageSizeLabel.Text = GroupDigits(pageSize);
+                }));
             }
             catch (Exception exception)
             {
                 iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
             }
         }
+
         private void LoadMoreEvents()
         {
             LoadEvents(eventsDataGrid.Rows.Count + uiSettings.RecordsIncrementCount);
         }
-        private void LoadRecords()
-        {
-            LoadEvents();
-            LoadTransfers();
-        }
-        private void LoadMoreRecords()
-        {
-            LoadMoreEvents();
-            LoadMoreTransfers();
-            StopRefreshingRecords();
-        }
+
         private void LoadSettings()
         {
             try
@@ -435,6 +393,7 @@ namespace IRISA.CommunicationCenter.Forms
                 iccCore.Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
             }
         }
+
         private void LoadAdapters()
         {
             try
@@ -475,55 +434,26 @@ namespace IRISA.CommunicationCenter.Forms
             }
             return true;
         }
-        private void SetRefreshStatus(bool newStatus)
-        {
-            refreshingRecordsEnabled = newStatus;
-            if (refreshingRecordsEnabled)
-            {
-                transfersRefreshButton.Image = Resources.refresh;
-                eventsRefreshButton.Image = Resources.refresh;
-            }
-            else
-            {
-                transfersRefreshButton.Image = Resources.refresh_disable;
-                eventsRefreshButton.Image = Resources.refresh_disable;
-            }
-        }
+
         private void ClearControls(Control control)
         {
             if (control is CheckBox)
             {
-                CheckBox checkBox = control as CheckBox;
-                if (checkBox.ThreeState)
-                {
+                var checkBox = (control as CheckBox);
+                if (checkBox.ThreeState == true)
                     checkBox.CheckState = CheckState.Indeterminate;
-                }
                 else
-                {
                     checkBox.Checked = false;
-                }
             }
+            else if (control is TextBox)
+                (control as TextBox).Clear();
+            else if (control is MaskedTextBox)
+                (control as MaskedTextBox).Clear();
+            else if (control is ComboBox)
+                (control as ComboBox).SelectedIndex = -1;
             else
-            {
-                if (control is TextBox)
-                {
-                    (control as TextBox).Clear();
-                }
-                else
-                {
-                    if (control is MaskedTextBox)
-                    {
-                        (control as MaskedTextBox).Clear();
-                    }
-                    else
-                    {
-                        foreach (Control control2 in control.Controls)
-                        {
-                            ClearControls(control2);
-                        }
-                    }
-                }
-            }
+                foreach (Control childControl in control.Controls)
+                    ClearControls(childControl);
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -646,8 +576,8 @@ namespace IRISA.CommunicationCenter.Forms
 
         private void IccEventSearchButton_Click(object sender, EventArgs e)
         {
-            iccEventSearchGroupBox.Visible = !iccEventSearchGroupBox.Visible;
-            if (!iccEventSearchGroupBox.Visible)
+            LogsSearchGroupBox.Visible = !LogsSearchGroupBox.Visible;
+            if (!LogsSearchGroupBox.Visible)
             {
                 ClearSearchButton_Click(null, null);
             }
@@ -677,6 +607,24 @@ namespace IRISA.CommunicationCenter.Forms
         private void SearchControl_Enter(object sender, EventArgs e)
         {
             StartRefreshingRecords();
+        }
+
+        public string GroupDigits(int number)
+        {
+            string text = number.ToString();
+            if (text.Length > 3)
+            {
+                text = text.Insert(text.Length - 3, ",");
+            }
+            if (text.Length > 7)
+            {
+                text = text.Insert(text.Length - 7, ",");
+            }
+            if (text.Length > 11)
+            {
+                text = text.Insert(text.Length - 11, ",");
+            }
+            return text;
         }
     }
 }
