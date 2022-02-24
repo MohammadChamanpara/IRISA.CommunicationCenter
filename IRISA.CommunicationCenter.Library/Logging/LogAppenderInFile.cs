@@ -2,7 +2,6 @@ using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Logging
 {
@@ -12,26 +11,21 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
         public void Log(string eventText, LogLevel logLevel)
         {
-            string logText = string.Concat(new string[]
-            {
-                " English Time : ",
-                DateTime.Now.ToString(),
-                "\r\n Persian Time : ",
-                DateTime.Now.ToPersianDateTime("/"),
-                "\r\n Type : ",
-                logLevel.ToPersian(),
-                "\r\n Event : ",
-                eventText,
-                "\r\n"
-            });
+            string logText = 
+                $" English Time : {DateTime.Now}\r\n" +
+                $" Persian Time : {DateTime.Now.ToPersianDateTime()}\r\n" +
+                $" Level : {logLevel.ToPersian()}\r\n" +
+                $" Text : {eventText}\r\n" +
+                $"_______________________________________________________________________________________\r\n\r\n";
 
-            logText += "_______________________________________________________________________________________\r\n\r\n";
             string fileAddress = LogFileAddress;
-            string path = Path.GetFullPath(fileAddress).Replace(Path.GetFileName(fileAddress), "");
-            if (!Directory.Exists(path))
+
+            var directory = Path.GetDirectoryName(fileAddress);
+            if (!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(directory);
             }
+
             File.AppendAllText(fileAddress, logText);
         }
 

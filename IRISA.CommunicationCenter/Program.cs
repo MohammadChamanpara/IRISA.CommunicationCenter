@@ -68,8 +68,8 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<IInProcessTelegrams, InProcessTelegrams>()
                 
                 .AddSingleton<ILogger, Logger>()
-                .AddSingleton<ILogAppender, LogAppenderInFile>()
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
+                .AddSingleton<ILogAppender, LogAppenderInFile>()
             ;
 
             ServiceProvider = services.BuildServiceProvider();
