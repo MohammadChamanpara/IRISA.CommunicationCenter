@@ -1,6 +1,7 @@
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Forms;
 using IRISA.CommunicationCenter.Library.Logging;
+using IRISA.CommunicationCenter.Oracle;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace IRISA.CommunicationCenter
             InitializeApplication();
 
             ConfigureServices();
-            
+
             Run();
         }
 
@@ -62,17 +63,31 @@ namespace IRISA.CommunicationCenter
             var services = new ServiceCollection();
 
             services
-                
+
                 .AddSingleton<IIccQueue, IccQueueInMemory>()
                 .AddSingleton<IIccCore, IccCore>()
                 .AddSingleton<IInProcessTelegrams, InProcessTelegrams>()
-                
+
                 .AddSingleton<ILogger, Logger>()
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
-            ;
+
+                .AddIccQueue();
 
             ServiceProvider = services.BuildServiceProvider();
+        }
+
+        private static IServiceCollection AddIccQueue(this IServiceCollection services)
+        {
+            try
+            {
+                if (new IccQueueInOracle().Connected)
+                    services.AddSingleton<IIccQueue, IccQueueInOracle>();
+                else
+                    services.AddSingleton<IIccQueue, IccQueueInMemory>();
+            }
+            catch { }
+            return services;
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

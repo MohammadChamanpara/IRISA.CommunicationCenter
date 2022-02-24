@@ -135,6 +135,10 @@
       <Project>{f7ec6e99-1d52-433d-b2dc-6a02a85bb733}</Project>
       <Name>IRISA.CommunicationCenter.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IRISA.CommunicationCenter.Oracle\IRISA.CommunicationCenter.Oracle.csproj">
+      <Project>{AA48F5D5-A5DF-4843-A1F9-6DF1D39B3B0D}</Project>
+      <Name>IRISA.CommunicationCenter.Oracle</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

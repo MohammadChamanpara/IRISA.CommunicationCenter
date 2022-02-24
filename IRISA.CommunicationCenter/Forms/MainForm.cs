@@ -75,6 +75,7 @@ namespace IRISA.CommunicationCenter.Forms
                 stopStartApplicationButton.Image = Resources.start;
                 stopStartApplicationButton.ToolTipText = "اجرای برنامه";
                 settingsPropertyGrid.Enabled = true;
+                StopRefreshingRecords();
                 Application.DoEvents();
             }
             catch (Exception exception)

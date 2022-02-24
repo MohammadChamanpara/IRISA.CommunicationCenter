@@ -14,7 +14,7 @@ namespace IRISA.CommunicationCenter.Oracle
     public class IccQueueInOracle : IIccQueue
     {
         private readonly DLLSettings<IccQueueInOracle> dllSettings = new DLLSettings<IccQueueInOracle>();
-
+        
         [Browsable(false)]
         public EntityBusiness<Entities, IccTransfer> IccTransfers
         {
@@ -23,7 +23,7 @@ namespace IRISA.CommunicationCenter.Oracle
                 return new EntityBusiness<Entities, IccTransfer>(new Entities(ConnectionString));
             }
         }
-
+                 
         public void Add(IccTelegram iccTelegram)
         {
             IccTransfers.Create(iccTelegram.ToIccTransfer());
@@ -41,6 +41,42 @@ namespace IRISA.CommunicationCenter.Oracle
             IccTransfers.Edit(iccTelegram.ToIccTransfer());
         }
 
+        [Category("Operation")]
+        [DisplayName("رشته اتصال به پایگاه داده")]
+        public string ConnectionString
+        {
+            get
+            {
+                return dllSettings.FindConnectionString();
+            }
+            set
+            {
+                dllSettings.SaveConnectionString(value);
+            }
+        }
+
+        [DisplayName("نوع صف")]
+        [Category("Information")]
+        public string Type => nameof(IccQueueInOracle);
+
+        [Category("Information")]
+        [DisplayName("وضعیت اتصال")]
+        public bool Connected
+        {
+            get
+            {
+                try
+                {
+                    return IccTransfers.Connected;
+                }
+                catch 
+                {
+                    return false;
+                }
+            }
+        }
+
+
         public List<IccTelegram> GetTelegramsToSend()
         {
             if (!Connected)
@@ -51,17 +87,6 @@ namespace IRISA.CommunicationCenter.Oracle
                 .Where(x => x.DROPPED == false && x.SENT == false)
                 .Select(x => x.ToIccTelegram())
                 .ToList();
-        }
-
-        public List<IccTelegram> GetTelegrams(int pageSize = 50)
-        {
-            return
-                IccTransfers
-                .GetAll()
-                   .OrderByDescending(x => x.ID)
-                   .Take(pageSize)
-                   .Select(x => x.ToIccTelegram())
-                   .ToList();
         }
 
         public List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount)
@@ -163,44 +188,5 @@ namespace IRISA.CommunicationCenter.Oracle
                 .Select(x => x.ToIccTelegram())
                 .ToList();
         }
-
-        [Category("Operation")]
-        [DisplayName("رشته اتصال به پایگاه داده")]
-        public string ConnectionString
-        {
-            get
-            {
-                return dllSettings.FindConnectionString();
-            }
-            set
-            {
-                dllSettings.SaveConnectionString(value);
-            }
-        }
-
-        [DisplayName("نوع صف")]
-        [Category("Information")]
-        public string Type => nameof(IccQueueInOracle);
-
-        [Category("Information")]
-        [DisplayName("وضعیت اتصال")]
-        public bool Connected
-        {
-            get
-            {
-                try
-                {
-                    return IccTransfers.Connected;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-
-        [Category("Information")]
-        [DisplayName("تعداد تلگرام ها")]
-        public int Count => IccTransfers.GetAll().Count();
     }
 }
