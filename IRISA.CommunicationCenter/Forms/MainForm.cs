@@ -105,7 +105,7 @@ namespace IRISA.CommunicationCenter.Forms
         {
             SetRefreshStatus(true);
             var startTime = DateTime.Now;
-            while ((DateTime.Now - startTime).TotalSeconds < 20 && refreshingRecordsEnabled == true)
+            while ((DateTime.Now - startTime).TotalSeconds < 120 && refreshingRecordsEnabled == true)
             {
                 LoadRecords();
                 await Task.Delay(1000);

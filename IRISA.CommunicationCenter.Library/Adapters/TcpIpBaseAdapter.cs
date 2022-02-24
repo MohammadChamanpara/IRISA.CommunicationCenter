@@ -547,7 +547,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 					telegramBodySize
 				});
             }
-            iccTelegram.SendTime = GetTelegramSendTime(completeTelegram);
+            iccTelegram.SendTime = DateTime.Now;
             iccTelegram.Source = GetTelegramSource(completeTelegram);
             TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
             iccTelegram.Destination = telegramDefinition.Destination;

@@ -85,6 +85,7 @@ namespace IRISA.CommunicationCenter.Oracle
             return IccTransfers
                 .GetAll()
                 .Where(x => x.DROPPED == false && x.SENT == false)
+                .ToList()
                 .Select(x => x.ToIccTelegram())
                 .ToList();
         }

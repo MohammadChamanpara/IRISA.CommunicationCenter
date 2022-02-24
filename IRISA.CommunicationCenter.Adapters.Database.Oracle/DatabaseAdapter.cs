@@ -227,7 +227,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
         public virtual void ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram, ref IccTelegram iccTelegram)
         {
             iccTelegram.Source = clientTelegram.SOURCE;
-            iccTelegram.SendTime = clientTelegram.SEND_TIME;
+            iccTelegram.SendTime = DateTime.Now;
             iccTelegram.TelegramId = clientTelegram.TELEGRAM_ID;
             if (GetDestinationFromSender)
             {

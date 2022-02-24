@@ -1,5 +1,4 @@
 ﻿using IRISA.CommunicationCenter.Components;
-using IRISA.CommunicationCenter.Library.Logging;
 using System.ComponentModel;
 using System.Windows.Forms;
 

@@ -16,11 +16,13 @@ namespace IRISA.CommunicationCenter
         [STAThread]
         private static void Main()
         {
-            _ = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp);
-            if (!firstInstanceOfApp)
+            using (Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
             {
-                MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد");
-                return;
+                if (!firstInstanceOfApp)
+                {
+                    MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد");
+                    return;
+                }
             }
 
             InitializeApplication();
