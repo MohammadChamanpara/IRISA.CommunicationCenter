@@ -1,16 +1,15 @@
 ﻿using IRISA.CommunicationCenter.Library.Extensions;
-using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Logging
 {
-    public class LoggerInMemory : BaseLogger
+    public class LogAppenderInMemory : ILogAppender
     {
         private static List<LogEvent> logs = new List<LogEvent>();
         private static int id = 1;
-        protected override void Log(string eventText, LogLevel logLevel)
+        public void Log(string eventText, LogLevel logLevel)
         {
             logs.Add(new LogEvent()
             {
@@ -24,7 +23,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
                 logs = logs.OrderByDescending(x => x.Id).Take(1000).ToList();
         }
 
-        public override List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
+        public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
         {
             var events = logs.AsEnumerable();
 

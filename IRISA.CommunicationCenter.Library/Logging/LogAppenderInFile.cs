@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Logging
 {
-    public class LoggerInFile : BaseLogger
+    public class LogAppenderInFile : ILogAppender
     {
         private string LogFileAddress => $"Logs\\Logs {DateTime.Now.ToPersianDate("-")}.txt";
 
-        protected override void Log(string eventText, LogLevel logLevel)
+        public void Log(string eventText, LogLevel logLevel)
         {
             string logText = string.Concat(new string[]
             {
@@ -35,9 +35,9 @@ namespace IRISA.CommunicationCenter.Library.Logging
             File.AppendAllText(fileAddress, logText);
         }
 
-        public override List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
+        public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
         {
-            throw new NotSupportedException($"Getting logs is not supported in {nameof(LoggerInFile)}");
+            throw new NotSupportedException($"Getting logs is not supported in {nameof(LogAppenderInFile)}");
         }
     }
 }

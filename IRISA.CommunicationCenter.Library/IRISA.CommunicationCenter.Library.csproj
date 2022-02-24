@@ -55,6 +55,7 @@
     <Compile Include="Definitions\FieldDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IIccQueue.cs" />
+    <Compile Include="Logging\ILogAppender.cs" />
     <Compile Include="Threading\IrisaBackgroundTimer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -62,12 +63,12 @@
     <Compile Include="Settings\DLLSettings.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Models\PersianDateTime.cs" />
-    <Compile Include="Logging\BaseLogger.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LogEvent.cs" />
-    <Compile Include="Logging\LoggerInFile.cs" />
-    <Compile Include="Logging\LoggerInMemory.cs" />
+    <Compile Include="Logging\LogAppenderInFile.cs" />
+    <Compile Include="Logging\LogAppenderInMemory.cs" />
     <Compile Include="Logging\LogSearchModel.cs" />
     <Compile Include="Models\IccTelegram.cs" />
     <Compile Include="Models\IccTelegramSearchModel.cs" />

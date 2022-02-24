@@ -60,11 +60,17 @@ namespace IRISA.CommunicationCenter
         static void ConfigureServices()
         {
             var services = new ServiceCollection();
-            
-            services.AddSingleton<IIccQueue, IccQueueInMemory>();
-            services.AddSingleton<ILogger, LoggerInMemory>();
-            services.AddSingleton<IIccCore, IccCore>();
-            services.AddSingleton<IInProcessTelegrams, InProcessTelegrams>();
+
+            services
+                
+                .AddSingleton<IIccQueue, IccQueueInMemory>()
+                .AddSingleton<IIccCore, IccCore>()
+                .AddSingleton<IInProcessTelegrams, InProcessTelegrams>()
+                
+                .AddSingleton<ILogger, Logger>()
+                .AddSingleton<ILogAppender, LogAppenderInFile>()
+                .AddSingleton<ILogAppender, LogAppenderInMemory>()
+            ;
 
             ServiceProvider = services.BuildServiceProvider();
         }

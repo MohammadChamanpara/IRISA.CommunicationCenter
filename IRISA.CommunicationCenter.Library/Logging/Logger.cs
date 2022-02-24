@@ -5,8 +5,18 @@ using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Logging
 {
-    public abstract partial class BaseLogger : ILogger
+    public class Logger : ILogger
     {
+        public IEnumerable<ILogAppender> LogAppenders { get; }
+
+        public Logger(IEnumerable<ILogAppender> logAppenders)
+        {
+            if (!logAppenders.Any())
+                throw new ArgumentException("Log Appenders must be passed to logger.");
+
+            LogAppenders = logAppenders;
+        }
+
         public void LogDebug(string testText, params object[] parameters)
         {
             Log(testText, LogLevel.Debug, null, parameters);
@@ -29,28 +39,31 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
         public void LogException(Exception exception, string message)
         {
-            string text = 
+            string text =
                 $"{message}\r\n" +
                 $"{exception.InnerExceptionsMessage()}\r\n" +
                 $"StackTrace :{exception.StackTrace}\r\n";
 
             Log(text, LogLevel.Exception, exception.StackTrace);
         }
-        
+
         private void Log(string eventText, LogLevel logLevel, params object[] parameters)
         {
             try
             {
                 eventText = string.Format(eventText, parameters);
-                Log(eventText, logLevel);
+                LogAppenders
+                    .ToList()
+                    .ForEach(x => x.Log(eventText, logLevel));
             }
             catch
             {
             }
         }
 
-        protected abstract void Log(string eventText, LogLevel logLevel);
-
-        public abstract List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount);
+        public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
+        {
+            return LogAppenders.First().GetLogs(searchModel, pageSize, out resultsCount);
+        }
     }
 }
