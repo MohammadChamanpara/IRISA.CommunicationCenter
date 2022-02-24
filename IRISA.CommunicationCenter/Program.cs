@@ -25,8 +25,27 @@ namespace IRISA.CommunicationCenter
             InitializeApplication();
 
             ConfigureServices();
+            
+            Run();
+        }
 
-            Application.Run(new MainForm(ServiceProvider.GetService<ILogger>()));
+        private static void Run()
+        {
+            try
+            {
+                Application.Run
+                (
+                    new MainForm
+                    (
+                        ServiceProvider.GetService<ILogger>(),
+                        ServiceProvider.GetService<IIccCore>()
+                    )
+                );
+            }
+            catch (Exception exception)
+            {
+                ServiceProvider.GetService<ILogger>().LogException(exception, "بروز خطا هنگام اجرای اولیه برنامه");
+            }
         }
 
         private static void InitializeApplication()
@@ -41,8 +60,12 @@ namespace IRISA.CommunicationCenter
         static void ConfigureServices()
         {
             var services = new ServiceCollection();
+            
             services.AddSingleton<IIccQueue, IccQueueInMemory>();
             services.AddSingleton<ILogger, LoggerInMemory>();
+            services.AddSingleton<IIccCore, IccCore>();
+            services.AddSingleton<IInProcessTelegrams, InProcessTelegrams>();
+
             ServiceProvider = services.BuildServiceProvider();
         }
 

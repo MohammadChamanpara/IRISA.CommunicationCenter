@@ -14,10 +14,12 @@ using System.Reflection;
 
 namespace IRISA.CommunicationCenter.Core
 {
-    public class IccCore
+    public class IccCore : IIccCore
     {
         public delegate void IccCoreTelegramEventHandler(IccCoreTelegramEventArgs e);
-        public List<IIccAdapter> connectedAdapters;
+        public List<IIccAdapter> ConnectedAdapters { get; set; }
+        public IIccQueue IccQueue { get; set; }
+
         private IrisaBackgroundTimer sendTimer;
         private IrisaBackgroundTimer activatorTimer;
         private DLLSettings<IccCore> dllSettings;
@@ -26,10 +28,8 @@ namespace IRISA.CommunicationCenter.Core
         public event IccCoreTelegramEventHandler TelegramDropped;
         private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
-
-        public readonly ILogger Logger;
+        private readonly ILogger Logger;
         private readonly IInProcessTelegrams InProcessTelegrams;
-        public readonly IIccQueue IccQueue;
 
         public IccCore(IInProcessTelegrams inProcessTelegrams, ILogger logger, IIccQueue iccQueue)
         {
@@ -42,6 +42,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             return LoadAdapters<T>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Adapters"));
         }
+
         public static List<T> LoadAdapters<T>(string directory)
         {
             List<T> result;
@@ -202,7 +203,7 @@ namespace IRISA.CommunicationCenter.Core
 
                 InProcessTelegrams.AddRange(telegrams);
 
-                SendTelegrams(telegrams, connectedAdapters);
+                SendTelegrams(telegrams, ConnectedAdapters);
             }
         }
 
@@ -268,9 +269,9 @@ namespace IRISA.CommunicationCenter.Core
             try
             {
                 sendTimer.Awake();
-                if (connectedAdapters != null)
+                if (ConnectedAdapters != null)
                 {
-                    foreach (IIccAdapter current in connectedAdapters)
+                    foreach (IIccAdapter current in ConnectedAdapters)
                     {
                         current.AwakeTimers();
                     }
@@ -309,7 +310,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             try
             {
-                connectedAdapters = new List<IIccAdapter>();
+                ConnectedAdapters = new List<IIccAdapter>();
                 dllSettings = new DLLSettings<IccCore>();
                 Logger.LogInformation("اجرای {0} آغاز شد.", new object[]
                 {
@@ -358,7 +359,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 activatorTimer.Stop();
             }
-            foreach (IIccAdapter current in connectedAdapters)
+            foreach (IIccAdapter current in ConnectedAdapters)
             {
                 current.Stop();
             }
@@ -375,13 +376,13 @@ namespace IRISA.CommunicationCenter.Core
         private void LoadAdapters()
         {
             //connectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
-            connectedAdapters = LoadAdapters<IIccAdapter>();
+            ConnectedAdapters = LoadAdapters<IIccAdapter>();
 
-            if (connectedAdapters.Count == 0)
+            if (ConnectedAdapters.Count == 0)
             {
                 Logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
             }
-            foreach (IIccAdapter adapter in connectedAdapters)
+            foreach (IIccAdapter adapter in ConnectedAdapters)
             {
                 try
                 {
@@ -411,7 +412,7 @@ namespace IRISA.CommunicationCenter.Core
                 throw IrisaException.Create("مقصد تلگرام مشخص نشده است.");
             }
 
-            var destination = connectedAdapters
+            var destination = ConnectedAdapters
                     .Where(c => c.Name == iccTelegram.Destination);
 
             if (destination.Count() == 0)

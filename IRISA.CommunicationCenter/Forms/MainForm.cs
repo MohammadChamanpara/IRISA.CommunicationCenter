@@ -20,27 +20,25 @@ namespace IRISA.CommunicationCenter.Forms
     {
         private const string ApplicationPassword = "iccAdmin";
 
-        #region Properties
-        private IccCore iccCore;
+        private readonly IIccCore IccCore;
         private UiSettings uiSettings;
+        private readonly ILogger Logger;
         private bool refreshingRecordsEnabled = false;
-        public ILogger Logger { get; set; }
 
-        public MainForm(ILogger logger)
+        public MainForm(ILogger logger, IIccCore iccCore)
         {
-            Logger = logger;
-
             InitializeComponent();
+
+            Logger = logger;
+            IccCore = iccCore;
         }
-        #endregion
 
         private void StartApplication()
         {
             try
             {
-                InitialIccCore();
                 InitialUiSettings();
-                iccCore.Start();
+                IccCore.Start();
                 LoadAdapters();
                 LoadSettings();
                 LoadLogLevelComboBox();
@@ -52,7 +50,7 @@ namespace IRISA.CommunicationCenter.Forms
                 Text = uiSettings.ProgramTitle;
                 notifyIcon.Text = uiSettings.ProgramTitle;
                 Application.DoEvents();
-                if (!iccCore.Started)
+                if (!IccCore.Started)
                 {
                     StopApplication();
                 }
@@ -64,7 +62,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             finally
             {
-                if (!iccCore.Started)
+                if (!IccCore.Started)
                     StopApplication();
             }
         }
@@ -73,7 +71,7 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                iccCore?.Stop();
+                IccCore?.Stop();
                 stopStartApplicationButton.Image = Resources.start;
                 stopStartApplicationButton.ToolTipText = "اجرای برنامه";
                 settingsPropertyGrid.Enabled = true;
@@ -135,13 +133,6 @@ namespace IRISA.CommunicationCenter.Forms
             Application.DoEvents();
         }
 
-
-
-        private void InitialIccCore()
-        {
-            iccCore = new IccCore(new InProcessTelegrams(), new LoggerInMemory(), new IccQueueInMemory());
-        }
-
         private void InitialUiSettings()
         {
             uiSettings = new UiSettings();
@@ -162,7 +153,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
+                Logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
             }
         }
 
@@ -253,7 +244,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (GetSelectedTab() != TransfersTabPage)
                     return;
 
-                if (!iccCore.IccQueue.Connected)
+                if (!IccCore.IccQueue.Connected)
                     return;
 
                 IccTelegramSearchModel searchModel = new IccTelegramSearchModel();
@@ -261,7 +252,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (telegramSearchGroupbox.Visible)
                     Invoke(new Action(() => { CopySearchControlsToSearchModel(searchModel); }));
 
-                var telegrams = iccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
+                var telegrams = IccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
 
                 pageSize = Math.Min(pageSize, resultsCount);
 
@@ -337,8 +328,8 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     new RadioButton
                     {
-                        Text = iccCore.PersianDescription,
-                        Tag = iccCore
+                        Text = IccCore.PersianDescription,
+                        Tag = IccCore
                     },
                     new RadioButton
                     {
@@ -348,12 +339,12 @@ namespace IRISA.CommunicationCenter.Forms
                     new RadioButton
                     {
                         Text = "صف تلگرام ها",
-                        Tag = iccCore.IccQueue
+                        Tag = IccCore.IccQueue
                     }
                 };
-                if (iccCore.connectedAdapters != null)
+                if (IccCore.ConnectedAdapters != null)
                 {
-                    foreach (IIccAdapter adapter in iccCore.connectedAdapters)
+                    foreach (IIccAdapter adapter in IccCore.ConnectedAdapters)
                     {
                         settingControls.Add(new RadioButton
                         {
@@ -388,9 +379,9 @@ namespace IRISA.CommunicationCenter.Forms
             try
             {
                 adaptersPanel.Controls.Clear();
-                if (iccCore.connectedAdapters != null)
+                if (IccCore.ConnectedAdapters != null)
                 {
-                    foreach (IIccAdapter adapter in iccCore.connectedAdapters)
+                    foreach (IIccAdapter adapter in IccCore.ConnectedAdapters)
                     {
                         AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, Logger);
                         adaptersPanel.Controls.Add(adapterUserControl);
@@ -496,7 +487,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void StopStartButton_Click(object sender, EventArgs e)
         {
-            if (iccCore.Started)
+            if (IccCore.Started)
             {
                 StopApplication();
             }

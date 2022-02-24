@@ -66,6 +66,7 @@
     <Compile Include="IccCore.cs" />
     <Compile Include="IccCoreTelegramEventArgs.cs" />
     <Compile Include="IccQueueInMemory.cs" />
+    <Compile Include="IIccCore.cs" />
     <Compile Include="InProcessTelegrams.cs" />
   </ItemGroup>
   <ItemGroup>

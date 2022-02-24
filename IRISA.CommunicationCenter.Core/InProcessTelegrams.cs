@@ -14,8 +14,9 @@ namespace IRISA.CommunicationCenter.Core
 
     public class InProcessTelegrams : IInProcessTelegrams
     {
-        private HashSet<long> InProcessIds = new HashSet<long>();
+        private readonly HashSet<long> InProcessIds = new HashSet<long>();
 
+        public InProcessTelegrams() { }
         public InProcessTelegrams(params long[] ids)
         {
             InProcessIds.UnionWith(ids);
