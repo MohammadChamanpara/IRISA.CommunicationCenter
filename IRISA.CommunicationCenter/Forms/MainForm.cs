@@ -24,12 +24,15 @@ namespace IRISA.CommunicationCenter.Forms
         private IccCore iccCore;
         private UiSettings uiSettings;
         private bool refreshingRecordsEnabled = false;
-        #endregion
+        public ILogger Logger { get; set; }
 
-        public MainForm()
+        public MainForm(ILogger logger)
         {
+            Logger = logger;
+
             InitializeComponent();
         }
+        #endregion
 
         private void StartApplication()
         {
@@ -57,13 +60,35 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore?.Logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
+                Logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
             }
             finally
             {
                 if (!iccCore.Started)
                     StopApplication();
             }
+        }
+
+        private void StopApplication()
+        {
+            try
+            {
+                iccCore?.Stop();
+                stopStartApplicationButton.Image = Resources.start;
+                stopStartApplicationButton.ToolTipText = "اجرای برنامه";
+                settingsPropertyGrid.Enabled = true;
+                Application.DoEvents();
+            }
+            catch (Exception exception)
+            {
+                Logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
+            }
+        }
+
+        private void RestartApplication()
+        {
+            StopApplication();
+            StartApplication();
         }
 
         private void DataGrid_Click(object sender, EventArgs e)
@@ -110,27 +135,7 @@ namespace IRISA.CommunicationCenter.Forms
             Application.DoEvents();
         }
 
-        private void StopApplication()
-        {
-            try
-            {
-                iccCore?.Stop();
-                stopStartApplicationButton.Image = Resources.start;
-                stopStartApplicationButton.ToolTipText = "اجرای برنامه";
-                settingsPropertyGrid.Enabled = true;
-                Application.DoEvents();
-            }
-            catch (Exception exception)
-            {
-                iccCore?.Logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
-            }
-        }
 
-        private void RestartApplication()
-        {
-            StopApplication();
-            StartApplication();
-        }
 
         private void InitialIccCore()
         {
@@ -272,7 +277,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
+                Logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
             }
         }
 
@@ -301,7 +306,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (LogsSearchGroupBox.Visible)
                     Invoke(new Action(() => { CopyEventSearchControlsToSearchModel(searchModel); }));
 
-                var query = iccCore.Logger.GetLogs(searchModel, pageSize, out int resultsCount);
+                var query = Logger.GetLogs(searchModel, pageSize, out int resultsCount);
 
                 pageSize = Math.Min(pageSize, resultsCount);
 
@@ -315,7 +320,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
+                Logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
             }
         }
 
@@ -374,7 +379,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
+                Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
             }
         }
 
@@ -387,7 +392,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     foreach (IIccAdapter adapter in iccCore.connectedAdapters)
                     {
-                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, iccCore.Logger);
+                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, Logger);
                         adaptersPanel.Controls.Add(adapterUserControl);
                         adapter.ConnectionChanged += Adapter_ConnectionChanged;
                     }
@@ -395,7 +400,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                iccCore.Logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
+                Logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
             }
         }
 
@@ -446,7 +451,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopApplication();
-            iccCore?.Logger.LogWarning("اجرای برنامه خاتمه یافت");
+            Logger.LogWarning("اجرای برنامه خاتمه یافت");
         }
         private void SettingControl_Click(object sender, EventArgs e)
         {

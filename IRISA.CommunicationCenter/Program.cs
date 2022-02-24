@@ -26,7 +26,7 @@ namespace IRISA.CommunicationCenter
 
             ConfigureServices();
 
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(ServiceProvider.GetService<ILogger>()));
         }
 
         private static void InitializeApplication()
