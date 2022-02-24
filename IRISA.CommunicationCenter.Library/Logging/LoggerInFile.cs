@@ -8,7 +8,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
 {
     public class LoggerInFile : BaseLogger
     {
-        private string LogFileAddress => $"Events\\Events {DateTime.Now.ToPersianDate("-")}.txt";
+        private string LogFileAddress => $"Logs\\Logs {DateTime.Now.ToPersianDate("-")}.txt";
 
         protected override void Log(string eventText, LogLevel logLevel)
         {

@@ -7,13 +7,6 @@ namespace IRISA.CommunicationCenter.Library.Logging
 {
     public abstract partial class BaseLogger : ILogger
     {
-        public event Action EventLogged;
-
-        protected void OnEventLogged()
-        {
-            EventLogged?.Invoke();
-        }
-
         public void LogDebug(string testText, params object[] parameters)
         {
             Log(testText, LogLevel.Debug, null, parameters);
@@ -50,7 +43,6 @@ namespace IRISA.CommunicationCenter.Library.Logging
             {
                 eventText = string.Format(eventText, parameters);
                 Log(eventText, logLevel);
-                OnEventLogged();
             }
             catch
             {

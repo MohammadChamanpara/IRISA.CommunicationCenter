@@ -363,7 +363,7 @@ namespace IRISA.CommunicationCenter.Forms
                 }
                 if (settingControls.Count > 0)
                 {
-                    RadioButton radioButton = settingControls.First<Control>() as RadioButton;
+                    RadioButton radioButton = settingControls.First() as RadioButton;
                     radioButton.Checked = true;
                     SettingControl_Click(radioButton, null);
                 }
