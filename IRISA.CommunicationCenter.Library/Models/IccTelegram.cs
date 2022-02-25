@@ -1,3 +1,4 @@
+using IRISA.CommunicationCenter.Library.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -16,8 +17,8 @@ namespace IRISA.CommunicationCenter.Library.Models
         public bool Dropped { get; set; }
         public string DropReason { get; set; }
         public DateTime? ReceiveTime { get; set; }
-        public string BodyString => GetBodyString(',');
-        public string GetBodyString(char bodySeparator)
+        public string BodyString => GetBodyAsString(',');
+        public string GetBodyAsString(char bodySeparator)
         {
             string text = "";
             foreach (string current in Body)
@@ -30,19 +31,11 @@ namespace IRISA.CommunicationCenter.Library.Models
             }
             return text;
         }
-        public void SetBodyString(string bodyString, char separator)
+        public void SetBodyFromString(string bodyString, char separator)
         {
-            if (bodyString == null)
-            {
-                Body = new List<string>();
-            }
-            else
-            {
-                Body = new List<string>(bodyString.Split(new char[]
-                {
-                    separator
-                }));
-            }
+            Body = bodyString.HasValue()
+                ? new List<string>(bodyString.Split(separator))
+                : new List<string>();
         }
         public string PersianSendTime => SendTime.ToPersianDateTime();
         public string PersianReceiveTime => ReceiveTime?.ToPersianDateTime();

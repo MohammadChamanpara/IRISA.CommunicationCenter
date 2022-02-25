@@ -18,7 +18,7 @@ namespace IRISA.CommunicationCenter.Core.Model
                 DropReason = iccTransfer.DROP_REASON,
                 ReceiveTime = iccTransfer.RECEIVE_TIME
             };
-            telegram.SetBodyString(iccTransfer.BODY,',');
+            telegram.SetBodyFromString(iccTransfer.BODY,',');
             return telegram;
         }
 

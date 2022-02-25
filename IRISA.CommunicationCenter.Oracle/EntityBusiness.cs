@@ -63,24 +63,22 @@ namespace IRISA.CommunicationCenter.Oracle
         {
             get
             {
-                bool result;
                 try
                 {
                     TContext context = Context;
                     if (context.Connection.State != ConnectionState.Open)
                     {
                         context = Context;
-                        Action arg_5B_0 = new Action(context.Connection.Open);
+                        Action action = new Action(context.Connection.Open);
                         context = Context;
-                        CallWithTimeout(arg_5B_0, context.Connection.ConnectionTimeout);
+                        CallWithTimeout(action, context.Connection.ConnectionTimeout);
                     }
-                    result = true;
+                    return true;
                 }
                 catch
                 {
-                    result = false;
+                    return false;
                 }
-                return result;
             }
         }
         public EntityBusiness() : this(Activator.CreateInstance<TContext>())
@@ -142,7 +140,7 @@ namespace IRISA.CommunicationCenter.Oracle
         }
         public virtual void Edit(TEntity entity)
         {
-            TEntity entity2 = GetEntity(entity);
+            _ = GetEntity(entity);
             Entities.ApplyCurrentValues(entity);
             TContext context = Context;
             context.SaveChanges();

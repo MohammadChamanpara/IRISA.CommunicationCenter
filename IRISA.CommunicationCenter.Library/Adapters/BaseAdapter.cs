@@ -124,6 +124,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public void Send(IccTelegram iccTelegram)
         {
             sendQueue.Enqueue(iccTelegram);
+            Logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال در صف آداپتور {PersianDescription} قرار گرفت.");
         }
 
         private async Task KeepSending()
@@ -135,6 +136,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     var iccTelegram = sendQueue.Dequeue();
                     try
                     {
+                        Logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
                         SendTelegram(iccTelegram);
                         OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, true, null));
                     }
@@ -153,6 +155,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
+
         public virtual void Start(ILogger eventLogger)
         {
             Logger = eventLogger;
@@ -161,6 +164,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             Started = true;
             Task.Run(() => KeepSending());
         }
+
         public virtual void Stop()
         {
             bool connected = Connected;
@@ -170,13 +174,16 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
             }
         }
+
         public virtual void AwakeTimers()
         {
         }
+
         public virtual void OnReceive(ReceiveEventArgs e)
         {
             Receive?.Invoke(e);
         }
+
         public virtual void OnConnectionChanged(AdapterConnectionChangedEventArgs e)
         {
             ConnectionChanged?.Invoke(this, e);

@@ -2,6 +2,7 @@
 using IRISA.CommunicationCenter.Core.Model;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
+using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
 using System;
@@ -14,6 +15,12 @@ namespace IRISA.CommunicationCenter.Oracle
     public class IccQueueInOracle : IIccQueue
     {
         private readonly DLLSettings<IccQueueInOracle> dllSettings = new DLLSettings<IccQueueInOracle>();
+        private readonly ILogger Logger;
+
+        public IccQueueInOracle(ILogger logger)
+        {
+            Logger = logger;
+        }
 
         [Browsable(false)]
         public EntityBusiness<Entities, IccTransfer> IccTransfers
@@ -23,6 +30,7 @@ namespace IRISA.CommunicationCenter.Oracle
                 return new EntityBusiness<Entities, IccTransfer>(new Entities(ConnectionString));
             }
         }
+
         [Category("Operation")]
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
@@ -47,22 +55,32 @@ namespace IRISA.CommunicationCenter.Oracle
         {
             get
             {
-                try
-                {
-                    return IccTransfers.Connected;
-                }
-                catch
-                {
-                    return false;
-                }
+                return IccTransfers.Connected;
             }
         }
+
+
 
         public void Add(IccTelegram iccTelegram)
         {
             var iccTransfer = iccTelegram.ToIccTransfer();
             IccTransfers.Create(iccTransfer);
-            iccTelegram.TransferId = iccTransfer.ID;
+
+            if (iccTransfer.ID != 0)
+            {
+                iccTelegram.TransferId = iccTransfer.ID;
+
+                Logger.LogDebug("Created item in Oracle Queue updates the ID in the same object, no need to Query for id again");
+            }
+            else
+            {
+                iccTelegram.TransferId = IccTransfers
+                    .GetAll()
+                    .Max(x => x.ID);
+
+                Logger.LogDebug("Created item in Oracle Queue did not have the ID, A separate query executed to get the id ");
+            }
+
         }
 
         public void Edit(IccTelegram iccTelegram)
@@ -80,7 +98,6 @@ namespace IRISA.CommunicationCenter.Oracle
                 .Where(x => x.DROPPED == false && x.SENT == false)
                 .ToList()
                 .Select(x => x.ToIccTelegram())
-                .OrderBy(x => x.SendTime)
                 .ToList();
         }
 

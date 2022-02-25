@@ -212,6 +212,7 @@ namespace IRISA.CommunicationCenter.Core
 
         public void SendTelegrams(List<IccTelegram> iccTelegrams, List<IIccAdapter> adapters)
         {
+            iccTelegrams = SortSendingTelegrams(iccTelegrams);
             foreach (IccTelegram iccTelegram in iccTelegrams)
             {
                 try
@@ -235,6 +236,13 @@ namespace IRISA.CommunicationCenter.Core
                     DropTelegram(iccTelegram, exception, true);
                 }
             }
+        }
+
+        private List<IccTelegram> SortSendingTelegrams(List<IccTelegram> iccTelegrams)
+        {
+            return iccTelegrams
+                .OrderBy(x => x.TransferId)
+                .ToList();
         }
 
         public IIccAdapter GetDestinationAdapter(List<IIccAdapter> adapters, string destination)
@@ -369,7 +377,7 @@ namespace IRISA.CommunicationCenter.Core
 
             if (!ConnectedAdapters.Any())
                 Logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
-            
+
             foreach (IIccAdapter adapter in ConnectedAdapters)
             {
                 try
