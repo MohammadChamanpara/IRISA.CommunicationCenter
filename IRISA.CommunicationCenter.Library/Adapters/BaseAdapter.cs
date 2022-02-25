@@ -38,7 +38,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             get;
         }
 
-        [Category("Information"), DisplayName("نام فایل پلاگین")]
+        [Category("Information"), DisplayName("نام فایل آداپتور")]
         public string FileName
         {
             get
@@ -56,7 +56,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information"), DisplayName("آدرس فایل پلاگین")]
+        [Category("Information"), DisplayName("آدرس فایل آداپتور")]
         public string FileAddress
         {
             get
@@ -65,7 +65,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information"), DisplayName("نوع فایل پلاگین")]
+        [Category("Information"), DisplayName("نوع فایل آداپتور")]
         public string FileAssembly
         {
             get

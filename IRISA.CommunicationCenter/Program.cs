@@ -68,7 +68,6 @@ namespace IRISA.CommunicationCenter
 
                 .AddSingleton<IIccQueue, IccQueueInMemory>()
                 .AddSingleton<IIccCore, IccCore>()
-                .AddSingleton<IInProcessTelegrams, InProcessTelegrams>()
 
                 .AddSingleton<ILogger, Logger>()
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
