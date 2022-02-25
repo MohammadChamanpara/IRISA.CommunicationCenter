@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TelegramDefinitions >
+
+  <Telegram id="2999" name="Alive Telegram" source="4b1" destination="4b1" description="L2->L3 Alive Telegram">
+  </Telegram>
+
+  <Telegram id="2999" name="Alive Telegram" source="4a1" destination="4a1" description="L2->L3 Alive Telegram">
+  </Telegram>
+
+  <Telegram id="2999" name="Alive Telegram" source="4e1" destination="4e1" description="L2->L3 Alive Telegram">
+  </Telegram>
+
+  <Telegram id="2999" name="Alive Telegram" source="4b2" destination="4b2" description="L2->L3 Alive Telegram">
+  </Telegram>
+
+  <Telegram id="2999" name="Alive Telegram" source="LAB" destination="LAB" description="L2->L3 Alive Telegram">
+  </Telegram>
+
+  <Telegram id="3999" name="Alive Telegram" source="MIS11g" destination="4b1,4b2,4e1" description="L3->L2 Alive Telegram">
+  </Telegram>
+
+
+  <Telegram id="2001" name="Coil Data Request" source="LAB,4b1,4b2,4a1,4e1" destination="MIS11g" description="Coil Data Request">
+    <Field name="Coil Id" type="Number" size="8"/>
+    <Field name="Cod Start" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2002" name="Acceptance Telegram" source="LAB,4b1,4b2,4a1" destination="MIS11g" description="Acceptance Telegram">
+    <Field name="Last Received CoilID" type="Number" size="8"/>
+    <Field name="Error Code" type="Number" size="4"/>
+    <Field name="Acceptance" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2002" name="Acceptance Telegram" source="4e1" destination="MIS11g" description="Acceptance Telegram">
+    <Field name="Last Received CoilID" type="Number" size="8"/>
+    <Field name="Error Code" type="Number" size="4"/>
+    <Field name="Acceptance" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2003" name="Mill 1and2 Final Result" source="LAB,4b1,4b2" destination="MIS11g" description="After Coil End">
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Mother Coil ID" type="Number" size="8"/>
+    <Field name="Entry Thickness" type="Float" size="4"/>
+    <Field name="Entry Width" type="Float" size="4"/>
+    <Field name="ExitCoil" type="Number" size="1"/>
+    <Field name="Calculated Exit Weight (Final)" type="Float" size="4"/>
+    <Field name="Scrap" type="Float" size="4"/>
+    <Field name="Entry Outer Diameter" type="Float" size="4"/>
+    <Field name="Exit Inner Diameter" type="Float" size="4"/>
+    <Field name="Exit Outer Diameter" type="Float" size="4"/>
+    <Field name="Final Exit Length" type="Float" size="4"/>
+    <Field name="Final Exit Thickness" type="Float" size="4"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Total Number of Passes" type="Number" size="1"/>
+    <Field name="Production Start Datetime" type="String" size="14"/>
+    <Field name="Production Finish Datetime" type="String" size="14"/>
+    <Field name="Length rolled in Pass1" type="Float" size="4"/>
+    <Field name="Length rolled in Pass2" type="Float" size="4"/>
+    <Field name="Length rolled in Pass3" type="Float" size="4"/>
+    <Field name="Length rolled in Pass4" type="Float" size="4"/>
+    <Field name="Length rolled in Pass5" type="Float" size="4"/>
+    <Field name="Length rolled in Pass6" type="Float" size="4"/>
+    <Field name="Length rolled in Pass7" type="Float" size="4"/>
+    <Field name="Length rolled in Pass8" type="Float" size="4"/>
+    <Field name="Length rolled in Pass9" type="Float" size="4"/>
+    <Field name="Length rolled in Pass10" type="Float" size="4"/>
+    <Field name="Length rolled in Pass11" type="Float" size="4"/>
+    <Field name="Length rolled in Pass12" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass1" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass2" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass3" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass4" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass5" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass6" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass7" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass8" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass9" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass10" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass11" type="Float" size="4"/>
+    <Field name="Average Thk Exit Pass12" type="Float" size="4"/>
+    <Field name="Final Roughness" type="Float" size="4"/>
+    <Field name="Average Flatness" type="Float" size="4"/>
+    <Field name="Min Thickness" type="Float" size="4"/>
+    <Field name="Max Thickness" type="Float" size="4"/>
+    <Field name="Min Lth Out Of Range" type="Float" size="4"/>
+    <Field name="Max Lth Out Of Range" type="Float" size="4"/>
+    <Field name="Spare1" type="Float" size="4"/>
+    <Field name="Spare2" type="Float" size="4"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2003" name="PPL Final Result" source="4a1" destination="MIS11g" description="After Coil End">
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Mother Coil ID" type="Number" size="8"/>
+    <Field name="Entry Thickness" type="Float" size="4"/>
+    <Field name="Exit Width" type="Float" size="4"/>
+    <Field name="Min Exit Width" type="Float" size="4"/>
+    <Field name="Max Exit Width" type="Float" size="4"/>
+    <Field name="Entry Width" type="Float" size="4"/>
+    <Field name="ExitCoil" type="Number" size="1"/>
+    <Field name="Calculated Exit Weight (Final)" type="Float" size="4"/>
+    <Field name="Scrap" type="Float" size="4"/>
+    <Field name="Entry Outer Diameter" type="Float" size="4"/>
+    <Field name="Exit Inner Diameter" type="Float" size="4"/>
+    <Field name="Exit Outer Diameter" type="Float" size="4"/>
+    <Field name="Final Exit Length" type="Float" size="4"/>
+    <Field name="Entry Out Of Renge Length" type="Float" size="4"/>
+    <Field name="Exit Out Of Renge Length" type="Float" size="4"/>
+    <Field name="Final Exit Thickness" type="Float" size="4"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Min Exit Tks" type="Float" size="4"/>
+    <Field name="Max ExitTks" type="Float" size="4"/>
+    <Field name="Production Start Datetime" type="String" size="14"/>
+    <Field name="Production Finish Datetime" type="String" size="14"/>
+    <Field name="WeldType" type="Number" size="1"/>
+    <Field name="Weld Start Datetime" type="String" size="14"/>
+    <Field name="Weld End Datetime" type="String" size="14"/>
+    <Field name="Temp Tank1" type="Float" size="4"/>
+    <Field name="Temp Tank2" type="Float" size="4"/>
+    <Field name="Temp Tank3" type="Float" size="4"/>
+    <Field name="Temp Tank4" type="Float" size="4"/>
+    <Field name="Temp Tank5" type="Float" size="4"/>
+    <Field name="Temp Tank6" type="Float" size="4"/>
+    <Field name="Density Tank1" type="Float" size="4"/>
+    <Field name="Density Tank2" type="Float" size="4"/>
+    <Field name="Density Tank3" type="Float" size="4"/>
+    <Field name="Density Tank4" type="Float" size="4"/>
+    <Field name="Density Tank5" type="Float" size="4"/>
+    <Field name="Density Tank6" type="Float" size="4"/>
+    <Field name="Min Speed" type="Float" size="4"/>
+    <Field name="Max Speed" type="Float" size="4"/>
+    <Field name="Average Speed" type="Float" size="4"/>
+    <Field name="Iron Percent Tank1" type="Float" size="4"/>
+    <Field name="Iron Percent Tank2" type="Float" size="4"/>
+    <Field name="Iron Percent Tank3" type="Float" size="4"/>
+    <Field name="Iron Percent Tank4" type="Float" size="4"/>
+    <Field name="Iron Percent Tank5" type="Float" size="4"/>
+    <Field name="Iron Percent Tank6" type="Float" size="4"/>
+    <Field name="Ph Rins Tank" type="Float" size="4"/>
+    <Field name="Grip_Coil_Time" type="String" size="14"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2003" name="Final Result" source="4e1" destination="MIS11g" description="After Coil End">
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Mother Coil ID" type="Number" size="8"/>
+    <Field name="ExitCoil" type="Number" size="1"/>
+    <Field name="Calculated Exit Weight (Final)" type="Float" size="4"/>
+    <Field name="Scrap" type="Float" size="4"/>
+    <Field name="Exit Inner Diameter" type="Float" size="4"/>
+    <Field name="Exit Outer Diameter" type="Float" size="4"/>
+    <Field name="Final Exit Thickness" type="Float" size="4"/>
+    <Field name="Length" type="Float" size="4"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Production Start Datetime" type="String" size="14"/>
+    <Field name="Production Finish Datetime" type="String" size="14"/>
+    <Field name="Final Roughness" type="Float" size="4"/>
+    <Field name="Elongation Min" type="Float" size="4"/>
+    <Field name="Elongation Max" type="Float" size="4"/>
+    <Field name="Elongation Average" type="Float" size="4"/>
+    <Field name="Oil Mode" type="Number" size="1"/>
+    <Field name="Skp Mode" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2005" name="Coil Status" source="LAB,4b1,4b2,4a1,4e1" destination="MIS11g" description="On every Activation or Deactivation of a coil">
+    <Field name="Coil ID" type="Number" size="8"/>
+    <Field name="Coil Status" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2006" name="Consumption Data_Mill" source="LAB,4b1,4b2,4a1,4e1" destination="MIS11g" description="Response to Consumption Data Request (3003)">
+    <Field name="Start DateTime" type="String" size="14"/>
+    <Field name="End DateTime" type="String" size="14"/>
+    <Field name="Total_Electrical_Energy_POR" type="float" size="4"/>
+    <Field name="Total_Electrical_Energy_ETR" type="float" size="4"/>
+    <Field name="Total_Electrical_Energy_DTR" type="float" size="4"/>
+    <Field name="Total_Electrical_Energy_MILL" type="float" size="4"/>
+    <Field name="Valid" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2007" name="Equipment Stoppage" source="LAB,4b1,4b2,4a1,4e1,4a1" destination="MIS11g" description="After Every Change in Line Running Status">
+    <Field name="Occation DateTime" type="String" size="14"/>
+    <Field name="Line Status" type="Number" size="1"/>
+    <Field name="Equipment Code" type="Number" size="4"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="2008" name="Disassembly Roll Mill1 and Mill2" source="4e1" destination="MIS11g" description="">
+    <Field name="BUR1 ID" type="String" size="15"/>
+    <Field name="BUR1 Rolled Length" type="Float" size="4"/>
+    <Field name="BUR2 ID" type="String" size="15"/>
+    <Field name="BUR2 Rolled Length" type="Float" size="4"/>
+    <Field name="IMR1 ID" type="String" size="15"/>
+    <Field name="IMR1 Rolled Length" type="Float" size="4"/>
+    <Field name="IMR2 ID" type="String" size="15"/>
+    <Field name="IMR2 Rolled Length" type="Float" size="4"/>
+    <Field name="WR1 ID" type="String" size="15"/>
+    <Field name="WR1 Rolled Length" type="Float" size="4"/>
+    <Field name="WR2 ID" type="String" size="15"/>
+    <Field name="WR2 Rolled Length" type="Float" size="4"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+
+  <Telegram id="3001" name="Coil Data for Mill" source="MIS11g" destination="4b1,4b2" description="Response to PDI Request">
+    <Field name="CoilId" type="Number" size="8"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Customer" type="String" size="20"/>
+    <Field name="AlloyCode (Commercial Quality)" type="String" size="10"/>
+    <Field name="Entrythk" type="Float" size="4"/>
+    <Field name="ExitThk" type="Float" size="4"/>
+    <Field name="Width" type="Float" size="4"/>
+    <Field name="InnerDia" type="Float" size="4"/>
+    <Field name="OuterDia" type="Float" size="4"/>
+    <Field name="Length" type="Float" size="4"/>
+    <Field name="weight" type="Float" size="4"/>
+    <Field name="Spool" type="Number" size="1"/>
+    <Field name="AlloyCode (Steel Grade)" type="String" size="10"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Start Line" type="Number" size="2"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="End Line" type="Number" size="2"/>
+    <Field name="Status" type="Number" size="1"/>
+    <Field name="Flatness Set point" type="Float" size="4"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Roughness" type="Float" size="4"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3001" name="Coil Data for PPL" source="MIS11g" destination="4a1" description="Response to PDI Request">
+    <Field name="CoilId" type="Number" size="8"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Customer" type="String" size="20"/>
+    <Field name="AlloyCode (Commercial Quality)" type="String" size="10"/>
+    <Field name="Thickness" type="Float" size="4"/>
+    <Field name="Entrythk" type="Float" size="4"/>
+    <Field name="ExitThk" type="Float" size="4"/>
+    <Field name="InnerDia" type="Float" size="4"/>
+    <Field name="OuterDia" type="Float" size="4"/>
+    <Field name="Length" type="Float" size="4"/>
+    <Field name="weight" type="Float" size="4"/>
+    <Field name="DivideNumber" type="Number" size="1"/>
+    <Field name="AlloyCode (Steel Grade)" type="String" size="10"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Start Line" type="Number" size="2"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="End Line" type="Number" size="2"/>
+    <Field name="Status" type="Number" size="1"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Roughness" type="Float" size="4"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3001" name="Coil Data for Mill" source="MIS11g" destination="4e1" description="Response to PDI Request">
+    <Field name="CoilId" type="Number" size="8"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Schedule Seq No" type="Number" size="4"/>
+    <Field name="Entrythk" type="Float" size="4"/>
+    <Field name="Tks Min" type="Float" size="4"/>
+    <Field name="Tks Max" type="Float" size="4"/>
+    <Field name="Width" type="Float" size="4"/>
+    <Field name="InnerDia" type="Float" size="4"/>
+    <Field name="OuterDia" type="Float" size="4"/>
+    <Field name="Length" type="Float" size="4"/>
+    <Field name="weight" type="Float" size="4"/>
+    <Field name="DivideNumber" type="Number" size="1"/>
+    <Field name="Steel Grade" type="String" size="10"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="Start Line" type="Number" size="2"/>
+    <Field name="Schedule No" type="Number" size="4"/>
+    <Field name="End Line" type="Number" size="2"/>
+    <Field name="Status" type="Number" size="1"/>
+    <Field name="Edgetriming" type="Number" size="1"/>
+    <Field name="RollingMode" type="Number" size="1"/>
+    <Field name="Roughness" type="Float" size="4"/>
+    <Field name="Weight Min" type="Float" size="4"/>
+    <Field name="Weight Max" type="Float" size="4"/>
+    <Field name="Elongation Min" type="Float" size="4"/>
+    <Field name="Elongation Max" type="Float" size="4"/>
+    <Field name="Oil" type="Number" size="1"/>
+    <Field name="Roughness Min" type="Float" size="4"/>
+    <Field name="Roughness Max" type="Float" size="4"/>
+    <Field name="Tension Mill" type="Float" size="4"/>
+    <Field name="Customer" type="String" size="10"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3002" name="Acceptance Telegram" source="MIS11g" destination="4b1,4b2,4a1,4e1,4a1,4e1" description="Condition: Response to Final Result, Consumption Data and Stoppage Data (2003,2006,2007)">
+    <Field name="Main Telegram ID" type="Number" size="4"/>
+    <Field name="MotherCoilID" type="Number" size="8"/>
+    <Field name="DaughterCoil ID1" type="Number" size="8"/>
+    <Field name="DaughterCoil ID2" type="Number" size="8"/>
+    <Field name="DaughterCoil ID3" type="Number" size="8"/>
+    <Field name="DaughterCoil ID4" type="Number" size="8"/>
+    <Field name="DaughterCoil ID5" type="Number" size="8"/>
+    <Field name="Error Code" type="Number" size="1"/>
+    <Field name="Acceptance" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3003" name="Consumption Data_Request" source="MIS11g" destination="4b1,4b2,4a1,4e1" description=" Cyclic Every Work Time OR Manual Request">
+    <Field name="Start DateTime" type="String" size="14"/>
+    <Field name="End DateTime" type="String" size="14"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3004" name="Change Roll Mill1 and Mill2" source="MIS11g" destination="4e1" description="">
+    <Field name="BUR1 ID" type="String" size="15"/>
+    <Field name="BUR1 Diameter" type="Float" size="4"/>
+    <Field name="BUR1 Change" type="Number" size="1"/>
+    <Field name="BUR2 ID" type="String" size="15"/>
+    <Field name="BUR2 Diameter" type="Float" size="4"/>
+    <Field name="BUR2 Change" type="Number" size="1"/>
+    <Field name="IMR1 ID" type="String" size="15"/>
+    <Field name="IMR1 Diameter" type="Float" size="4"/>
+    <Field name="IMR1 Change" type="Number" size="1"/>
+    <Field name="IMR2 ID" type="String" size="15"/>
+    <Field name="IMR2 Diameter" type="Float" size="4"/>
+    <Field name="IMR2 Change" type="Number" size="1"/>
+    <Field name="WR1 ID" type="String" size="15"/>
+    <Field name="WR1 Diameter" type="Float" size="4"/>
+    <Field name="WR1 Change" type="Number" size="1"/>
+    <Field name="WR2 ID" type="String" size="15"/>
+    <Field name="WR2 Diameter" type="Float" size="4"/>
+    <Field name="WR2 Change" type="Number" size="1"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+  <Telegram id="3005" name="Consumption Data_Request" source="MIS11g" destination="4b1,4b2" description=" Cyclic Every Work Time OR Manual Request">
+    <Field name="Start DateTime" type="String" size="14"/>
+    <Field name="End DateTime" type="String" size="14"/>
+    <Field name="L2 Message No." type="Number" size="4"/>
+    <Field name="L3 Message No." type="Number" size="4"/>
+  </Telegram>
+
+</TelegramDefinitions>

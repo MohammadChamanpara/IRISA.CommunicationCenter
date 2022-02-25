@@ -76,5 +76,10 @@
     <Compile Include="Definitions\TelegramDefinition.cs" />
     <Compile Include="Definitions\TelegramDefinitions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Definitions\TelegramDefinitions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
