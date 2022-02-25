@@ -46,6 +46,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return dllSettings.Assembly.AsssemblyFileName();
             }
         }
+
         [Category("Information"), DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
@@ -54,6 +55,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return dllSettings.Assembly.AssemblyVersion();
             }
         }
+
         [Category("Information"), DisplayName("آدرس فایل پلاگین")]
         public string FileAddress
         {
@@ -62,6 +64,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return dllSettings.Assembly.Location;
             }
         }
+
         [Category("Information"), DisplayName("نوع فایل پلاگین")]
         public string FileAssembly
         {
@@ -70,6 +73,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return dllSettings.Assembly.AssemblyName();
             }
         }
+
         [DisplayName("نام کلاینت")]
         public string Name
         {
@@ -95,6 +99,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 dllSettings.SaveSetting("PersianDescription", value);
             }
         }
+
         [DisplayName("آدرس فایل تعریف ساختار تلگرام ها")]
         public string TelegramDefinitionFile
         {
@@ -107,6 +112,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 dllSettings.SaveSetting("TelegramDefinitionFile", value);
             }
         }
+
         [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
         public abstract bool Connected
         {
@@ -140,6 +146,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 await Task.Delay(500);
             }
         }
+
         protected void OnTelegramSendCompleted(SendCompletedEventArgs e)
         {
             SendCompleted?.Invoke(this, e);

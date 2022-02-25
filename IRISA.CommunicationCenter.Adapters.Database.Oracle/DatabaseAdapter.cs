@@ -19,6 +19,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
         private IrisaBackgroundTimer receiveTimer;
         private IrisaBackgroundTimer activatorTimer;
         private bool databaseIsConnected = false;
+        
         [Browsable(false)]
         public EntityBusiness<Entities, IccClientTelegram> ClientTelegrams
         {
@@ -27,6 +28,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 return new EntityBusiness<Entities, IccClientTelegram>(new Entities(ConnectionString));
             }
         }
+        
         public override string Type
         {
             get
@@ -34,6 +36,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 return "پایگاه داده";
             }
         }
+        
         [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
         public override bool Connected
         {
@@ -53,6 +56,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 return base.Started && databaseIsConnected;
             }
         }
+        
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
         {
@@ -65,6 +69,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveConnectionString(value);
             }
         }
+        
         [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
         public int ReceiveTimerInterval
         {
@@ -103,6 +108,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
             }
         }
+       
         [DisplayName("شرح فارسی پروسه فعال ساز")]
         public string ActivatorTimerPersianDescription
         {
@@ -115,6 +121,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
             }
         }
+        
         [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
         public char BodySeparator
         {
@@ -127,6 +134,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveSetting("BodySeparator", value);
             }
         }
+        
         [DisplayName("تعیین مقصد تلگرام توسط فرستنده")]
         public bool GetDestinationFromSender
         {
@@ -139,6 +147,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveSetting("GetDestinationFromSender", value);
             }
         }
+        
         [DisplayName("انجام عملیات اعتبار سنجی محتوای تلگرام")]
         public bool PerformBodyValidation
         {
@@ -151,6 +160,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 dllSettings.SaveSetting("PerformBodyValidation", value);
             }
         }
+        
         public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
@@ -162,10 +172,12 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             };
             receiveTimer.DoWork += new DoWorkEventHandler(ReceiveTimer_DoWork);
             receiveTimer.Start();
+            
             if (Connected)
             {
                 OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
             }
+            
             if (activatorTimer != null)
             {
                 activatorTimer.Stop();
@@ -179,6 +191,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             activatorTimer.DoWork += new DoWorkEventHandler(ActivatorTimer_DoWork);
             activatorTimer.Start();
         }
+        
         private void ActivatorTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             try
@@ -192,6 +205,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
             }
         }
+        
         public override void Stop()
         {
             base.Stop();
@@ -200,6 +214,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 receiveTimer.Stop();
             }
         }
+        
         protected override void SendTelegram(IccTelegram iccTelegram)
         {
             IccClientTelegram entity = new IccClientTelegram();
@@ -209,6 +224,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 clientTelegrams.Create(entity);
             }
         }
+    
         public virtual void ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram, ref IccClientTelegram clientTelegram)
         {
             telegramDefinitions.Find(iccTelegram);
@@ -224,6 +240,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 TRANSFER_ID = iccTelegram.TransferId
             };
         }
+   
         public virtual void ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram, ref IccTelegram iccTelegram)
         {
             iccTelegram.Source = clientTelegram.SOURCE;
@@ -250,6 +267,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 iccTelegram.Body = new List<string>();
             }
         }
+    
         public override void AwakeTimers()
         {
             base.AwakeTimers();
@@ -283,23 +301,28 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                 }
             }
         }
+        
         private void ReceiveTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
             {
                 CheckDatabaseConnection();
+                
                 List<IccClientTelegram> list = (
                     from t in clientTelegrams.GetAll()
                     where t.PROCESSED == false && t.SOURCE.ToLower() == Name.ToLower() && t.READY_FOR_CLIENT == false
                     select t).Take(100).ToList<IccClientTelegram>();
+                
                 foreach (IccClientTelegram current in list)
                 {
                     IccTelegram iccTelegram = new IccTelegram
                     {
                         Source = base.Name
                     };
+                    
                     bool successful = false;
                     Exception failException = null;
+                    
                     try
                     {
                         ConvertClientTelegramToStandardTelegram(current, ref iccTelegram);

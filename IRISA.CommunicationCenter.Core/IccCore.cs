@@ -31,6 +31,119 @@ namespace IRISA.CommunicationCenter.Core
         private readonly ILogger Logger;
         private readonly IInProcessTelegrams InProcessTelegrams;
 
+        [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
+        public string PersianDescription
+        {
+            get
+            {
+                return dllSettings.FindStringValue("PersianDescription", "هسته مرکزی سیستم ارتباط");
+            }
+            set
+            {
+                dllSettings.SaveSetting("PersianDescription", value);
+            }
+        }
+        
+        [DisplayName("شرح فارسی پروسه فعال ساز")]
+        public string ActivatorTimerPersianDescription
+        {
+            get
+            {
+                return dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
+            }
+            set
+            {
+                dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
+            }
+        }
+        
+        [DisplayName("شرح فارسی پروسه ارسال تلگرام")]
+        public string SendTimerPersianDescription
+        {
+            get
+            {
+                return dllSettings.FindStringValue("SendTimerPersianDescription", "پروسه ارسال تلگرام");
+            }
+            set
+            {
+                dllSettings.SaveSetting("SendTimerPersianDescription", value);
+            }
+        }
+
+        [DisplayName("کاراکتر جدا کننده بین مقصد های تلگرام")]
+        public char DestinationSeparator
+        {
+            get
+            {
+                return dllSettings.FindCharacterValue("DestinationSeparator", ',');
+            }
+            set
+            {
+                dllSettings.SaveSetting("DestinationSeparator", value);
+            }
+        }
+        
+        [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
+        public int SendTimerInterval
+        {
+            get
+            {
+                return dllSettings.FindIntValue("sendTimerInterval", 2000);
+            }
+            set
+            {
+                dllSettings.SaveSetting("sendTimerInterval", value);
+            }
+        }
+        
+        [DisplayName("دوره زمانی فعال نمودن پروسه های متوقف شده بر حسب میلی ثانیه")]
+        public int ActivatorTimerInterval
+        {
+            get
+            {
+                return dllSettings.FindIntValue("activatorTimerInterval", 20000);
+            }
+            set
+            {
+                dllSettings.SaveSetting("activatorTimerInterval", value);
+            }
+        }
+        
+        [Category("Information"), DisplayName("وضعیت اجرای پروسه")]
+        public bool Started
+        {
+            get;
+            private set;
+        }
+        
+        [Category("Information"), DisplayName("نوع فایل")]
+        public string FileAssembly
+        {
+            get
+            {
+                return dllSettings.Assembly.AssemblyName();
+            }
+        }
+        
+        [Category("Information"), DisplayName("ورژن برنامه")]
+        public string FileAssemblyVersion
+        {
+            get
+            {
+                return dllSettings.Assembly.AssemblyVersion();
+            }
+        }
+      
+        [Category("Information"), DisplayName("آدرس فایل")]
+        public string FileAddress
+        {
+            get
+            {
+                return dllSettings.Assembly.Location;
+            }
+        }
+
+
         public IccCore(IInProcessTelegrams inProcessTelegrams, ILogger logger, IIccQueue iccQueue)
         {
             InProcessTelegrams = inProcessTelegrams;
@@ -89,110 +202,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             return result;
         }
-
-        [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
-        public string PersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("PersianDescription", "هسته مرکزی سیستم ارتباط");
-            }
-            set
-            {
-                dllSettings.SaveSetting("PersianDescription", value);
-            }
-        }
-        [DisplayName("شرح فارسی پروسه فعال ساز")]
-        public string ActivatorTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
-            }
-        }
-        [DisplayName("شرح فارسی پروسه ارسال تلگرام")]
-        public string SendTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("SendTimerPersianDescription", "پروسه ارسال تلگرام");
-            }
-            set
-            {
-                dllSettings.SaveSetting("SendTimerPersianDescription", value);
-            }
-        }
-
-        [DisplayName("کاراکتر جدا کننده بین مقصد های تلگرام")]
-        public char DestinationSeparator
-        {
-            get
-            {
-                return dllSettings.FindCharacterValue("DestinationSeparator", ',');
-            }
-            set
-            {
-                dllSettings.SaveSetting("DestinationSeparator", value);
-            }
-        }
-        [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
-        public int SendTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("sendTimerInterval", 2000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("sendTimerInterval", value);
-            }
-        }
-        [DisplayName("دوره زمانی فعال نمودن پروسه های متوقف شده بر حسب میلی ثانیه")]
-        public int ActivatorTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("activatorTimerInterval", 20000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("activatorTimerInterval", value);
-            }
-        }
-        [Category("Information"), DisplayName("وضعیت اجرای پروسه")]
-        public bool Started
-        {
-            get;
-            private set;
-        }
-        [Category("Information"), DisplayName("نوع فایل")]
-        public string FileAssembly
-        {
-            get
-            {
-                return dllSettings.Assembly.AssemblyName();
-            }
-        }
-        [Category("Information"), DisplayName("ورژن برنامه")]
-        public string FileAssemblyVersion
-        {
-            get
-            {
-                return dllSettings.Assembly.AssemblyVersion();
-            }
-        }
-        [Category("Information"), DisplayName("آدرس فایل")]
-        public string FileAddress
-        {
-            get
-            {
-                return dllSettings.Assembly.Location;
-            }
-        }
+        
         private void SendTimer_DoWork(object sender, DoWorkEventArgs e)
         {
             lock (sendLocker)
@@ -206,7 +216,6 @@ namespace IRISA.CommunicationCenter.Core
                 SendTelegrams(telegrams, ConnectedAdapters);
             }
         }
-
 
         public void SendTelegrams(List<IccTelegram> telegrams, List<IIccAdapter> adapters)
         {
@@ -282,6 +291,7 @@ namespace IRISA.CommunicationCenter.Core
                 Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
             }
         }
+        
         private void Adapter_OnReceive(ReceiveEventArgs e)
         {
             lock (receiveLocker)
@@ -306,6 +316,7 @@ namespace IRISA.CommunicationCenter.Core
                 }
             }
         }
+        
         public void Start()
         {
             try
@@ -349,6 +360,7 @@ namespace IRISA.CommunicationCenter.Core
                 Logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
             }
         }
+        
         public void Stop()
         {
             if (sendTimer != null)
@@ -425,6 +437,7 @@ namespace IRISA.CommunicationCenter.Core
                 throw IrisaException.Create("چند مقصد با نام داده شده وجود دارد.");
             }
         }
+      
         private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)
         {
             try
@@ -462,6 +475,7 @@ namespace IRISA.CommunicationCenter.Core
                 InProcessTelegrams.Remove(iccTelegram);
             }
         }
+      
         private void QueueTelegram(IccTelegram iccTelegram)
         {
             try
@@ -482,6 +496,7 @@ namespace IRISA.CommunicationCenter.Core
                 Logger.LogException(ex, "بروز خطا هنگام ثبت تلگرام در صف.");
             }
         }
+
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)
         {
             List<IccTelegram> list = new List<IccTelegram>();
