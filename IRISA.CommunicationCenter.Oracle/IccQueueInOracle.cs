@@ -14,7 +14,7 @@ namespace IRISA.CommunicationCenter.Oracle
     public class IccQueueInOracle : IIccQueue
     {
         private readonly DLLSettings<IccQueueInOracle> dllSettings = new DLLSettings<IccQueueInOracle>();
-        
+
         [Browsable(false)]
         public EntityBusiness<Entities, IccTransfer> IccTransfers
         {
@@ -23,24 +23,6 @@ namespace IRISA.CommunicationCenter.Oracle
                 return new EntityBusiness<Entities, IccTransfer>(new Entities(ConnectionString));
             }
         }
-                 
-        public void Add(IccTelegram iccTelegram)
-        {
-            IccTransfers.Create(iccTelegram.ToIccTransfer());
-
-            var id =
-                IccTransfers
-                .GetAll()
-                .Max(x => x.ID);
-
-            iccTelegram.TransferId = id;
-        }
-
-        public void Edit(IccTelegram iccTelegram)
-        {
-            IccTransfers.Edit(iccTelegram.ToIccTransfer());
-        }
-
         [Category("Operation")]
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
@@ -69,13 +51,24 @@ namespace IRISA.CommunicationCenter.Oracle
                 {
                     return IccTransfers.Connected;
                 }
-                catch 
+                catch
                 {
                     return false;
                 }
             }
         }
 
+        public void Add(IccTelegram iccTelegram)
+        {
+            var iccTransfer = iccTelegram.ToIccTransfer();
+            IccTransfers.Create(iccTransfer);
+            iccTelegram.TransferId = iccTransfer.ID;
+        }
+
+        public void Edit(IccTelegram iccTelegram)
+        {
+            IccTransfers.Edit(iccTelegram.ToIccTransfer());
+        }
 
         public List<IccTelegram> GetTelegramsToSend()
         {
@@ -87,6 +80,7 @@ namespace IRISA.CommunicationCenter.Oracle
                 .Where(x => x.DROPPED == false && x.SENT == false)
                 .ToList()
                 .Select(x => x.ToIccTelegram())
+                .OrderBy(x => x.SendTime)
                 .ToList();
         }
 
