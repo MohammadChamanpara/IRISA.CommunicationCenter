@@ -113,13 +113,40 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
-        public abstract bool Connected
+        private bool _connected = false;
+        [Category("Information")]
+        [DisplayName("وضعیت اتصال کلاینت")]
+        public bool Connected
         {
-            get;
+            get
+            {
+                if (!Started)
+                    return false;
+
+                try
+                {
+                    Connected = CheckConnection();
+                }
+                catch (Exception exception)
+                {
+                    Logger.LogException(exception, "بروز خطا هنگام بررسی اتصال کلاینت");
+                    Connected = false;
+                }
+
+                return _connected;
+            }
+            set
+            {
+                if (_connected == value)
+                    return;
+                _connected = value;
+                OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+            }
         }
+
         #endregion
 
+        protected abstract bool CheckConnection();
 
         public void Send(IccTelegram iccTelegram)
         {
@@ -167,12 +194,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public virtual void Stop()
         {
-            bool connected = Connected;
             Started = false;
-            if (connected)
-            {
-                OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
-            }
+            Connected = false;
         }
 
         public virtual void AwakeTimers()

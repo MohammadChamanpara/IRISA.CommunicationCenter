@@ -245,23 +245,23 @@ namespace IRISA.CommunicationCenter.Core
                 .ToList();
         }
 
-        public IIccAdapter GetDestinationAdapter(List<IIccAdapter> adapters, string destination)
+        public IIccAdapter GetDestinationAdapter(List<IIccAdapter> adapters, string destinationName)
         {
-            if (!destination.HasValue())
+            if (!destinationName.HasValue())
             {
                 throw IrisaException.Create("مقصد تلگرام مشخص نشده است.");
             }
 
-            var destinationAdapter = adapters.Where(x => x.Name == destination);
+            var destinationAdapter = adapters.Where(x => x.Name == destinationName);
 
             if (!destinationAdapter.Any())
             {
-                throw IrisaException.Create("مقصد مشخص شده وجود ندارد.");
+                throw IrisaException.Create($"مقصدی با نام {destinationName} وجود ندارد.");
             }
 
-            if (destination.Count() > 1)
+            if (destinationAdapter.Count() > 1)
             {
-                throw IrisaException.Create("چند مقصد با نام داده شده وجود دارد.");
+                throw IrisaException.Create($"چند مقصد با نام {destinationName} وجود دارد.");
             }
 
             return destinationAdapter.Single();
@@ -372,7 +372,10 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadAdapters()
         {
-            //connectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            //ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
 
             if (!ConnectedAdapters.Any())
@@ -491,14 +494,13 @@ namespace IRISA.CommunicationCenter.Core
 
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)
         {
-            List<IccTelegram> list = new List<IccTelegram>();
-            string[] array = iccTelegram.Destination.Split(new char[]
+            List<IccTelegram> iccTelegrams = new List<IccTelegram>();
+
+            string[] destinations = iccTelegram.Destination.Split(DestinationSeparator);
+
+            for (int i = 0; i < destinations.Length; i++)
             {
-                DestinationSeparator
-            });
-            for (int i = 0; i < array.Length; i++)
-            {
-                string text = array[i];
+                string text = destinations[i];
                 if (!(text.Trim() == ""))
                 {
                     IccTelegram item = new IccTelegram
@@ -509,10 +511,14 @@ namespace IRISA.CommunicationCenter.Core
                         Source = iccTelegram.Source,
                         Body = new List<string>(iccTelegram.Body)
                     };
-                    list.Add(item);
+                    iccTelegrams.Add(item);
                 }
             }
-            return list;
+            
+            if (destinations.Length > 1)
+                Logger.LogInformation($"تلگرام دریافت شده از {iccTelegram.Source} از نوع {iccTelegram.TelegramId} به {destinations.Count()} تلگرام تقسیم شد.");
+
+            return iccTelegrams;
         }
     }
 }

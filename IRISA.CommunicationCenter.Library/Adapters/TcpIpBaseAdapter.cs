@@ -30,7 +30,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return "Tcp/Ip";
             }
         }
-        
+
         [Category("Operation")]
         [DisplayName("کاراکتر آغاز کننده تلگرام")]
         public char StartCharacter
@@ -58,7 +58,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 dllSettings.SaveSetting("EndCharacter", value);
             }
         }
-        
+
         [Category("Operation")]
         [DisplayName("سایز هدر تلگرام بر حسب بایت")]
         public int HeaderSize
@@ -245,12 +245,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
         [Category("Information")]
-        public override bool Connected
+        protected override bool CheckConnection()
         {
-            get
-            {
-                return base.Started && socket != null && socket.Connected;
-            }
+            return socket != null && socket.Connected;
         }
         #endregion
 
@@ -263,11 +260,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if ((DateTime.Now - lastConnectionTime).TotalMilliseconds > (double)TcpIpConnectExpireTime)
                 {
                     Logger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
-					{
-						base.PersianDescription
-					});
+                    {
+                        base.PersianDescription
+                    });
                     socket = null;
-                    OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+                    Connected = false;
                 }
                 else
                 {
@@ -320,22 +317,17 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             if (tcpListener.Pending())
             {
                 lastConnectionTime = DateTime.Now;
-                bool flag = false;
                 if (socket == null)
                 {
-                    Logger.LogInformation(string.Format("کلاینت {0} متصل شد.", base.PersianDescription));
-                    flag = true;
+                    Logger.LogInformation($"کلاینت {PersianDescription} متصل شد.");
+                    Connected = true;
                 }
                 else
                 {
-                    Logger.LogInformation(string.Format("کلاینت {0} مجددا متصل شد.", base.PersianDescription));
+                    Logger.LogInformation($"کلاینت {PersianDescription} مجددا متصل شد.");
                 }
                 socket = tcpListener.AcceptSocket();
                 socket.SendTimeout = SendTimeout;
-                if (flag)
-                {
-                    OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
-                }
             }
         }
         protected DateTime StringToDateTime(string stringDate, string format)
@@ -348,11 +340,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             catch
             {
                 Logger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
-				{
-					base.PersianDescription,
-					stringDate,
-					format
-				});
+                {
+                    base.PersianDescription,
+                    stringDate,
+                    format
+                });
                 result = DateTime.Now;
             }
             return result;
@@ -372,10 +364,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             catch (Exception ex)
             {
                 throw IrisaException.Create("پاسخی از سرور {0} دریافت نشد. متن خطا : {1}", new object[]
-				{
-					base.PersianDescription,
-					ex.Message
-				});
+                {
+                    base.PersianDescription,
+                    ex.Message
+                });
             }
         }
         public override void Start(ILogger eventLogger)
@@ -395,10 +387,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             catch
             {
                 throw IrisaException.Create("برنامه دیگری در حال استفاده از پورت {0} مورد استفاده در آداپتور {1} می باشد", new object[]
-				{
-					Port,
-					base.PersianDescription
-				});
+                {
+                    Port,
+                    base.PersianDescription
+                });
             }
             if (clientDetectTimer != null)
             {
@@ -474,26 +466,26 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if (b != 0 && receivedBuffer.First<byte>() != b)
                 {
                     throw IrisaException.Create("پکت دریافتی  با کاراکتر {0} آغاز نشده است.", new object[]
-					{
-						startCharacter
-					});
+                    {
+                        startCharacter
+                    });
                 }
                 if (receivedBuffer.Count < HeaderSize)
                 {
                     throw IrisaException.Create("طول پکت دریافتی {0} بایت و حداقل طول مجاز {1} بایت می باشد.", new object[]
-					{
-						receivedBuffer.Count,
-						HeaderSize
-					});
+                    {
+                        receivedBuffer.Count,
+                        HeaderSize
+                    });
                 }
                 iccTelegram.TelegramId = GetTelegramId(receivedBuffer.ToArray());
                 int telegramSize = GetTelegramSize(receivedBuffer.ToArray());
                 if (telegramSize < 0)
                 {
                     throw IrisaException.Create("اندازه تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
-					{
-						telegramSize
-					});
+                    {
+                        telegramSize
+                    });
                 }
                 completeTelegram = new byte[telegramSize];
                 if (receivedBuffer.Count < telegramSize)
@@ -501,15 +493,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     if (receivedBuffer.Count < 1000 && receivedBuffer.Last<byte>() == b2)
                     {
                         throw IrisaException.Create("طول پکت دریافتی {0} بایت و طول اعلام شده توسط پکت {1} بایت می باشد.", new object[]
-						{
-							receivedBuffer.Count,
-							telegramSize
-						});
+                        {
+                            receivedBuffer.Count,
+                            telegramSize
+                        });
                     }
                     Logger.LogInformation("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
-					{
-						base.Name
-					});
+                    {
+                        base.Name
+                    });
                     result = false;
                 }
                 else
@@ -527,9 +519,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     if (b2 != 0 && completeTelegram.Last<byte>() != b2)
                     {
                         throw IrisaException.Create("تلگرام دریافتی  با کاراکتر {0} خاتمه نیافته است.", new object[]
-						{
-							endCharacter
-						});
+                        {
+                            endCharacter
+                        });
                     }
                     result = true;
                 }
@@ -543,9 +535,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             if (telegramBodySize < 0)
             {
                 throw IrisaException.Create("اندازه محتوات تلگرام بر حسب بایت {0} اعلام شده است.", new object[]
-				{
-					telegramBodySize
-				});
+                {
+                    telegramBodySize
+                });
             }
             iccTelegram.SendTime = DateTime.Now;
             iccTelegram.Source = GetTelegramSource(completeTelegram);
@@ -562,10 +554,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if (array.Length < fieldDefinition.Size)
                 {
                     throw IrisaException.Create("تعداد فیلد های ارسال شده {0} و تعداد فیلد های تعریف شده {1} می باشد.", new object[]
-					{
-						i,
-						count
-					});
+                    {
+                        i,
+                        count
+                    });
                 }
                 string value = fieldDefinition.GetValue(array);
                 array = array.Skip(fieldDefinition.Size).ToArray<byte>();
@@ -574,9 +566,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             if (array.Length > 0)
             {
                 throw IrisaException.Create("طول تلگرام ارسال شده {0} بایت بزرگتر از تلگرام تعریف شده در سیستم است.", new object[]
-				{
-					array.Length
-				});
+                {
+                    array.Length
+                });
             }
             ExtraValidationsOnReceive(completeTelegram, bodyBytes, iccTelegram);
         }
@@ -591,10 +583,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             if (fields.Count != iccTelegram.Body.Count)
             {
                 throw IrisaException.Create("تعداد فیلد های تلگرام ارسالی {0} و تعداد فیلد های تلگرام تعریف شده {1} می باشد.", new object[]
-				{
-					iccTelegram.Body.Count,
-					fields.Count
-				});
+                {
+                    iccTelegram.Body.Count,
+                    fields.Count
+                });
             }
             int num = 0;
             foreach (FieldDefinition current in fields)

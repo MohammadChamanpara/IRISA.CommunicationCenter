@@ -18,6 +18,7 @@ namespace IRISA.CommunicationCenter.Oracle
             get;
             private set;
         }
+
         public ObjectSet<TEntity> Entities
         {
             get
@@ -30,6 +31,7 @@ namespace IRISA.CommunicationCenter.Oracle
                 return entities;
             }
         }
+
         public string FullyQualifiedEntitySetName
         {
             get
@@ -44,19 +46,22 @@ namespace IRISA.CommunicationCenter.Oracle
         private static void CallWithTimeout(Action action, int timeoutSeconds)
         {
             Thread threadToKill = null;
-            Action action2 = delegate
+            Action wrappedAction = () =>
             {
                 threadToKill = Thread.CurrentThread;
                 action();
             };
-            IAsyncResult asyncResult = action2.BeginInvoke(null, null);
-            if (asyncResult.AsyncWaitHandle.WaitOne(timeoutSeconds * 1000))
+
+            IAsyncResult result = wrappedAction.BeginInvoke(null, null);
+            if (result.AsyncWaitHandle.WaitOne(timeoutSeconds * 1000))
             {
-                action2.EndInvoke(asyncResult);
-                return;
+                wrappedAction.EndInvoke(result);
             }
-            threadToKill.Abort();
-            throw new TimeoutException();
+            else
+            {
+                threadToKill.Abort();
+                throw new TimeoutException();
+            }
         }
 
         public bool Connected
@@ -65,14 +70,12 @@ namespace IRISA.CommunicationCenter.Oracle
             {
                 try
                 {
-                    TContext context = Context;
-                    if (context.Connection.State != ConnectionState.Open)
-                    {
-                        context = Context;
-                        Action action = new Action(context.Connection.Open);
-                        context = Context;
-                        CallWithTimeout(action, context.Connection.ConnectionTimeout);
-                    }
+                    if (Context.Connection.State != ConnectionState.Open)
+                        CallWithTimeout
+                        (
+                            Context.Connection.Open,
+                            Context.Connection.ConnectionTimeout
+                        );
                     return true;
                 }
                 catch

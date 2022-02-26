@@ -28,7 +28,6 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             }
 
             public override string Type => "TestAdapter";
-            public override bool Connected => Started;
 
             private readonly object sendLocker = new object();
             protected override void SendTelegram(IccTelegram iccTelegram)
@@ -84,6 +83,10 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 }
             }
 
+            protected override bool CheckConnection()
+            {
+                return true;
+            }
         }
     }
 }

@@ -18,7 +18,6 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
     {
         private IrisaBackgroundTimer receiveTimer;
         private IrisaBackgroundTimer activatorTimer;
-        private bool databaseIsConnected = false;
 
         [Browsable(false)]
         public EntityBusiness<Entities, IccClientTelegram> ClientTelegrams
@@ -34,26 +33,6 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             get
             {
                 return "پایگاه داده";
-            }
-        }
-
-        [Category("Information"), DisplayName("وضعیت اتصال کلاینت")]
-        public override bool Connected
-        {
-            get
-            {
-                if (!databaseIsConnected)
-                {
-                    try
-                    {
-                        CheckDatabaseConnection();
-                    }
-                    catch (Exception exception)
-                    {
-                        Logger.LogException(exception, "بروز خطا هنگام بررسی اتصال پایگاه داده");
-                    }
-                }
-                return base.Started && databaseIsConnected;
             }
         }
 
@@ -161,9 +140,15 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
+        protected override bool CheckConnection()
+        {
+            return ClientTelegrams.Connected;
+        }
+
         public override void Start(ILogger eventLogger)
         {
             base.Start(eventLogger);
+
             receiveTimer = new IrisaBackgroundTimer
             {
                 Interval = ReceiveTimerInterval,
@@ -172,11 +157,6 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             };
             receiveTimer.DoWork += new DoWorkEventHandler(ReceiveTimer_DoWork);
             receiveTimer.Start();
-
-            if (Connected)
-            {
-                OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
-            }
 
             if (activatorTimer != null)
             {
@@ -225,7 +205,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        public virtual IccClientTelegram ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram)
+        private IccClientTelegram ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram)
         {
             telegramDefinitions.Find(iccTelegram);
             return new IccClientTelegram
@@ -241,7 +221,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             };
         }
 
-        public IccTelegram ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram)
+        private IccTelegram ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram)
         {
             var iccTelegram = new IccTelegram
             {
@@ -268,40 +248,27 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        private void CheckDatabaseConnection()
-        {
-            using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
-            {
-                var connected = clientTelegrams.Connected;
-
-                if (connected != databaseIsConnected)
-                {
-                    OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
-                }
-
-                databaseIsConnected = connected;
-                
-                if (!connected)
-                    throw IrisaException.Create($"برنامه قادر به اتصال به پایگاه داده {PersianDescription} نمی باشد.");
-            }
-        }
-
         private void ReceiveTimer_DoWork(object sender, DoWorkEventArgs e)
         {
-            using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
+            using (var clientTelegramsTable = ClientTelegrams)
             {
-                CheckDatabaseConnection();
+                List<IccClientTelegram> clientTelegrams = clientTelegramsTable
+                        .GetAll()
+                        .Where
+                        (
+                            t =>
+                            t.PROCESSED == false &&
+                            t.SOURCE.ToLower() == Name.ToLower() &&
+                            t.READY_FOR_CLIENT == false
+                        )
+                        .Take(100)
+                        .ToList();
 
-                List<IccClientTelegram> list = (
-                    from t in clientTelegrams.GetAll()
-                    where t.PROCESSED == false && t.SOURCE.ToLower() == Name.ToLower() && t.READY_FOR_CLIENT == false
-                    select t).Take(100).ToList<IccClientTelegram>();
-
-                foreach (IccClientTelegram current in list)
+                foreach (IccClientTelegram clientTelegram in clientTelegrams)
                 {
                     IccTelegram iccTelegram = new IccTelegram
                     {
-                        Source = base.Name
+                        Source = Name
                     };
 
                     bool successful = false;
@@ -309,18 +276,18 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
                     try
                     {
-                        iccTelegram = ConvertClientTelegramToStandardTelegram(current);
+                        iccTelegram = ConvertClientTelegramToStandardTelegram(clientTelegram);
                         successful = true;
                     }
-                    catch (Exception ex)
+                    catch (Exception exception)
                     {
-                        failException = ex;
+                        failException = exception;
                         successful = false;
                     }
                     finally
                     {
-                        current.PROCESSED = true;
-                        clientTelegrams.Edit(current);
+                        clientTelegram.PROCESSED = true;
+                        clientTelegramsTable.Edit(clientTelegram);
                         OnReceive(new ReceiveEventArgs(iccTelegram, successful, failException));
                     }
                 }
