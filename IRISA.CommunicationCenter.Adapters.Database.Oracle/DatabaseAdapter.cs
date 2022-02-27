@@ -182,7 +182,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
+                _logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
             }
         }
 

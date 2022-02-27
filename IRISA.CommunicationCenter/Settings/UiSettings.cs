@@ -8,7 +8,7 @@ namespace IRISA.CommunicationCenter.Settings
     {
         private readonly DLLSettings<UiSettings> dllSettings = new DLLSettings<UiSettings>();
         
-        [DisplayName("زمان نمایش رویداد بر حسب میلی ثانیه")]
+        [DisplayName("طول نمایش رویداد در ویندوز بر حسب میلی ثانیه")]
         public int NotifyIconShowTime
         {
             get
@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
-        [DisplayName("فارسی بودن زبان نمایش رویداد")]
+        [DisplayName("فارسی بودن زبان نمایش رویداد در ویندوز")]
         public bool NotifyIconPersianLanguage
         {
             get
@@ -33,8 +33,8 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconPersianLanguage", value);
             }
         }
-
-        [DisplayName("نمایش رویداد متصل شدن کلاینت")]
+    
+        [DisplayName("نمایش رویداد متصل شدن کلاینت در ویندوز")]
         public bool NotifyIconShowAdapterConnected
         {
             get
@@ -46,7 +46,8 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconShowClientConnected", value);
             }
         }
-        [DisplayName("عنوان نمایش رویداد ")]
+
+        [DisplayName("عنوان نمایش رویداد در ویندوز")]
         public string NotifyIconTitle
         {
             get
@@ -58,6 +59,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("NotifyIconTitle", value);
             }
         }
+
         [DisplayName("عنوان نرم افزار ")]
         public string ProgramTitle
         {
@@ -70,6 +72,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("ProgramTitle", value);
             }
         }
+
         [DisplayName("شرح فارسی واسط کاربر")]
         public string UiInterfacePersianDescription
         {
@@ -82,24 +85,52 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("UiInterfacePersianDescription", value);
             }
         }
+
+        [DisplayName("دوره زمانی بازیابی رکورد ها بر حسب میلی ثانیه")]
+        public int RecordsRefreshInterval
+        {
+            get
+            {
+                return dllSettings.FindIntValue("RecordsRefreshInterval", 500);
+            }
+            set
+            {
+                dllSettings.SaveSetting("RecordsRefreshInterval", value);
+            }
+        }
+
+        [DisplayName("طول زمان فعال بودن پروسه بازیابی رکورد ها بر حسب ثانیه")]
+        public int RecordsRefreshAliveTime
+        {
+            get
+            {
+                return dllSettings.FindIntValue("RecordsRefreshAliveTime", 120);
+            }
+            set
+            {
+                dllSettings.SaveSetting("RecordsRefreshAliveTime", value);
+            }
+        }
+
         [DisplayName("تعداد رکورد هایی که در لود اولیه نمایش داده می شوند")]
         public int RecordsLoadCount
         {
             get
             {
-                return dllSettings.FindIntValue("RecordsLoadCount", 10);
+                return dllSettings.FindIntValue("RecordsLoadCount", 50);
             }
             set
             {
                 dllSettings.SaveSetting("RecordsLoadCount", value);
             }
         }
+
         [DisplayName("تعداد رکورد هایی که به لیست در حال نمایش اضافه می شوند")]
         public int RecordsIncrementCount
         {
             get
             {
-                return dllSettings.FindIntValue("RecordsIncrementCount", 20);
+                return dllSettings.FindIntValue("RecordsIncrementCount", 200);
             }
             set
             {

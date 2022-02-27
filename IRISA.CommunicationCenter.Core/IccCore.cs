@@ -386,7 +386,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 try
                 {
-                    adapter.Receive += new ReceiveEventHandler(Adapter_OnReceive);
+                    adapter.TelegramReceived += new ReceiveEventHandler(Adapter_OnReceive);
                     adapter.SendCompleted += Adapter_SendCompleted;
                     adapter.Start(Logger);
                 }

@@ -259,7 +259,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             {
                 if ((DateTime.Now - lastConnectionTime).TotalMilliseconds > (double)TcpIpConnectExpireTime)
                 {
-                    Logger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
+                    _logger.LogWarning("کلاینت {0} به دلیل منقضی شدن زمان اتصال متوقف شد.", new object[]
                     {
                         base.PersianDescription
                     });
@@ -319,12 +319,12 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 lastConnectionTime = DateTime.Now;
                 if (socket == null)
                 {
-                    Logger.LogInformation($"کلاینت {PersianDescription} متصل شد.");
+                    _logger.LogInformation($"کلاینت {PersianDescription} متصل شد.");
                     Connected = true;
                 }
                 else
                 {
-                    Logger.LogInformation($"کلاینت {PersianDescription} مجددا متصل شد.");
+                    _logger.LogInformation($"کلاینت {PersianDescription} مجددا متصل شد.");
                 }
                 socket = tcpListener.AcceptSocket();
                 socket.SendTimeout = SendTimeout;
@@ -339,7 +339,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             catch
             {
-                Logger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
+                _logger.LogWarning("زمان ارسال تلگرام از کلاینت {0} برابر با {1} می باشد و قابل تبدیل به فرمت {2} نیست.", new object[]
                 {
                     base.PersianDescription,
                     stringDate,
@@ -498,7 +498,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                             telegramSize
                         });
                     }
-                    Logger.LogInformation("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
+                    _logger.LogInformation("دریافت تلگرام چند قسمتی از {0} آغاز شد.", new object[]
                     {
                         base.Name
                     });

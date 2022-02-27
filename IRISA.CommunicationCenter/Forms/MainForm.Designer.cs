@@ -666,7 +666,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.telegramSearchGroupbox.TabStop = false;
             this.telegramSearchGroupbox.Text = "جستجو";
             this.telegramSearchGroupbox.Visible = false;
-            this.telegramSearchGroupbox.Enter += new System.EventHandler(this.SearchControl_Enter);
             // 
             // searchFlowLayoutPanel
             // 

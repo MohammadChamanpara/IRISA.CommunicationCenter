@@ -4,11 +4,11 @@ using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
+using IRISA.CommunicationCenter.Library.Tasks;
 using IRISA.CommunicationCenter.Properties;
 using IRISA.CommunicationCenter.Settings;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,17 +20,17 @@ namespace IRISA.CommunicationCenter.Forms
     {
         private const string ApplicationPassword = "iccAdmin";
 
-        private readonly IIccCore IccCore;
-        private UiSettings uiSettings;
-        private readonly ILogger Logger;
-        private bool refreshingRecordsEnabled = false;
+        private readonly IIccCore _iccCore;
+        private UiSettings _uiSettings;
+        private readonly ILogger _logger;
+        private BackgroundTimer _refreshTimer;
 
         public MainForm(ILogger logger, IIccCore iccCore)
         {
             InitializeComponent();
 
-            Logger = logger;
-            IccCore = iccCore;
+            _logger = logger;
+            _iccCore = iccCore;
         }
 
         private void StartApplication()
@@ -38,7 +38,7 @@ namespace IRISA.CommunicationCenter.Forms
             try
             {
                 InitialUiSettings();
-                IccCore.Start();
+                _iccCore.Start();
                 LoadAdapters();
                 LoadSettings();
                 LoadLogLevelComboBox();
@@ -47,40 +47,63 @@ namespace IRISA.CommunicationCenter.Forms
                 stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
                 stopStartApplicationButton.Image = Resources.stop;
                 settingsPropertyGrid.Enabled = false;
-                Text = uiSettings.ProgramTitle;
-                notifyIcon.Text = uiSettings.ProgramTitle;
+                Text = _uiSettings.ProgramTitle;
+                notifyIcon.Text = _uiSettings.ProgramTitle;
                 Application.DoEvents();
-                if (!IccCore.Started)
+                if (!_iccCore.Started)
                 {
                     StopApplication();
                 }
-                StartRefreshingRecords();
+                InitializeRefreshTimer();
+                _refreshTimer.Start();
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
+                _logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
             }
             finally
             {
-                if (!IccCore.Started)
+                if (!_iccCore.Started)
                     StopApplication();
             }
+        }
+
+        private void InitializeRefreshTimer()
+        {
+            _refreshTimer = new BackgroundTimer(_logger)
+            { 
+                Interval=_uiSettings.RecordsRefreshInterval,
+                AliveTime = _uiSettings.RecordsRefreshAliveTime,
+                PersianDescription ="پروسه نمایش رویداد ها و تلگرام ها در فرم"
+            };
+            _refreshTimer.DoWork += LoadRecords;
+            _refreshTimer.Started += RefreshTimer_Started;
+            _refreshTimer.Stopped += RefreshTimer_Stopped;
+        }
+
+        private void RefreshTimer_Stopped()
+        {
+            SetRefreshStatus(false);
+        }
+        private void RefreshTimer_Started()
+        {
+            SetRefreshStatus(true);
         }
 
         private void StopApplication()
         {
             try
             {
-                IccCore?.Stop();
+                _iccCore?.Stop();
                 stopStartApplicationButton.Image = Resources.start;
                 stopStartApplicationButton.ToolTipText = "اجرای برنامه";
                 settingsPropertyGrid.Enabled = true;
-                StopRefreshingRecords();
+                _refreshTimer?.Stop();
                 Application.DoEvents();
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
+                _logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
             }
         }
 
@@ -92,35 +115,11 @@ namespace IRISA.CommunicationCenter.Forms
 
         private void DataGrid_Click(object sender, EventArgs e)
         {
-            StopRefreshingRecords();
+            _refreshTimer.Stop();
         }
 
-        private void StartRefreshingRecords()
+        private void SetRefreshStatus(bool refreshingRecordsEnabled)
         {
-            if (!refreshingRecordsEnabled)
-                _ = KeepRefreshingRecords();
-        }
-
-        private async Task KeepRefreshingRecords()
-        {
-            SetRefreshStatus(true);
-            var startTime = DateTime.Now;
-            while ((DateTime.Now - startTime).TotalSeconds < 120 && refreshingRecordsEnabled == true)
-            {
-                LoadRecords();
-                await Task.Delay(1000);
-            }
-            StopRefreshingRecords();
-        }
-
-        private void StopRefreshingRecords()
-        {
-            SetRefreshStatus(false);
-        }
-
-        private void SetRefreshStatus(bool newStatus)
-        {
-            refreshingRecordsEnabled = newStatus;
             if (refreshingRecordsEnabled)
             {
                 transfersRefreshButton.Image = Resources.refresh;
@@ -136,7 +135,7 @@ namespace IRISA.CommunicationCenter.Forms
 
         private void InitialUiSettings()
         {
-            uiSettings = new UiSettings();
+            _uiSettings = new UiSettings();
         }
 
         private void LoadLogLevelComboBox()
@@ -154,7 +153,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
+                _logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
             }
         }
 
@@ -227,12 +226,12 @@ namespace IRISA.CommunicationCenter.Forms
         {
             LoadMoreEvents();
             LoadMoreTransfers();
-            StopRefreshingRecords();
+            _refreshTimer.Stop();
         }
 
         private void LoadTransfers()
         {
-            LoadTransfers(uiSettings.RecordsLoadCount);
+            LoadTransfers(_uiSettings.RecordsLoadCount);
         }
 
         private void LoadTransfers(int pageSize)
@@ -245,7 +244,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (GetSelectedTab() != TransfersTabPage)
                     return;
 
-                if (!IccCore.IccQueue.Connected)
+                if (!_iccCore.IccQueue.Connected)
                     return;
 
                 IccTelegramSearchModel searchModel = new IccTelegramSearchModel();
@@ -253,7 +252,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (telegramSearchGroupbox.Visible)
                     Invoke(new Action(() => { CopySearchControlsToSearchModel(searchModel); }));
 
-                var telegrams = IccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
+                var telegrams = _iccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
 
                 pageSize = Math.Min(pageSize, resultsCount);
 
@@ -269,18 +268,18 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
+                _logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
             }
         }
 
         private void LoadMoreTransfers()
         {
-            LoadTransfers(transfersDataGrid.Rows.Count + uiSettings.RecordsIncrementCount);
+            LoadTransfers(transfersDataGrid.Rows.Count + _uiSettings.RecordsIncrementCount);
         }
 
         private void LoadEvents()
         {
-            LoadEvents(uiSettings.RecordsLoadCount);
+            LoadEvents(_uiSettings.RecordsLoadCount);
         }
 
         private void LoadEvents(int pageSize)
@@ -298,7 +297,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (LogsSearchGroupBox.Visible)
                     Invoke(new Action(() => { CopyEventSearchControlsToSearchModel(searchModel); }));
 
-                var query = Logger.GetLogs(searchModel, pageSize, out int resultsCount);
+                var query = _logger.GetLogs(searchModel, pageSize, out int resultsCount);
 
                 pageSize = Math.Min(pageSize, resultsCount);
 
@@ -312,13 +311,13 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
+                _logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
             }
         }
 
         private void LoadMoreEvents()
         {
-            LoadEvents(eventsDataGrid.Rows.Count + uiSettings.RecordsIncrementCount);
+            LoadEvents(eventsDataGrid.Rows.Count + _uiSettings.RecordsIncrementCount);
         }
 
         private void LoadSettings()
@@ -329,23 +328,23 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     new RadioButton
                     {
-                        Text = IccCore.PersianDescription,
-                        Tag = IccCore
+                        Text = _iccCore.PersianDescription,
+                        Tag = _iccCore
                     },
                     new RadioButton
                     {
-                        Text = uiSettings.UiInterfacePersianDescription,
-                        Tag = uiSettings
+                        Text = _uiSettings.UiInterfacePersianDescription,
+                        Tag = _uiSettings
                     },
                     new RadioButton
                     {
                         Text = "صف تلگرام ها",
-                        Tag = IccCore.IccQueue
+                        Tag = _iccCore.IccQueue
                     }
                 };
-                if (IccCore.ConnectedAdapters != null)
+                if (_iccCore.ConnectedAdapters != null)
                 {
-                    foreach (IIccAdapter adapter in IccCore.ConnectedAdapters)
+                    foreach (IIccAdapter adapter in _iccCore.ConnectedAdapters)
                     {
                         settingControls.Add(new RadioButton
                         {
@@ -371,7 +370,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
+                _logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
             }
         }
 
@@ -380,11 +379,11 @@ namespace IRISA.CommunicationCenter.Forms
             try
             {
                 adaptersPanel.Controls.Clear();
-                if (IccCore.ConnectedAdapters != null)
+                if (_iccCore.ConnectedAdapters != null)
                 {
-                    foreach (IIccAdapter adapter in IccCore.ConnectedAdapters)
+                    foreach (IIccAdapter adapter in _iccCore.ConnectedAdapters)
                     {
-                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, Logger);
+                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, _logger);
                         adaptersPanel.Controls.Add(adapterUserControl);
                         adapter.ConnectionChanged += Adapter_ConnectionChanged;
                     }
@@ -392,7 +391,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
+                _logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
             }
         }
 
@@ -408,7 +407,7 @@ namespace IRISA.CommunicationCenter.Forms
 
         private bool CheckPassword()
         {
-            if (ShowPasswordDialog(uiSettings.ProgramTitle) != ApplicationPassword)
+            if (ShowPasswordDialog(_uiSettings.ProgramTitle) != ApplicationPassword)
             {
                 MessageForm.ShowErrorMessage("کلمه عبور صحیح نمی باشد");
                 return false;
@@ -443,7 +442,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopApplication();
-            Logger.LogWarning("اجرای برنامه خاتمه یافت");
+            _logger.LogWarning("اجرای برنامه خاتمه یافت");
         }
         private void SettingControl_Click(object sender, EventArgs e)
         {
@@ -451,7 +450,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            StartRefreshingRecords();
+            _refreshTimer.Start();
         }
         private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -465,10 +464,10 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void RefreshRecordsButton_Click(object sender, EventArgs e)
         {
-            if (refreshingRecordsEnabled)
-                StopRefreshingRecords();
+            if (_refreshTimer.IsRunning)
+                _refreshTimer.Stop();
             else
-                StartRefreshingRecords();
+                _refreshTimer.Start();
         }
         private void MoreRecordsButton_Click(object sender, EventArgs e)
         {
@@ -488,7 +487,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void StopStartButton_Click(object sender, EventArgs e)
         {
-            if (IccCore.Started)
+            if (_iccCore.Started)
             {
                 StopApplication();
             }
@@ -499,10 +498,10 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
         {
-            if (uiSettings.NotifyIconShowAdapterConnected)
+            if (_uiSettings.NotifyIconShowAdapterConnected)
             {
                 string tipText;
-                if (uiSettings.NotifyIconPersianLanguage)
+                if (_uiSettings.NotifyIconPersianLanguage)
                 {
                     tipText = string.Format("کلاینت {0} {1} شد", e.Adapter.PersianDescription, e.Adapter.Connected ? "متصل" : "متوقف");
                 }
@@ -510,7 +509,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     tipText = string.Format("{0} Client {1}.", e.Adapter.Name, e.Adapter.Connected ? "Connected" : "Disconnected");
                 }
-                notifyIcon.ShowBalloonTip(uiSettings.NotifyIconShowTime, uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
+                notifyIcon.ShowBalloonTip(_uiSettings.NotifyIconShowTime, _uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
             }
         }
         private void TelegramDetails_Click(object sender, EventArgs e)
@@ -532,7 +531,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchButton_Click(object sender, EventArgs e)
         {
             ClearControls(searchFlowLayoutPanel);
-            StartRefreshingRecords();
+            LoadRecords();
         }
         private void MaskedTextBox_Click(object sender, EventArgs e)
         {
@@ -572,7 +571,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             ClearControls(eventsSearchflowLayout);
-            StartRefreshingRecords();
+            LoadEvents();
         }
 
         public static string ShowPasswordDialog(string caption)
@@ -583,11 +582,6 @@ namespace IRISA.CommunicationCenter.Forms
             };
             passwordDialogForm.ShowDialog();
             return passwordDialogForm.passwordTextBox.Text;
-        }
-
-        private void SearchControl_Enter(object sender, EventArgs e)
-        {
-            StartRefreshingRecords();
         }
 
         public string GroupDigits(int number)

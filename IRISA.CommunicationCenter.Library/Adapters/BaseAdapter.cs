@@ -15,8 +15,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         #region Variables
         protected TelegramDefinitions telegramDefinitions;
         protected DLLSettings<DLLT> dllSettings;
-        protected ILogger Logger;
-        public event ReceiveEventHandler Receive;
+        protected ILogger _logger;
+        public event ReceiveEventHandler TelegramReceived;
         public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
 
@@ -129,7 +129,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 }
                 catch (Exception exception)
                 {
-                    Logger.LogException(exception, "بروز خطا هنگام بررسی اتصال کلاینت");
+                    _logger.LogException(exception, "بروز خطا هنگام بررسی اتصال کلاینت");
                     Connected = false;
                 }
 
@@ -151,7 +151,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public void Send(IccTelegram iccTelegram)
         {
             sendQueue.Enqueue(iccTelegram);
-            Logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال در صف آداپتور {PersianDescription} قرار گرفت.");
+            _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال در صف آداپتور {PersianDescription} قرار گرفت.");
         }
 
         private async Task KeepSending()
@@ -163,7 +163,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     var iccTelegram = sendQueue.Dequeue();
                     try
                     {
-                        Logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
+                        _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
                         SendTelegram(iccTelegram);
                         OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, true, null));
                     }
@@ -185,7 +185,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public virtual void Start(ILogger eventLogger)
         {
-            Logger = eventLogger;
+            _logger = eventLogger;
             dllSettings = new DLLSettings<DLLT>();
             telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
             Started = true;
@@ -204,7 +204,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public virtual void OnReceive(ReceiveEventArgs e)
         {
-            Receive?.Invoke(e);
+            TelegramReceived?.Invoke(e);
         }
 
         public virtual void OnConnectionChanged(AdapterConnectionChangedEventArgs e)

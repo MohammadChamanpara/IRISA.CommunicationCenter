@@ -56,6 +56,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Core\IIccQueue.cs" />
     <Compile Include="Logging\ILogAppender.cs" />
+    <Compile Include="Tasks\BackgroundTimer.cs" />
     <Compile Include="Threading\IrisaBackgroundTimer.cs">
       <SubType>Component</SubType>
     </Compile>
