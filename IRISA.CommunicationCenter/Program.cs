@@ -65,7 +65,7 @@ namespace IRISA.CommunicationCenter
             var services = new ServiceCollection();
 
             services
-                .AddSingleton<IIccQueue, IccQueueInOracle>()
+                .AddIccQueue()
                 .AddSingleton<IIccCore, IccCore>()
 
                 .AddSingleton<ILogger, Logger>()
@@ -73,6 +73,15 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogAppender, LogAppenderInFile>();
 
             ServiceProvider = services.BuildServiceProvider();
+        }
+
+        private static IServiceCollection AddIccQueue(this IServiceCollection services)
+        {
+//#if DEBUG
+            return services.AddSingleton<IIccQueue, IccQueueInMemory>();
+//#else
+            //return services.AddSingleton<IIccQueue, IccQueueInOracle>();
+//#endif
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
