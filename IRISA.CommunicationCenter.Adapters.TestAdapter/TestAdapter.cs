@@ -54,6 +54,12 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 {
                     try
                     {
+                        if (DateTime.Now.Second % 20 == 0 && Name == "Behnam")
+                        {
+                            Connected = false;
+                            throw new Exception("my disconnection------------");
+                        }
+
                         OnReceive
                         (
                             new ReceiveEventArgs
@@ -85,7 +91,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
 
             protected override bool CheckConnection()
             {
-                return true;
+                return DateTime.Now.Second % 20 == 0 ? false : true;
             }
         }
     }
