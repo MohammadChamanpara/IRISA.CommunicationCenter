@@ -1,4 +1,5 @@
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Core;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
@@ -372,11 +373,11 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadAdapters()
         {
-            //ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+            ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
-            ConnectedAdapters = LoadAdapters<IIccAdapter>();
+            //ConnectedAdapters = LoadAdapters<IIccAdapter>();
 
             if (!ConnectedAdapters.Any())
                 Logger.LogWarning("کلاینتی برای اتصال یافت نشد.");

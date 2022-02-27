@@ -54,7 +54,7 @@
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="Definitions\FieldDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="IIccQueue.cs" />
+    <Compile Include="Core\IIccQueue.cs" />
     <Compile Include="Logging\ILogAppender.cs" />
     <Compile Include="Threading\IrisaBackgroundTimer.cs">
       <SubType>Component</SubType>

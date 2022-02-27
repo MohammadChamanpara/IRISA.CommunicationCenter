@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Forms;
+using IRISA.CommunicationCenter.Library.Core;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Oracle;
 using Microsoft.Extensions.DependencyInjection;

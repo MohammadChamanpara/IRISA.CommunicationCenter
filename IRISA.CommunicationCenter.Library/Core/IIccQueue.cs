@@ -1,7 +1,7 @@
 ﻿using IRISA.CommunicationCenter.Library.Models;
 using System.Collections.Generic;
 
-namespace IRISA.CommunicationCenter.Core
+namespace IRISA.CommunicationCenter.Library.Core
 {
     public interface IIccQueue
     {

@@ -1,4 +1,5 @@
 ﻿using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Core;
 using System.Collections.Generic;
 
 namespace IRISA.CommunicationCenter.Core

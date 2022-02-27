@@ -1,5 +1,5 @@
-﻿using IRISA.CommunicationCenter.Core;
-using IRISA.CommunicationCenter.Core.Model;
+﻿using IRISA.CommunicationCenter.Core.Model;
+using IRISA.CommunicationCenter.Library.Core;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
