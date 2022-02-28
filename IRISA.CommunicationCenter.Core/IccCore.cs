@@ -26,11 +26,25 @@ namespace IRISA.CommunicationCenter.Core
         private readonly HashSet<long> inProcessTelegrams = new HashSet<long>();
         private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
-        private readonly ILogger Logger;
+        private readonly ILogger _logger;
 
         public event IccCoreTelegramEventHandler TelegramQueued;
         public event IccCoreTelegramEventHandler TelegramSent;
         public event IccCoreTelegramEventHandler TelegramDropped;
+
+
+        [DisplayName("کمترین سطح ثبت رویداد")]
+        public LogLevel LogMinimumLevel
+        {
+            get
+            {
+                return dllSettings.FindEnumValue("LogMinimumLevel", LogLevel.Information);
+            }
+            set
+            {
+                dllSettings.SaveSetting("LogMinimumLevel", value);
+            }
+        }
 
         [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
         public string PersianDescription
@@ -120,7 +134,7 @@ namespace IRISA.CommunicationCenter.Core
 
         public IccCore(ILogger logger, IIccQueue iccQueue)
         {
-            Logger = logger;
+            _logger = logger;
             IccQueue = iccQueue;
         }
 
@@ -201,7 +215,7 @@ namespace IRISA.CommunicationCenter.Core
 
                     inProcessTelegrams.Add(iccTelegram.TransferId);
 
-                    Logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destination.PersianDescription} تحویل داده شد.");
+                    _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destination.PersianDescription} تحویل داده شد.");
 
                     destination.Send(iccTelegram);
                 }
@@ -272,29 +286,32 @@ namespace IRISA.CommunicationCenter.Core
             {
                 ConnectedAdapters = new List<IIccAdapter>();
                 dllSettings = new DLLSettings<IccCore>();
-                Logger.LogInformation("اجرای {0} آغاز شد.", new object[]
-                {
-                        PersianDescription
-                });
+                _logger.LogInformation($"اجرای {PersianDescription} آغاز شد.");
                 LoadAdapters();
-                if (sendTimer != null)
-                {
-                    sendTimer.Stop();
-                }
-                sendTimer = new BackgroundTimer(Logger)
-                {
-                    Interval = SendTimerInterval,
-                    PersianDescription = SendTimerPersianDescription + " در " + PersianDescription,
-                };
-                sendTimer.DoWork += SendTimer_DoWork;
-                sendTimer.Start();
+                InitializeSendTimer();
+                _logger.SetMinumumLevel(LogMinimumLevel);
                 Started = true;
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
-                this.Stop();
+                _logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
+                Stop();
             }
+        }
+
+        private void InitializeSendTimer()
+        {
+            if (sendTimer != null)
+            {
+                sendTimer.Stop();
+            }
+            sendTimer = new BackgroundTimer(_logger)
+            {
+                Interval = SendTimerInterval,
+                PersianDescription = SendTimerPersianDescription + " در " + PersianDescription,
+            };
+            sendTimer.DoWork += SendTimer_DoWork;
+            sendTimer.Start();
         }
 
         public void Stop()
@@ -306,7 +323,7 @@ namespace IRISA.CommunicationCenter.Core
             }
 
             if (Started)
-                Logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
+                _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
 
             Started = false;
         }
@@ -320,7 +337,7 @@ namespace IRISA.CommunicationCenter.Core
             //ConnectedAdapters = LoadAdapters<IIccAdapter>();
 
             if (!ConnectedAdapters.Any())
-                Logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
+                _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
 
             foreach (IIccAdapter adapter in ConnectedAdapters)
             {
@@ -328,11 +345,11 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     adapter.TelegramReceived += new ReceiveEventHandler(Adapter_OnReceive);
                     adapter.SendCompleted += Adapter_SendCompleted;
-                    adapter.Start(Logger);
+                    adapter.Start(_logger);
                 }
                 catch (Exception exception)
                 {
-                    Logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
+                    _logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
                 }
             }
         }
@@ -356,7 +373,7 @@ namespace IRISA.CommunicationCenter.Core
 
                 IccQueue.Edit(iccTelegram);
 
-                Logger.LogInformation("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
+                _logger.LogInformation("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
                 {
                     iccTelegram.TransferId
                 });
@@ -365,7 +382,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
             }
             finally
             {
@@ -379,7 +396,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 if (!(dropException is IrisaException))
                 {
-                    Logger.LogException(dropException, "بروز خطا هنگام ارسال تلگرام.");
+                    _logger.LogException(dropException, "بروز خطا هنگام ارسال تلگرام.");
                 }
                 iccTelegram.Sent = false;
                 iccTelegram.Dropped = true;
@@ -394,7 +411,7 @@ namespace IRISA.CommunicationCenter.Core
                     IccQueue.Add(iccTelegram);
                 }
 
-                Logger.LogInformation("تلگرام با شناسه {0} حذف شد.", new object[]
+                _logger.LogInformation("تلگرام با شناسه {0} حذف شد.", new object[]
                 {
                         iccTelegram.TransferId
                 });
@@ -403,7 +420,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
             }
             finally
             {
@@ -420,7 +437,7 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.Sent = false;
 
                 IccQueue.Add(iccTelegram);
-                Logger.LogInformation("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
+                _logger.LogInformation("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
                     iccTelegram.TransferId
                 });
@@ -429,7 +446,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex, "بروز خطا هنگام ثبت تلگرام در صف.");
+                _logger.LogException(ex, "بروز خطا هنگام ثبت تلگرام در صف.");
             }
         }
 
@@ -455,9 +472,9 @@ namespace IRISA.CommunicationCenter.Core
                     iccTelegrams.Add(item);
                 }
             }
-            
+
             if (destinations.Length > 1)
-                Logger.LogInformation($"تلگرام دریافت شده از {iccTelegram.Source} از نوع {iccTelegram.TelegramId} به {destinations.Count()} تلگرام تقسیم شد.");
+                _logger.LogInformation($"تلگرام دریافت شده از {iccTelegram.Source} از نوع {iccTelegram.TelegramId} به {destinations.Count()} تلگرام تقسیم شد.");
 
             return iccTelegrams;
         }

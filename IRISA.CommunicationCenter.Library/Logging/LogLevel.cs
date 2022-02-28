@@ -5,8 +5,7 @@
         Debug,
         Information,
         Warning,
-        Error,
-        Exception
+        Error
     }
 
     public static class LogLevelExtensions
@@ -22,8 +21,6 @@
                 case LogLevel.Warning:
                     return "هشدار";
                 case LogLevel.Error:
-                    return "اشکال";
-                case LogLevel.Exception:
                     return "خطا";
                 default:
                     return "نا مشخص";

@@ -7,14 +7,15 @@ namespace IRISA.CommunicationCenter.Library.Logging
 {
     public class Logger : ILogger
     {
-        public IEnumerable<ILogAppender> LogAppenders { get; }
+        private LogLevel _minimumLevel = LogLevel.Information;
+        private readonly IEnumerable<ILogAppender> _logAppenders;
 
         public Logger(IEnumerable<ILogAppender> logAppenders)
         {
             if (!logAppenders.Any())
                 throw new ArgumentException("Log Appenders must be passed to logger.");
 
-            LogAppenders = logAppenders;
+            _logAppenders = logAppenders;
         }
 
         public void LogDebug(string testText, params object[] parameters)
@@ -44,15 +45,18 @@ namespace IRISA.CommunicationCenter.Library.Logging
                 $"{exception.InnerExceptionsMessage()}\r\n" +
                 $"StackTrace :{exception.StackTrace}\r\n";
 
-            Log(text, LogLevel.Exception, exception.StackTrace);
+            Log(text, LogLevel.Error);
         }
 
         private void Log(string eventText, LogLevel logLevel, params object[] parameters)
         {
             try
             {
+                if (logLevel < _minimumLevel)
+                    return;
+
                 eventText = string.Format(eventText, parameters);
-                LogAppenders
+                _logAppenders
                     .ToList()
                     .ForEach(x => x.Log(eventText, logLevel));
             }
@@ -63,7 +67,12 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
         public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
         {
-            return LogAppenders.First().GetLogs(searchModel, pageSize, out resultsCount);
+            return _logAppenders.First().GetLogs(searchModel, pageSize, out resultsCount);
+        }
+
+        public void SetMinumumLevel(LogLevel minimumLevel)
+        {
+            _minimumLevel = minimumLevel;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
         void LogWarning(string warningText, params object[] parameters);
         void LogError(string errorText, params object[] parameters);
         void LogException(Exception exception, string message);
+        void SetMinumumLevel(LogLevel minimumLevel);
         List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount);
     }
 }

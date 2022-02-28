@@ -333,7 +333,7 @@ namespace IRISA.CommunicationCenter.Forms
                     },
                     new RadioButton
                     {
-                        Text = _uiSettings.UiInterfacePersianDescription,
+                        Text = "واسط کاربری",
                         Tag = _uiSettings
                     },
                     new RadioButton
@@ -509,7 +509,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     tipText = string.Format("{0} Client {1}.", e.Adapter.Name, e.Adapter.Connected ? "Connected" : "Disconnected");
                 }
-                notifyIcon.ShowBalloonTip(_uiSettings.NotifyIconShowTime, _uiSettings.NotifyIconTitle, tipText, ToolTipIcon.Info);
+                notifyIcon.ShowBalloonTip(_uiSettings.NotifyIconShowTime, "Irisa Communication Center", tipText, ToolTipIcon.Info);
             }
         }
         private void TelegramDetails_Click(object sender, EventArgs e)

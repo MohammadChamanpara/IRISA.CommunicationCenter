@@ -47,19 +47,6 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
-        [DisplayName("عنوان نمایش رویداد در ویندوز")]
-        public string NotifyIconTitle
-        {
-            get
-            {
-                return dllSettings.FindStringValue("NotifyIconTitle", "Irisa Communication Center");
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconTitle", value);
-            }
-        }
-
         [DisplayName("عنوان نرم افزار ")]
         public string ProgramTitle
         {
@@ -70,19 +57,6 @@ namespace IRISA.CommunicationCenter.Settings
             set
             {
                 dllSettings.SaveSetting("ProgramTitle", value);
-            }
-        }
-
-        [DisplayName("شرح فارسی واسط کاربر")]
-        public string UiInterfacePersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("UiInterfacePersianDescription", "واسط کاربر");
-            }
-            set
-            {
-                dllSettings.SaveSetting("UiInterfacePersianDescription", value);
             }
         }
 
