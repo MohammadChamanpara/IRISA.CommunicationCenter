@@ -168,33 +168,49 @@ namespace IRISA.CommunicationCenter.Forms
             searchModel.Destination = destinationTextbox.Text;
 
             /*.................... Send Time....................*/
-            if (!sendDateTextBox.Text.Contains(' ') && sendDateTextBox.Text.Length == 10)
+            try
             {
-                PersianCalendar persianCalendar = new PersianCalendar();
+                if (!sendDateTextBox.Text.Contains(' ') && sendDateTextBox.Text.Length == 10)
+                {
+                    PersianCalendar persianCalendar = new PersianCalendar();
 
-                int persianYear = int.Parse(sendDateTextBox.Text.Substring(0, 4));
-                int persianMonth = int.Parse(sendDateTextBox.Text.Substring(5, 2));
-                int persianDay = int.Parse(sendDateTextBox.Text.Substring(8, 2));
-                int hour = sendHourTextBox.Text.HasValue() ? int.Parse(sendHourTextBox.Text) : 0;
-                int minute = sendMinuteTextBox.Text.HasValue() ? int.Parse(sendMinuteTextBox.Text) : 0;
-                int second = sendSecondTextBox.Text.HasValue() ? int.Parse(sendSecondTextBox.Text) : 0;
+                    int persianYear = int.Parse(sendDateTextBox.Text.Substring(0, 4));
+                    int persianMonth = int.Parse(sendDateTextBox.Text.Substring(5, 2));
+                    int persianDay = int.Parse(sendDateTextBox.Text.Substring(8, 2));
+                    int hour = sendHourTextBox.Text.HasValue() ? int.Parse(sendHourTextBox.Text) : 0;
+                    int minute = sendMinuteTextBox.Text.HasValue() ? int.Parse(sendMinuteTextBox.Text) : 0;
+                    int second = sendSecondTextBox.Text.HasValue() ? int.Parse(sendSecondTextBox.Text) : 0;
 
-                searchModel.SendTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
+                    searchModel.SendTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
+                }
+            }
+            catch (Exception exception)
+            {
+                searchModel.SendTime = DateTime.MinValue;
+                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها");
             }
 
             /*.................... Receive Time....................*/
-            if (!receiveDateTextBox.Text.Contains(' ') && receiveDateTextBox.Text.Length == 10)
+            try
             {
-                PersianCalendar persianCalendar = new PersianCalendar();
+                if (!receiveDateTextBox.Text.Contains(' ') && receiveDateTextBox.Text.Length == 10)
+                {
+                    PersianCalendar persianCalendar = new PersianCalendar();
 
-                int persianYear = int.Parse(receiveDateTextBox.Text.Substring(0, 4));
-                int persianMonth = int.Parse(receiveDateTextBox.Text.Substring(5, 2));
-                int persianDay = int.Parse(receiveDateTextBox.Text.Substring(8, 2));
-                int hour = receiveHourTextBox.Text.HasValue() ? int.Parse(receiveHourTextBox.Text) : 0;
-                int minute = receiveMinuteTextBox.Text.HasValue() ? int.Parse(receiveMinuteTextBox.Text) : 0;
-                int second = receiveSecondTextBox.Text.HasValue() ? int.Parse(receiveSecondTextBox.Text) : 0;
+                    int persianYear = int.Parse(receiveDateTextBox.Text.Substring(0, 4));
+                    int persianMonth = int.Parse(receiveDateTextBox.Text.Substring(5, 2));
+                    int persianDay = int.Parse(receiveDateTextBox.Text.Substring(8, 2));
+                    int hour = receiveHourTextBox.Text.HasValue() ? int.Parse(receiveHourTextBox.Text) : 0;
+                    int minute = receiveMinuteTextBox.Text.HasValue() ? int.Parse(receiveMinuteTextBox.Text) : 0;
+                    int second = receiveSecondTextBox.Text.HasValue() ? int.Parse(receiveSecondTextBox.Text) : 0;
 
-                searchModel.ReceiveTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
+                    searchModel.ReceiveTime = persianCalendar.ToDateTime(persianYear, persianMonth, persianDay, hour, minute, second, 0, 0);
+                }
+            }
+            catch (Exception exception)
+            {
+                searchModel.ReceiveTime= DateTime.MinValue;
+                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها");
             }
 
             searchModel.DropReason = dropReasonTextBox.Text;
@@ -445,7 +461,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void SettingControl_Click(object sender, EventArgs e)
         {
-            settingsPropertyGrid.SelectedObject = (sender as Control).Tag;
+
         }
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -530,7 +546,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchButton_Click(object sender, EventArgs e)
         {
             ClearControls(searchFlowLayoutPanel);
-            LoadRecords();
+            telegramSearchGroupbox.Visible = false;
         }
         private void MaskedTextBox_Click(object sender, EventArgs e)
         {
@@ -601,5 +617,9 @@ namespace IRISA.CommunicationCenter.Forms
             return text;
         }
 
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _refreshTimer.Start();
+        }
     }
 }
