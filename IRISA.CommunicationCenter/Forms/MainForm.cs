@@ -461,7 +461,7 @@ namespace IRISA.CommunicationCenter.Forms
         }
         private void SettingControl_Click(object sender, EventArgs e)
         {
-
+            settingsPropertyGrid.SelectedObject = (sender as Control).Tag;
         }
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
