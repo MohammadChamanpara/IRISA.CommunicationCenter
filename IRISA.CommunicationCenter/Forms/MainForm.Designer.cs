@@ -231,6 +231,10 @@ namespace IRISA.CommunicationCenter.Forms
             this.searchTelegramButton = new System.Windows.Forms.ToolStripButton();
             this.eventsTabPage = new System.Windows.Forms.TabPage();
             this.eventsDataGrid = new IRISA.CommunicationCenter.Components.IrisaDataGrid();
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LogLevelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LogsSearchGroupBox = new System.Windows.Forms.GroupBox();
             this.eventsSearchflowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.ClearFiltersToolStrip = new System.Windows.Forms.ToolStrip();
@@ -282,10 +286,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.minimizeApplicationButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LogLevelColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TextColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.adaptersSplitContainer)).BeginInit();
@@ -709,10 +709,9 @@ namespace IRISA.CommunicationCenter.Forms
             this.searchToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.searchToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearSearchButton});
-            this.searchToolStrip.Location = new System.Drawing.Point(1090, 22);
-            this.searchToolStrip.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
+            this.searchToolStrip.Location = new System.Drawing.Point(1090, 0);
             this.searchToolStrip.Name = "searchToolStrip";
-            this.searchToolStrip.Size = new System.Drawing.Size(56, 30);
+            this.searchToolStrip.Size = new System.Drawing.Size(56, 47);
             this.searchToolStrip.TabIndex = 37;
             this.searchToolStrip.Text = "toolStrip1";
             // 
@@ -722,7 +721,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.clearSearchButton.Image = global::IRISA.CommunicationCenter.Properties.Resources.close;
             this.clearSearchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearSearchButton.Name = "clearSearchButton";
-            this.clearSearchButton.Size = new System.Drawing.Size(44, 27);
+            this.clearSearchButton.Size = new System.Drawing.Size(44, 44);
             this.clearSearchButton.Text = "toolStripButton3";
             this.clearSearchButton.ToolTipText = "حذف فیلترینگ";
             this.clearSearchButton.Click += new System.EventHandler(this.ClearSearchButton_Click);
@@ -1410,7 +1409,8 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             // DoTelegramSearch
             // 
-            this.DoTelegramSearch.Location = new System.Drawing.Point(3, 3);
+            this.DoTelegramSearch.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DoTelegramSearch.Location = new System.Drawing.Point(3, 14);
             this.DoTelegramSearch.Name = "DoTelegramSearch";
             this.DoTelegramSearch.Size = new System.Drawing.Size(75, 23);
             this.DoTelegramSearch.TabIndex = 64;
@@ -1485,7 +1485,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.searchTelegramButton.Name = "searchTelegramButton";
             this.searchTelegramButton.Size = new System.Drawing.Size(28, 28);
             this.searchTelegramButton.Text = "جستجو";
-            this.searchTelegramButton.Click += new System.EventHandler(this.SearchTelegramButton_Click);
+            this.searchTelegramButton.Click += new System.EventHandler(this.DoTelegramSearch_Click);
             // 
             // eventsTabPage
             // 
@@ -1520,6 +1520,42 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.ReadOnly = true;
             this.eventsDataGrid.Size = new System.Drawing.Size(1086, 455);
             this.eventsDataGrid.TabIndex = 0;
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.DataPropertyName = "Id";
+            this.IdColumn.HeaderText = "شناسه";
+            this.IdColumn.Name = "IdColumn";
+            this.IdColumn.ReadOnly = true;
+            this.IdColumn.Width = 67;
+            // 
+            // TimeColumn
+            // 
+            this.TimeColumn.DataPropertyName = "PersianTime";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.NullValue = null;
+            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            this.TimeColumn.HeaderText = "زمان رویداد";
+            this.TimeColumn.Name = "TimeColumn";
+            this.TimeColumn.ReadOnly = true;
+            this.TimeColumn.Width = 130;
+            // 
+            // LogLevelColumn
+            // 
+            this.LogLevelColumn.DataPropertyName = "PersianLogLevel";
+            this.LogLevelColumn.HeaderText = "نوع رویداد";
+            this.LogLevelColumn.Name = "LogLevelColumn";
+            this.LogLevelColumn.ReadOnly = true;
+            this.LogLevelColumn.Width = 76;
+            // 
+            // TextColumn
+            // 
+            this.TextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TextColumn.DataPropertyName = "Text";
+            this.TextColumn.HeaderText = "متن رویداد";
+            this.TextColumn.MinimumWidth = 150;
+            this.TextColumn.Name = "TextColumn";
+            this.TextColumn.ReadOnly = true;
             // 
             // LogsSearchGroupBox
             // 
@@ -1571,10 +1607,9 @@ namespace IRISA.CommunicationCenter.Forms
             this.ClearFiltersToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.ClearFiltersToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearSearchEventsPanel});
-            this.ClearFiltersToolStrip.Location = new System.Drawing.Point(1024, 22);
-            this.ClearFiltersToolStrip.Margin = new System.Windows.Forms.Padding(0, 22, 0, 0);
+            this.ClearFiltersToolStrip.Location = new System.Drawing.Point(1024, 0);
             this.ClearFiltersToolStrip.Name = "ClearFiltersToolStrip";
-            this.ClearFiltersToolStrip.Size = new System.Drawing.Size(56, 43);
+            this.ClearFiltersToolStrip.Size = new System.Drawing.Size(56, 65);
             this.ClearFiltersToolStrip.TabIndex = 37;
             this.ClearFiltersToolStrip.Text = "ClearFiltersToolStrip";
             // 
@@ -1584,7 +1619,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.clearSearchEventsPanel.Image = global::IRISA.CommunicationCenter.Properties.Resources.close;
             this.clearSearchEventsPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearSearchEventsPanel.Name = "clearSearchEventsPanel";
-            this.clearSearchEventsPanel.Size = new System.Drawing.Size(44, 40);
+            this.clearSearchEventsPanel.Size = new System.Drawing.Size(44, 62);
             this.clearSearchEventsPanel.Text = "toolStripButton3";
             this.clearSearchEventsPanel.ToolTipText = "حذف فیلترینگ";
             this.clearSearchEventsPanel.Click += new System.EventHandler(this.ClearSearchEventsPanel_Click);
@@ -1968,7 +2003,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.iccEventSearchButton.Name = "iccEventSearchButton";
             this.iccEventSearchButton.Size = new System.Drawing.Size(28, 28);
             this.iccEventSearchButton.Text = "جستجو";
-            this.iccEventSearchButton.Click += new System.EventHandler(this.IccEventSearchButton_Click);
+            this.iccEventSearchButton.Click += new System.EventHandler(this.DoIccEventSearch_Click);
             // 
             // imageList
             // 
@@ -2078,42 +2113,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
-            // 
-            // IdColumn
-            // 
-            this.IdColumn.DataPropertyName = "Id";
-            this.IdColumn.HeaderText = "شناسه";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.ReadOnly = true;
-            this.IdColumn.Width = 67;
-            // 
-            // TimeColumn
-            // 
-            this.TimeColumn.DataPropertyName = "PersianTime";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.NullValue = null;
-            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle5;
-            this.TimeColumn.HeaderText = "زمان رویداد";
-            this.TimeColumn.Name = "TimeColumn";
-            this.TimeColumn.ReadOnly = true;
-            this.TimeColumn.Width = 130;
-            // 
-            // LogLevelColumn
-            // 
-            this.LogLevelColumn.DataPropertyName = "PersianLogLevel";
-            this.LogLevelColumn.HeaderText = "نوع رویداد";
-            this.LogLevelColumn.Name = "LogLevelColumn";
-            this.LogLevelColumn.ReadOnly = true;
-            this.LogLevelColumn.Width = 76;
-            // 
-            // TextColumn
-            // 
-            this.TextColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TextColumn.DataPropertyName = "Text";
-            this.TextColumn.HeaderText = "متن رویداد";
-            this.TextColumn.MinimumWidth = 150;
-            this.TextColumn.Name = "TextColumn";
-            this.TextColumn.ReadOnly = true;
             // 
             // MainForm
             // 
