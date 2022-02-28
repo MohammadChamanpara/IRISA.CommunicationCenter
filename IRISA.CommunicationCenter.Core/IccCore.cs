@@ -17,7 +17,6 @@ namespace IRISA.CommunicationCenter.Core
 {
     public class IccCore : IIccCore
     {
-        public delegate void IccCoreTelegramEventHandler(IccCoreTelegramEventArgs e);
         public List<IIccAdapter> ConnectedAdapters { get; private set; }
         public IIccQueue IccQueue { get; set; }
 
@@ -28,10 +27,9 @@ namespace IRISA.CommunicationCenter.Core
         private readonly object receiveLocker = new object();
         private readonly ILogger _logger;
 
-        public event IccCoreTelegramEventHandler TelegramQueued;
-        public event IccCoreTelegramEventHandler TelegramSent;
-        public event IccCoreTelegramEventHandler TelegramDropped;
-
+        public event Action<IccTelegram> TelegramQueued;
+        public event Action<IccTelegram> TelegramSent;
+        public event Action<IccTelegram> TelegramDropped;
 
         [DisplayName("کمترین سطح ثبت رویداد")]
         public LogLevel LogMinimumLevel
@@ -378,7 +376,7 @@ namespace IRISA.CommunicationCenter.Core
                     iccTelegram.TransferId
                 });
 
-                TelegramSent?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
+                TelegramSent?.Invoke(iccTelegram);
             }
             catch (Exception exception)
             {
@@ -416,7 +414,7 @@ namespace IRISA.CommunicationCenter.Core
                         iccTelegram.TransferId
                 });
 
-                TelegramDropped?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
+                TelegramDropped?.Invoke(iccTelegram);
             }
             catch (Exception exception)
             {
@@ -442,7 +440,7 @@ namespace IRISA.CommunicationCenter.Core
                     iccTelegram.TransferId
                 });
 
-                TelegramQueued?.Invoke(new IccCoreTelegramEventArgs(iccTelegram));
+                TelegramQueued?.Invoke(iccTelegram);
             }
             catch (Exception ex)
             {
