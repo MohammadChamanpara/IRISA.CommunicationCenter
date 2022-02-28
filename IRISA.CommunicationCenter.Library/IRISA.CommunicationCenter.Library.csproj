@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Adapters\BaseAdapter.cs" />
     <Compile Include="Adapters\TelegramSendCompletedEventArgs.cs" />
-    <Compile Include="Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
     <Compile Include="Adapters\IIccAdapter.cs" />
     <Compile Include="Adapters\TelegramReceivedEventArgs.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />

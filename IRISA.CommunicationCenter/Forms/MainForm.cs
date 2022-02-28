@@ -71,10 +71,10 @@ namespace IRISA.CommunicationCenter.Forms
         private void InitializeRefreshTimer()
         {
             _refreshTimer = new BackgroundTimer(_logger)
-            { 
-                Interval=_uiSettings.RecordsRefreshInterval,
+            {
+                Interval = _uiSettings.RecordsRefreshInterval,
                 AliveTime = _uiSettings.RecordsRefreshAliveTime,
-                PersianDescription ="پروسه نمایش رویداد ها و تلگرام ها در فرم"
+                PersianDescription = "پروسه نمایش رویداد ها و تلگرام ها در فرم"
             };
             _refreshTimer.DoWork += LoadRecords;
             _refreshTimer.Started += RefreshTimer_Started;
@@ -496,18 +496,18 @@ namespace IRISA.CommunicationCenter.Forms
                 StartApplication();
             }
         }
-        private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+        private void Adapter_ConnectionChanged(IIccAdapter iccAdapter)
         {
             if (_uiSettings.NotifyIconShowAdapterConnected)
             {
                 string tipText;
                 if (_uiSettings.NotifyIconPersianLanguage)
                 {
-                    tipText = string.Format("کلاینت {0} {1} شد", e.Adapter.PersianDescription, e.Adapter.Connected ? "متصل" : "متوقف");
+                    tipText = string.Format("کلاینت {0} {1} شد", iccAdapter.PersianDescription, iccAdapter.Connected ? "متصل" : "متوقف");
                 }
                 else
                 {
-                    tipText = string.Format("{0} Client {1}.", e.Adapter.Name, e.Adapter.Connected ? "Connected" : "Disconnected");
+                    tipText = string.Format("{0} Client {1}.", iccAdapter.Name, iccAdapter.Connected ? "Connected" : "Disconnected");
                 }
                 notifyIcon.ShowBalloonTip(_uiSettings.NotifyIconShowTime, "Irisa Communication Center", tipText, ToolTipIcon.Info);
             }

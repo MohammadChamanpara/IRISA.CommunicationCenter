@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         private BackgroundTimer _sendTimer;
 
         public event Action<TelegramReceivedEventArgs> TelegramReceived;
-        public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
+        public event Action<IIccAdapter> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
 
 
@@ -28,7 +28,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         #endregion
 
         #region Properties
-        
+
         [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
         public int TelegramReceiveInterval
         {
@@ -170,7 +170,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if (_connected == value)
                     return;
                 _connected = value;
-                OnConnectionChanged(new AdapterConnectionChangedEventArgs(this));
+                ConnectionChanged?.Invoke(this);
             }
         }
 
@@ -255,11 +255,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public virtual void OnTelegramReceived(TelegramReceivedEventArgs e)
         {
             TelegramReceived?.Invoke(e);
-        }
-
-        public virtual void OnConnectionChanged(AdapterConnectionChangedEventArgs e)
-        {
-            ConnectionChanged?.Invoke(this, e);
         }
     }
 }

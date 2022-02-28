@@ -36,7 +36,7 @@ namespace IRISA.CommunicationCenter.Components
 		{
 			this.RefreshConnection();
 		}
-		private void Adapter_ConnectionChanged(object sender, AdapterConnectionChangedEventArgs e)
+		private void Adapter_ConnectionChanged(IIccAdapter adapter)
 		{
 			this.RefreshConnection();
 		}
