@@ -224,8 +224,8 @@ namespace IRISA.CommunicationCenter.Forms
 
         private void CopyEventSearchControlsToSearchModel(LogSearchModel searchModel)
         {
-            if (LogTimeTextBox.Text.HasValue())
-                searchModel.PersianTime = LogTimeTextBox.Text;
+            if (SearchKeywordTextBox.Text.HasValue())
+                searchModel.SearchKeyword = SearchKeywordTextBox.Text;
 
             if (LogLevelComboBox.SelectedIndex > -1)
                 searchModel.LogLevel = (LogLevel)LogLevelComboBox.SelectedIndex;
@@ -357,7 +357,7 @@ namespace IRISA.CommunicationCenter.Forms
                         Tag = _iccCore.IccQueue
                     }
                 };
-                if (_iccCore.ConnectedAdapters != null)
+                if (_iccCore?.ConnectedAdapters != null)
                 {
                     foreach (IIccAdapter adapter in _iccCore.ConnectedAdapters)
                     {
@@ -555,7 +555,7 @@ namespace IRISA.CommunicationCenter.Forms
                 (sender as MaskedTextBox).SelectAll();
             }
         }
-        private void SearchTelegramButton_Click(object sender, EventArgs e)
+        private void TelegramSearchShowHideButton_Click(object sender, EventArgs e)
         {
             telegramSearchGroupbox.Visible = !telegramSearchGroupbox.Visible;
             if (!telegramSearchGroupbox.Visible)
@@ -569,7 +569,7 @@ namespace IRISA.CommunicationCenter.Forms
             LoadTransfers();
         }
 
-        private void IccEventSearchButton_Click(object sender, EventArgs e)
+        private void LogSearchShowHideButton_Click(object sender, EventArgs e)
         {
             LogsSearchGroupBox.Visible = !LogsSearchGroupBox.Visible;
             if (!LogsSearchGroupBox.Visible)
@@ -586,6 +586,7 @@ namespace IRISA.CommunicationCenter.Forms
         private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             ClearControls(eventsSearchflowLayout);
+            LogsSearchGroupBox.Visible = false;
             LoadEvents();
         }
 
