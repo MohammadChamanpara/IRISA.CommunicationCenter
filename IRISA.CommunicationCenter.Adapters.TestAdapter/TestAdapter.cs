@@ -28,41 +28,17 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 }
             }
 
-            public override string Type => "TestAdapter";
+            public override string Type => nameof(TestAdapter);
 
-            private readonly object sendLocker = new object();
-
-            private BackgroundTimer ReceiveTimer;
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
-                lock (sendLocker)
-                {
-                    Thread.Sleep(DelayInSend);
-                    if (iccTelegram.TransferId % 3 == 0)
-                        throw new Exception("error");
-                    File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
-                }
+                Thread.Sleep(DelayInSend);
+                if (iccTelegram.TransferId % 3 == 0)
+                    throw new Exception("error");
+                File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
             }
 
-            public override void Start(ILogger eventLogger)
-            {
-                base.Start(eventLogger);
-                InitializeReceiverTask();
-                ReceiveTimer = new BackgroundTimer(_logger)
-                {
-                    Interval = 1000,
-                    PersianDescription = $"پروسه دریافت تلگرام در {Name}"
-                };
-            }
-
-            private void InitializeReceiverTask()
-            {
-                ReceiveTimer = new BackgroundTimer(_logger);
-                ReceiveTimer.Start();
-                ReceiveTimer.DoWork += Receive;
-            }
-
-            private void Receive()
+            protected override void ReceiveTimer_DoWork()
             {
                 int id = Name == "Behnam" ? 1000 : 2000;
                 try

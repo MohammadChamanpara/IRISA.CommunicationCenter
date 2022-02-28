@@ -51,11 +51,14 @@ namespace IRISA.CommunicationCenter.Library.Tasks
 
                     DoWork?.Invoke();
 
-                    await Task.Delay(Interval);
                 }
                 catch (Exception exception)
                 {
                     _logger.LogException(exception, $"بروز خطا در {PersianDescription}.");
+                }
+                finally
+                {
+                    await Task.Delay(Interval);
                 }
             }
             Stop();

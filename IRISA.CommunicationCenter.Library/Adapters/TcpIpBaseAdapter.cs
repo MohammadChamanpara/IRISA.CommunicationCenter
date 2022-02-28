@@ -2,7 +2,7 @@ using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.CommunicationCenter.Library.Threading;
+using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +17,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         #region Properties
         private TcpListener tcpListener;
         private Socket socket;
-        private IrisaBackgroundTimer clientDetectTimer;
-        private IrisaBackgroundTimer receiveTimer;
+        private BackgroundTimer _clientDetectTimer;
+
         protected List<byte> receivedBuffer = new List<byte>();
         private DateTime lastConnectionTime;
 
@@ -116,20 +116,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
         [Category("Operation")]
-        [DisplayName("شرح فارسی پروسه تشخیص کلاینت")]
-        public string ClientDetectTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ClientDetectTimerPersianDescription", "پروسه تشخیص کلاینت");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ClientDetectTimerPersianDescription", value);
-            }
-        }
-
-        [Category("Operation")]
         [DisplayName("دوره زمانی بررسی حضور کلاینت بر حسب میلی ثانیه")]
         public int ClientDetectInterval
         {
@@ -140,33 +126,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             set
             {
                 dllSettings.SaveSetting("ClientDetectInterval", value);
-            }
-        }
-
-        [Category("Operation")]
-        [DisplayName("شرح فارسی پروسه دریافت پکت")]
-        public string ReceiveTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ReceiveTimerPersianDescription", "پروسه دریافت پکت");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
-            }
-        }
-
-        [DisplayName("دوره زمانی بررسی دریافت پکت بر حسب میلی ثانیه")]
-        public int ReceiveInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("ReceiveInterval", 2000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("ReceiveInterval", value);
             }
         }
 
@@ -253,7 +212,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #region Methods
 
-        private void ReceiverTimer_DoWork(object sender, DoWorkEventArgs e)
+        protected override void ReceiveTimer_DoWork()
         {
             if (socket != null)
             {
@@ -293,7 +252,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                                     };
                                     if (RetrieveCompleteTelegram(out byte[] completeTelegram, ref iccTelegram))
                                     {
-                                        ConvertClientTelegramToStandardTelegram(completeTelegram, ref iccTelegram);
+                                        ToIccTelegram(completeTelegram, ref iccTelegram);
                                         OnReceive(new ReceiveEventArgs(iccTelegram, true, null));
                                     }
                                     else
@@ -312,7 +271,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 }
             }
         }
-        private void ClientDetectTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void ClientDetectTimer_DoWork()
         {
             if (tcpListener.Pending())
             {
@@ -351,7 +310,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         protected override void SendTelegram(IccTelegram iccTelegram)
         {
-            byte[] buffer = ConvertStandardTelegramToClientTelegram(iccTelegram);
+            byte[] buffer = ToClientTelegram(iccTelegram);
             if (!Connected)
             {
                 throw IrisaException.Create("مقصد تلگرام متصل نمی باشد");
@@ -375,6 +334,27 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             base.Start(eventLogger);
             lastConnectionTime = DateTime.Now;
             IPAddress localaddr = IPAddress.Parse(Ip);
+            InitializeTcpListener(localaddr);
+            InitializeClientDetectTimer(eventLogger);
+        }
+
+        private void InitializeClientDetectTimer(ILogger eventLogger)
+        {
+            if (_clientDetectTimer != null)
+            {
+                _clientDetectTimer.Stop();
+            }
+            _clientDetectTimer = new BackgroundTimer(eventLogger)
+            {
+                Interval = ClientDetectInterval,
+                PersianDescription = $"پروسه تشخیص کلاینت در آداپتور {PersianDescription}"
+            };
+            _clientDetectTimer.DoWork += ClientDetectTimer_DoWork;
+            _clientDetectTimer.Start();
+        }
+
+        private void InitializeTcpListener(IPAddress localaddr)
+        {
             if (tcpListener != null)
             {
                 tcpListener.Stop();
@@ -392,63 +372,16 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     base.PersianDescription
                 });
             }
-            if (clientDetectTimer != null)
-            {
-                clientDetectTimer.Stop();
-            }
-            clientDetectTimer = new IrisaBackgroundTimer
-            {
-                Interval = ClientDetectInterval
-            };
-            clientDetectTimer.DoWork += new DoWorkEventHandler(ClientDetectTimer_DoWork);
-            clientDetectTimer.PersianDescription = ClientDetectTimerPersianDescription + " در آداپتور " + base.PersianDescription;
-            clientDetectTimer.EventLogger = eventLogger;
-            clientDetectTimer.Start();
-            if (receiveTimer != null)
-            {
-                receiveTimer.Stop();
-            }
-            receiveTimer = new IrisaBackgroundTimer
-            {
-                Interval = ReceiveInterval
-            };
-            receiveTimer.DoWork += new DoWorkEventHandler(ReceiverTimer_DoWork);
-            receiveTimer.PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription;
-            receiveTimer.EventLogger = eventLogger;
-            receiveTimer.Start();
         }
+
         public override void Stop()
         {
             base.Stop();
-            if (clientDetectTimer != null)
-            {
-                clientDetectTimer.Stop();
-            }
-            if (receiveTimer != null)
-            {
-                receiveTimer.Stop();
-            }
-            if (tcpListener != null)
-            {
-                tcpListener.Stop();
-            }
-            if (socket != null)
-            {
-                socket.Close();
-            }
+            _clientDetectTimer?.Stop();
+            tcpListener?.Stop();
+            socket?.Close();
         }
-        public override void AwakeTimers()
-        {
-            base.AwakeTimers();
-            if (receiveTimer != null)
-            {
-                receiveTimer.Awake();
-            }
-            if (clientDetectTimer != null)
-            {
-                clientDetectTimer.Awake();
-            }
-        }
+
         protected virtual bool RetrieveCompleteTelegram(out byte[] completeTelegram, ref IccTelegram iccTelegram)
         {
             bool result;
@@ -528,7 +461,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             return result;
         }
-        protected virtual void ConvertClientTelegramToStandardTelegram(byte[] completeTelegram, ref IccTelegram iccTelegram)
+        protected virtual void ToIccTelegram(byte[] completeTelegram, ref IccTelegram iccTelegram)
         {
             iccTelegram.TelegramId = GetTelegramId(completeTelegram);
             int telegramBodySize = GetTelegramBodySize(completeTelegram);
@@ -575,7 +508,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected virtual void ExtraValidationsOnReceive(byte[] completeTelegram, byte[] bodyBytes, IccTelegram iccTelegram)
         {
         }
-        protected virtual byte[] ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram)
+        protected virtual byte[] ToClientTelegram(IccTelegram iccTelegram)
         {
             TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
             MemoryStream memoryStream = new MemoryStream();

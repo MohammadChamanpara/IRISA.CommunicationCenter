@@ -15,6 +15,5 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         void Send(IccTelegram iccTelegram);
         void Start(ILogger EventLogger);
         void Stop();
-        void AwakeTimers();
     }
 }

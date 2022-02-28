@@ -3,6 +3,7 @@ using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
+using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,15 +17,45 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected TelegramDefinitions telegramDefinitions;
         protected DLLSettings<DLLT> dllSettings;
         protected ILogger _logger;
+        private BackgroundTimer _receiveTimer;
+        private BackgroundTimer _sendTimer;
+
         public event ReceiveEventHandler TelegramReceived;
         public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
 
+
         private readonly Queue<IccTelegram> sendQueue = new Queue<IccTelegram>();
         #endregion
 
-
         #region Properties
+        
+        [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
+        public int TelegramReceiveInterval
+        {
+            get
+            {
+                return dllSettings.FindIntValue("TelegramReceiveInterval", 1000);
+            }
+            set
+            {
+                dllSettings.SaveSetting("TelegramReceiveInterval", value);
+            }
+        }
+
+        [DisplayName("دوره زمانی بررسی ارسال تلگرام بر حسب میلی ثانیه")]
+        public int TelegramSendInterval
+        {
+            get
+            {
+                return dllSettings.FindIntValue("TelegramSendInterval", 1000);
+            }
+            set
+            {
+                dllSettings.SaveSetting("TelegramSendInterval", value);
+            }
+        }
+
         [Category("Information"), DisplayName("درحال اجرا")]
         public bool Started
         {
@@ -146,6 +177,48 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #endregion
 
+        public virtual void Start(ILogger eventLogger)
+        {
+            _logger = eventLogger;
+            dllSettings = new DLLSettings<DLLT>();
+            telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
+
+            InitializeSendTimer();
+            InitializeReceiveTimer();
+
+            Started = true;
+        }
+
+        private void InitializeSendTimer()
+        {
+            _sendTimer = new BackgroundTimer(_logger)
+            {
+                Interval = TelegramSendInterval,
+                PersianDescription = $"پروسه ارسال تلگرام در {PersianDescription}"
+            };
+            _sendTimer.DoWork += SendTimer_DoWork;
+            _sendTimer.Start();
+        }
+
+        private void InitializeReceiveTimer()
+        {
+            _receiveTimer = new BackgroundTimer(_logger)
+            {
+                Interval = TelegramReceiveInterval,
+                PersianDescription = $"پروسه دریافت تلگرام در {PersianDescription}"
+            };
+            _receiveTimer.DoWork += ReceiveTimer_DoWork;
+            _receiveTimer.Start();
+        }
+
+        public virtual void Stop()
+        {
+            Started = false;
+            Connected = false;
+            _sendTimer?.Stop();
+            _receiveTimer?.Stop();
+        }
+
         protected abstract bool CheckConnection();
 
         public void Send(IccTelegram iccTelegram)
@@ -154,27 +227,24 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال در صف آداپتور {PersianDescription} قرار گرفت.");
         }
 
-        private async Task KeepSending()
+        private void SendTimer_DoWork()
         {
-            while (Started)
+            while (sendQueue.Count > 0)
             {
-                while (sendQueue.Count > 0)
+                var iccTelegram = sendQueue.Dequeue();
+                try
                 {
-                    var iccTelegram = sendQueue.Dequeue();
-                    try
-                    {
-                        _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
-                        SendTelegram(iccTelegram);
-                        OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, true, null));
-                    }
-                    catch (Exception exception)
-                    {
-                        OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, false, exception));
-                    }
+                    _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
+                    SendTelegram(iccTelegram);
+                    OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, true, null));
                 }
-                await Task.Delay(500);
+                catch (Exception exception)
+                {
+                    OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, false, exception));
+                }
             }
         }
+        protected abstract void ReceiveTimer_DoWork();
 
         protected void OnTelegramSendCompleted(SendCompletedEventArgs e)
         {
@@ -182,25 +252,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
-
-        public virtual void Start(ILogger eventLogger)
-        {
-            _logger = eventLogger;
-            dllSettings = new DLLSettings<DLLT>();
-            telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
-            Started = true;
-            Task.Run(() => KeepSending());
-        }
-
-        public virtual void Stop()
-        {
-            Started = false;
-            Connected = false;
-        }
-
-        public virtual void AwakeTimers()
-        {
-        }
 
         public virtual void OnReceive(ReceiveEventArgs e)
         {

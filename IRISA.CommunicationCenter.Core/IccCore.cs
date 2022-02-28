@@ -5,7 +5,7 @@ using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
-using IRISA.CommunicationCenter.Library.Threading;
+using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,8 +21,7 @@ namespace IRISA.CommunicationCenter.Core
         public List<IIccAdapter> ConnectedAdapters { get; private set; }
         public IIccQueue IccQueue { get; set; }
 
-        private IrisaBackgroundTimer sendTimer;
-        private IrisaBackgroundTimer activatorTimer;
+        private BackgroundTimer sendTimer;
         private DLLSettings<IccCore> dllSettings;
         private readonly HashSet<long> inProcessTelegrams = new HashSet<long>();
         private readonly object sendLocker = new object();
@@ -43,19 +42,6 @@ namespace IRISA.CommunicationCenter.Core
             set
             {
                 dllSettings.SaveSetting("PersianDescription", value);
-            }
-        }
-
-        [DisplayName("شرح فارسی پروسه فعال ساز")]
-        public string ActivatorTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
             }
         }
 
@@ -95,19 +81,6 @@ namespace IRISA.CommunicationCenter.Core
             set
             {
                 dllSettings.SaveSetting("sendTimerInterval", value);
-            }
-        }
-
-        [DisplayName("دوره زمانی فعال نمودن پروسه های متوقف شده بر حسب میلی ثانیه")]
-        public int ActivatorTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("activatorTimerInterval", 20000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("activatorTimerInterval", value);
             }
         }
 
@@ -203,7 +176,7 @@ namespace IRISA.CommunicationCenter.Core
             return result;
         }
 
-        private void SendTimer_DoWork(object sender, DoWorkEventArgs e)
+        private void SendTimer_DoWork()
         {
             lock (sendLocker)
             {
@@ -268,25 +241,6 @@ namespace IRISA.CommunicationCenter.Core
             return destinationAdapter.Single();
         }
 
-        private void ActivatorTimer_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                sendTimer.Awake();
-                if (ConnectedAdapters != null)
-                {
-                    foreach (IIccAdapter current in ConnectedAdapters)
-                    {
-                        current.AwakeTimers();
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
-            }
-        }
-
         private void Adapter_OnReceive(ReceiveEventArgs e)
         {
             lock (receiveLocker)
@@ -327,26 +281,13 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     sendTimer.Stop();
                 }
-                sendTimer = new IrisaBackgroundTimer
+                sendTimer = new BackgroundTimer(Logger)
                 {
                     Interval = SendTimerInterval,
                     PersianDescription = SendTimerPersianDescription + " در " + PersianDescription,
-                    EventLogger = Logger
                 };
-                sendTimer.DoWork += new DoWorkEventHandler(SendTimer_DoWork);
+                sendTimer.DoWork += SendTimer_DoWork;
                 sendTimer.Start();
-                if (activatorTimer != null)
-                {
-                    activatorTimer.Stop();
-                }
-                activatorTimer = new IrisaBackgroundTimer
-                {
-                    Interval = ActivatorTimerInterval,
-                    PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription,
-                    EventLogger = Logger
-                };
-                activatorTimer.DoWork += new DoWorkEventHandler(ActivatorTimer_DoWork);
-                activatorTimer.Start();
                 Started = true;
             }
             catch (Exception exception)
@@ -359,7 +300,6 @@ namespace IRISA.CommunicationCenter.Core
         public void Stop()
         {
             sendTimer?.Stop();
-            activatorTimer?.Stop();
             foreach (IIccAdapter adapter in ConnectedAdapters)
             {
                 adapter.Stop();

@@ -1,11 +1,6 @@
 using IRISA.CommunicationCenter.Adapters.Database.Oracle.Model;
 using IRISA.CommunicationCenter.Library.Adapters;
-using IRISA.CommunicationCenter.Library.Definitions;
-using IRISA.CommunicationCenter.Library.Extensions;
-using IRISA.CommunicationCenter.Library.Loggers;
-using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.CommunicationCenter.Library.Threading;
 using IRISA.CommunicationCenter.Oracle;
 using System;
 using System.Collections.Generic;
@@ -16,8 +11,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 {
     public class DatabaseAdapter : BaseAdapter<DatabaseAdapter>
     {
-        private IrisaBackgroundTimer receiveTimer;
-        private IrisaBackgroundTimer activatorTimer;
+        #region Properties
 
         [Browsable(false)]
         public EntityBusiness<Entities, IccClientTelegram> ClientTelegrams
@@ -49,58 +43,6 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
-        public int ReceiveTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("ReceiveTimerInterval", 2000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("ReceiveTimerInterval", value);
-            }
-        }
-
-        [DisplayName("دوره زمانی فعال نمودن پروسه های دریافت تلگرام متوقف شده بر حسب میلی ثانیه")]
-        public int ActivatorTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("activatorTimerInterval", 20000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("activatorTimerInterval", value);
-            }
-        }
-
-        [DisplayName("شرح فارسی پروسه دریافت تلگرام")]
-        public string ReceiveTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ReceiveTimerPersianDescription", "پروسه دریافت تلگرام");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ReceiveTimerPersianDescription", value);
-            }
-        }
-
-        [DisplayName("شرح فارسی پروسه فعال ساز")]
-        public string ActivatorTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("ActivatorTimerPersianDescription", "پروسه فعال ساز");
-            }
-            set
-            {
-                dllSettings.SaveSetting("ActivatorTimerPersianDescription", value);
-            }
-        }
-
         [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
         public char BodySeparator
         {
@@ -127,77 +69,16 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        [DisplayName("انجام عملیات اعتبار سنجی محتوای تلگرام")]
-        public bool PerformBodyValidation
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("PerformBodyValidation", true);
-            }
-            set
-            {
-                dllSettings.SaveSetting("PerformBodyValidation", value);
-            }
-        }
+        #endregion
 
         protected override bool CheckConnection()
         {
             return ClientTelegrams.Connected;
         }
 
-        public override void Start(ILogger eventLogger)
-        {
-            base.Start(eventLogger);
-
-            receiveTimer = new IrisaBackgroundTimer
-            {
-                Interval = ReceiveTimerInterval,
-                PersianDescription = ReceiveTimerPersianDescription + " در آداپتور " + base.PersianDescription,
-                EventLogger = eventLogger
-            };
-            receiveTimer.DoWork += new DoWorkEventHandler(ReceiveTimer_DoWork);
-            receiveTimer.Start();
-
-            if (activatorTimer != null)
-            {
-                activatorTimer.Stop();
-            }
-            activatorTimer = new IrisaBackgroundTimer
-            {
-                Interval = ActivatorTimerInterval,
-                PersianDescription = ActivatorTimerPersianDescription + " در " + PersianDescription,
-                EventLogger = eventLogger
-            };
-            activatorTimer.DoWork += new DoWorkEventHandler(ActivatorTimer_DoWork);
-            activatorTimer.Start();
-        }
-
-        private void ActivatorTimer_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                if (receiveTimer != null)
-                    receiveTimer.Awake();
-
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, "بروز خطا هنگام فعال سازی پروسه ها");
-            }
-        }
-
-        public override void Stop()
-        {
-            base.Stop();
-            if (receiveTimer != null)
-            {
-                receiveTimer.Stop();
-            }
-        }
-
         protected override void SendTelegram(IccTelegram iccTelegram)
         {
-            var clientTelegram = ConvertStandardTelegramToClientTelegram(iccTelegram);
+            var clientTelegram = ToClientTelegram(iccTelegram);
 
             using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
             {
@@ -205,7 +86,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        private IccClientTelegram ConvertStandardTelegramToClientTelegram(IccTelegram iccTelegram)
+        private IccClientTelegram ToClientTelegram(IccTelegram iccTelegram)
         {
             telegramDefinitions.Find(iccTelegram);
             return new IccClientTelegram
@@ -221,7 +102,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             };
         }
 
-        private IccTelegram ConvertClientTelegramToStandardTelegram(IccClientTelegram clientTelegram)
+        private IccTelegram ToIccTelegram(IccClientTelegram clientTelegram)
         {
             var iccTelegram = new IccTelegram
             {
@@ -239,16 +120,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             return iccTelegram;
         }
 
-        public override void AwakeTimers()
-        {
-            base.AwakeTimers();
-            if (receiveTimer != null)
-            {
-                receiveTimer.Awake();
-            }
-        }
-
-        private void ReceiveTimer_DoWork(object sender, DoWorkEventArgs e)
+        protected override void ReceiveTimer_DoWork()
         {
             using (var clientTelegramsTable = ClientTelegrams)
             {
@@ -276,7 +148,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
                     try
                     {
-                        iccTelegram = ConvertClientTelegramToStandardTelegram(clientTelegram);
+                        iccTelegram = ToIccTelegram(clientTelegram);
                         successful = true;
                     }
                     catch (Exception exception)
