@@ -7,7 +7,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
     {
         event Action<TelegramReceivedEventArgs> TelegramReceived;
         event Action<IIccAdapter> ConnectionChanged;
-        event EventHandler<SendCompletedEventArgs> SendCompleted;
+        event Action<SendCompletedEventArgs> SendCompleted;
 
         string Name { get; }
         string PersianDescription { get; }

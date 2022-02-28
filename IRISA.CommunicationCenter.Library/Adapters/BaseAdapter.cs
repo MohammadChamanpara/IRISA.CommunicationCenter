@@ -21,7 +21,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public event Action<TelegramReceivedEventArgs> TelegramReceived;
         public event Action<IIccAdapter> ConnectionChanged;
-        public event EventHandler<SendCompletedEventArgs> SendCompleted;
+        public event Action<SendCompletedEventArgs> SendCompleted;
 
 
         private readonly Queue<IccTelegram> sendQueue = new Queue<IccTelegram>();
@@ -235,20 +235,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 {
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
                     SendTelegram(iccTelegram);
-                    OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, true, null));
+                    SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, true, null));
                 }
                 catch (Exception exception)
                 {
-                    OnTelegramSendCompleted(new SendCompletedEventArgs(iccTelegram, false, exception));
+                    SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, false, exception));
                 }
             }
         }
         protected abstract void ReceiveTimer_DoWork();
-
-        protected void OnTelegramSendCompleted(SendCompletedEventArgs e)
-        {
-            SendCompleted?.Invoke(this, e);
-        }
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
 

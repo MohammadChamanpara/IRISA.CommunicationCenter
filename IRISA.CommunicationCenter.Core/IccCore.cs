@@ -354,7 +354,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        private void Adapter_SendCompleted(object sender, SendCompletedEventArgs e)
+        private void Adapter_SendCompleted(SendCompletedEventArgs e)
         {
             if (e.Successful)
                 UpdateSentTelegram(e.IccTelegram);
