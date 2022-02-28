@@ -247,7 +247,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel22 = new System.Windows.Forms.FlowLayoutPanel();
             this.label19 = new System.Windows.Forms.Label();
             this.flowLayoutPanel30 = new System.Windows.Forms.FlowLayoutPanel();
-            this.LogTimeTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.SearchKeywordTextBox = new System.Windows.Forms.MaskedTextBox();
             this.flowLayoutPanel19 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel20 = new System.Windows.Forms.FlowLayoutPanel();
             this.splitter17 = new System.Windows.Forms.Splitter();
@@ -1485,7 +1485,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.searchTelegramButton.Name = "searchTelegramButton";
             this.searchTelegramButton.Size = new System.Drawing.Size(28, 28);
             this.searchTelegramButton.Text = "جستجو";
-            this.searchTelegramButton.Click += new System.EventHandler(this.DoTelegramSearch_Click);
+            this.searchTelegramButton.Click += new System.EventHandler(this.TelegramSearchShowHideButton_Click);
             // 
             // eventsTabPage
             // 
@@ -1682,42 +1682,42 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.flowLayoutPanel22.Controls.Add(this.label19);
             this.flowLayoutPanel22.Controls.Add(this.flowLayoutPanel30);
-            this.flowLayoutPanel22.Location = new System.Drawing.Point(896, 3);
+            this.flowLayoutPanel22.Location = new System.Drawing.Point(817, 3);
             this.flowLayoutPanel22.Name = "flowLayoutPanel22";
-            this.flowLayoutPanel22.Size = new System.Drawing.Size(100, 59);
+            this.flowLayoutPanel22.Size = new System.Drawing.Size(179, 59);
             this.flowLayoutPanel22.TabIndex = 73;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label19.Location = new System.Drawing.Point(8, 3);
+            this.label19.Location = new System.Drawing.Point(109, 3);
             this.label19.Margin = new System.Windows.Forms.Padding(3);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(89, 13);
+            this.label19.Size = new System.Drawing.Size(67, 13);
             this.label19.TabIndex = 71;
-            this.label19.Text = "تاریخ یا زمان رویداد";
+            this.label19.Text = "کلمه جستجو";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // flowLayoutPanel30
             // 
             this.flowLayoutPanel30.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.flowLayoutPanel30.Controls.Add(this.LogTimeTextBox);
-            this.flowLayoutPanel30.Location = new System.Drawing.Point(1, 22);
+            this.flowLayoutPanel30.Controls.Add(this.SearchKeywordTextBox);
+            this.flowLayoutPanel30.Location = new System.Drawing.Point(6, 22);
             this.flowLayoutPanel30.Name = "flowLayoutPanel30";
-            this.flowLayoutPanel30.Size = new System.Drawing.Size(96, 24);
+            this.flowLayoutPanel30.Size = new System.Drawing.Size(170, 24);
             this.flowLayoutPanel30.TabIndex = 72;
             // 
-            // LogTimeTextBox
+            // SearchKeywordTextBox
             // 
-            this.LogTimeTextBox.Location = new System.Drawing.Point(11, 3);
-            this.LogTimeTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.LogTimeTextBox.Name = "LogTimeTextBox";
-            this.LogTimeTextBox.PromptChar = ' ';
-            this.LogTimeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.LogTimeTextBox.Size = new System.Drawing.Size(85, 21);
-            this.LogTimeTextBox.TabIndex = 0;
-            this.LogTimeTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
+            this.SearchKeywordTextBox.Location = new System.Drawing.Point(0, 3);
+            this.SearchKeywordTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.SearchKeywordTextBox.Name = "SearchKeywordTextBox";
+            this.SearchKeywordTextBox.PromptChar = ' ';
+            this.SearchKeywordTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.SearchKeywordTextBox.Size = new System.Drawing.Size(170, 21);
+            this.SearchKeywordTextBox.TabIndex = 0;
+            this.SearchKeywordTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // flowLayoutPanel19
             // 
@@ -1725,7 +1725,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel19.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel19.Controls.Add(this.flowLayoutPanel20);
             this.flowLayoutPanel19.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel19.Location = new System.Drawing.Point(890, 3);
+            this.flowLayoutPanel19.Location = new System.Drawing.Point(811, 3);
             this.flowLayoutPanel19.Name = "flowLayoutPanel19";
             this.flowLayoutPanel19.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel19.TabIndex = 4;
@@ -1745,7 +1745,7 @@ namespace IRISA.CommunicationCenter.Forms
             // splitter17
             // 
             this.splitter17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter17.Location = new System.Drawing.Point(886, 0);
+            this.splitter17.Location = new System.Drawing.Point(807, 0);
             this.splitter17.Margin = new System.Windows.Forms.Padding(0);
             this.splitter17.Name = "splitter17";
             this.splitter17.Size = new System.Drawing.Size(1, 65);
@@ -1757,7 +1757,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel21.AutoSize = true;
             this.flowLayoutPanel21.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel21.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel21.Location = new System.Drawing.Point(883, 3);
+            this.flowLayoutPanel21.Location = new System.Drawing.Point(804, 3);
             this.flowLayoutPanel21.Name = "flowLayoutPanel21";
             this.flowLayoutPanel21.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel21.TabIndex = 5;
@@ -1768,7 +1768,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel23.AutoSize = true;
             this.flowLayoutPanel23.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel23.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel23.Location = new System.Drawing.Point(877, 3);
+            this.flowLayoutPanel23.Location = new System.Drawing.Point(798, 3);
             this.flowLayoutPanel23.Name = "flowLayoutPanel23";
             this.flowLayoutPanel23.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel23.TabIndex = 6;
@@ -1778,7 +1778,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.flowLayoutPanel14.Controls.Add(this.label34);
             this.flowLayoutPanel14.Controls.Add(this.flowLayoutPanel27);
-            this.flowLayoutPanel14.Location = new System.Drawing.Point(734, 3);
+            this.flowLayoutPanel14.Location = new System.Drawing.Point(655, 3);
             this.flowLayoutPanel14.Name = "flowLayoutPanel14";
             this.flowLayoutPanel14.Size = new System.Drawing.Size(137, 59);
             this.flowLayoutPanel14.TabIndex = 65;
@@ -1817,7 +1817,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel24.AutoSize = true;
             this.flowLayoutPanel24.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel24.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel24.Location = new System.Drawing.Point(728, 3);
+            this.flowLayoutPanel24.Location = new System.Drawing.Point(649, 3);
             this.flowLayoutPanel24.Name = "flowLayoutPanel24";
             this.flowLayoutPanel24.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel24.TabIndex = 7;
@@ -1828,7 +1828,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel25.AutoSize = true;
             this.flowLayoutPanel25.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel25.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel25.Location = new System.Drawing.Point(722, 3);
+            this.flowLayoutPanel25.Location = new System.Drawing.Point(643, 3);
             this.flowLayoutPanel25.Name = "flowLayoutPanel25";
             this.flowLayoutPanel25.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel25.TabIndex = 8;
@@ -1837,7 +1837,7 @@ namespace IRISA.CommunicationCenter.Forms
             // splitter21
             // 
             this.splitter21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter21.Location = new System.Drawing.Point(718, 0);
+            this.splitter21.Location = new System.Drawing.Point(639, 0);
             this.splitter21.Margin = new System.Windows.Forms.Padding(0);
             this.splitter21.Name = "splitter21";
             this.splitter21.Size = new System.Drawing.Size(1, 65);
@@ -1849,7 +1849,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel26.AutoSize = true;
             this.flowLayoutPanel26.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel26.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel26.Location = new System.Drawing.Point(715, 3);
+            this.flowLayoutPanel26.Location = new System.Drawing.Point(636, 3);
             this.flowLayoutPanel26.Name = "flowLayoutPanel26";
             this.flowLayoutPanel26.Size = new System.Drawing.Size(0, 0);
             this.flowLayoutPanel26.TabIndex = 60;
@@ -1862,7 +1862,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.flowLayoutPanel28.Controls.Add(this.label18);
             this.flowLayoutPanel28.Controls.Add(this.flowLayoutPanel29);
             this.flowLayoutPanel28.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel28.Location = new System.Drawing.Point(633, 3);
+            this.flowLayoutPanel28.Location = new System.Drawing.Point(554, 3);
             this.flowLayoutPanel28.Name = "flowLayoutPanel28";
             this.flowLayoutPanel28.Size = new System.Drawing.Size(76, 46);
             this.flowLayoutPanel28.TabIndex = 66;
@@ -1931,7 +1931,7 @@ namespace IRISA.CommunicationCenter.Forms
             // splitter13
             // 
             this.splitter13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.splitter13.Location = new System.Drawing.Point(629, 0);
+            this.splitter13.Location = new System.Drawing.Point(550, 0);
             this.splitter13.Margin = new System.Windows.Forms.Padding(0);
             this.splitter13.Name = "splitter13";
             this.splitter13.Size = new System.Drawing.Size(1, 65);
@@ -1941,7 +1941,7 @@ namespace IRISA.CommunicationCenter.Forms
             // DoIccEventSearch
             // 
             this.DoIccEventSearch.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DoIccEventSearch.Location = new System.Drawing.Point(551, 21);
+            this.DoIccEventSearch.Location = new System.Drawing.Point(472, 21);
             this.DoIccEventSearch.Name = "DoIccEventSearch";
             this.DoIccEventSearch.Size = new System.Drawing.Size(75, 23);
             this.DoIccEventSearch.TabIndex = 64;
@@ -2003,7 +2003,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.iccEventSearchButton.Name = "iccEventSearchButton";
             this.iccEventSearchButton.Size = new System.Drawing.Size(28, 28);
             this.iccEventSearchButton.Text = "جستجو";
-            this.iccEventSearchButton.Click += new System.EventHandler(this.DoIccEventSearch_Click);
+            this.iccEventSearchButton.Click += new System.EventHandler(this.LogSearchShowHideButton_Click);
             // 
             // imageList
             // 
@@ -2224,7 +2224,7 @@ namespace IRISA.CommunicationCenter.Forms
         private FlowLayoutPanel flowLayoutPanel18;
         private FlowLayoutPanel flowLayoutPanel19;
         private FlowLayoutPanel flowLayoutPanel20;
-        private MaskedTextBox LogTimeTextBox;
+        private MaskedTextBox SearchKeywordTextBox;
         private Splitter splitter17;
         private FlowLayoutPanel flowLayoutPanel21;
         private FlowLayoutPanel flowLayoutPanel23;
