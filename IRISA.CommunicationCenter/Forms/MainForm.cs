@@ -45,7 +45,6 @@ namespace IRISA.CommunicationCenter.Forms
                 eventsDataGrid.Click += DataGrid_Click;
                 stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
                 stopStartApplicationButton.Image = Resources.stop;
-                settingsPropertyGrid.Enabled = false;
                 Text = _uiSettings.ProgramTitle;
                 notifyIcon.Text = _uiSettings.ProgramTitle;
                 Application.DoEvents();
@@ -96,7 +95,6 @@ namespace IRISA.CommunicationCenter.Forms
                 _iccCore?.Stop();
                 stopStartApplicationButton.Image = Resources.start;
                 stopStartApplicationButton.ToolTipText = "اجرای برنامه";
-                settingsPropertyGrid.Enabled = true;
                 _refreshTimer?.Stop();
                 Application.DoEvents();
             }

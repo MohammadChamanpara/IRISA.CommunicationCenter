@@ -35,10 +35,6 @@ namespace IRISA.CommunicationCenter.Forms
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator5;
-        private ToolStrip settingsToolStrip;
-        private ToolStripLabel toolStripLabel1;
-        private ToolStripButton toolStripButton1;
-        private ToolStripLabel toolStripLabel2;
         private FlowLayoutPanel adaptersPanel;
         private SplitContainer adaptersSplitContainer;
         private ToolStrip adaptersToolStrip;
@@ -125,12 +121,12 @@ namespace IRISA.CommunicationCenter.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
             this.adaptersSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -143,10 +139,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.settingsSplitContainer = new System.Windows.Forms.SplitContainer();
             this.settingsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.settingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.settingsToolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.TransfersTabPage = new System.Windows.Forms.TabPage();
             this.transfersDataGrid = new IRISA.CommunicationCenter.Components.IrisaDataGrid();
             this.transfersIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -297,7 +289,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.settingsSplitContainer.Panel1.SuspendLayout();
             this.settingsSplitContainer.Panel2.SuspendLayout();
             this.settingsSplitContainer.SuspendLayout();
-            this.settingsToolStrip.SuspendLayout();
             this.TransfersTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transfersDataGrid)).BeginInit();
             this.telegramSearchGroupbox.SuspendLayout();
@@ -439,7 +430,6 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.settingsTabPage.BackColor = System.Drawing.Color.White;
             this.settingsTabPage.Controls.Add(this.settingsSplitContainer);
-            this.settingsTabPage.Controls.Add(this.settingsToolStrip);
             this.settingsTabPage.ImageIndex = 1;
             this.settingsTabPage.Location = new System.Drawing.Point(4, 31);
             this.settingsTabPage.Name = "settingsTabPage";
@@ -452,7 +442,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.settingsSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.settingsSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.settingsSplitContainer.Location = new System.Drawing.Point(3, 50);
+            this.settingsSplitContainer.Location = new System.Drawing.Point(3, 3);
             this.settingsSplitContainer.Name = "settingsSplitContainer";
             // 
             // settingsSplitContainer.Panel1
@@ -464,7 +454,7 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.settingsSplitContainer.Panel2.Controls.Add(this.settingsPropertyGrid);
             this.settingsSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.settingsSplitContainer.Size = new System.Drawing.Size(1080, 518);
+            this.settingsSplitContainer.Size = new System.Drawing.Size(1080, 565);
             this.settingsSplitContainer.SplitterDistance = 329;
             this.settingsSplitContainer.SplitterWidth = 10;
             this.settingsSplitContainer.TabIndex = 1;
@@ -477,7 +467,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.settingsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.settingsPanel.Location = new System.Drawing.Point(0, 0);
             this.settingsPanel.Name = "settingsPanel";
-            this.settingsPanel.Size = new System.Drawing.Size(327, 516);
+            this.settingsPanel.Size = new System.Drawing.Size(327, 563);
             this.settingsPanel.TabIndex = 0;
             // 
             // settingsPropertyGrid
@@ -487,45 +477,9 @@ namespace IRISA.CommunicationCenter.Forms
             this.settingsPropertyGrid.Location = new System.Drawing.Point(0, 0);
             this.settingsPropertyGrid.Name = "settingsPropertyGrid";
             this.settingsPropertyGrid.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.settingsPropertyGrid.Size = new System.Drawing.Size(739, 516);
+            this.settingsPropertyGrid.Size = new System.Drawing.Size(739, 563);
             this.settingsPropertyGrid.TabIndex = 0;
             this.settingsPropertyGrid.UseCompatibleTextRendering = true;
-            // 
-            // settingsToolStrip
-            // 
-            this.settingsToolStrip.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.settingsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1,
-            this.toolStripButton1,
-            this.toolStripLabel2});
-            this.settingsToolStrip.Location = new System.Drawing.Point(3, 3);
-            this.settingsToolStrip.Name = "settingsToolStrip";
-            this.settingsToolStrip.Size = new System.Drawing.Size(1080, 47);
-            this.settingsToolStrip.TabIndex = 2;
-            this.settingsToolStrip.Text = "toolStrip1";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(214, 44);
-            this.toolStripLabel1.Text = "برای ایجاد تغییر در تنظیمات ، توسط  دکمه";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::IRISA.CommunicationCenter.Properties.Resources.stop;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(44, 44);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(117, 44);
-            this.toolStripLabel2.Text = "برنامه را متوقف نمایید.";
             // 
             // TransfersTabPage
             // 
@@ -545,8 +499,8 @@ namespace IRISA.CommunicationCenter.Forms
             this.transfersDataGrid.AllowUserToAddRows = false;
             this.transfersDataGrid.AllowUserToDeleteRows = false;
             this.transfersDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
-            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.AliceBlue;
+            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.transfersDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.transfersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.transfersDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -609,10 +563,10 @@ namespace IRISA.CommunicationCenter.Forms
             // SendTimeColumn
             // 
             this.SendTimeColumn.DataPropertyName = "PersianSendTime";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.Format = "G";
-            dataGridViewCellStyle2.NullValue = null;
-            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Format = "G";
+            dataGridViewCellStyle7.NullValue = null;
+            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.SendTimeColumn.HeaderText = "زمان ارسال";
             this.SendTimeColumn.Name = "SendTimeColumn";
             this.SendTimeColumn.ReadOnly = true;
@@ -621,10 +575,10 @@ namespace IRISA.CommunicationCenter.Forms
             // ReceiveTimeColumn
             // 
             this.ReceiveTimeColumn.DataPropertyName = "PersianReceiveTime";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "G";
-            dataGridViewCellStyle3.NullValue = null;
-            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Format = "G";
+            dataGridViewCellStyle8.NullValue = null;
+            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle8;
             this.ReceiveTimeColumn.HeaderText = "زمان دریافت";
             this.ReceiveTimeColumn.Name = "ReceiveTimeColumn";
             this.ReceiveTimeColumn.ReadOnly = true;
@@ -1505,8 +1459,8 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.AllowUserToAddRows = false;
             this.eventsDataGrid.AllowUserToDeleteRows = false;
             this.eventsDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.AliceBlue;
-            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.AliceBlue;
+            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
             this.eventsDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.eventsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IdColumn,
@@ -1532,9 +1486,9 @@ namespace IRISA.CommunicationCenter.Forms
             // TimeColumn
             // 
             this.TimeColumn.DataPropertyName = "PersianTime";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.NullValue = null;
-            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.NullValue = null;
+            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle10;
             this.TimeColumn.HeaderText = "زمان رویداد";
             this.TimeColumn.Name = "TimeColumn";
             this.TimeColumn.ReadOnly = true;
@@ -2136,14 +2090,11 @@ namespace IRISA.CommunicationCenter.Forms
             this.adaptersToolStrip.ResumeLayout(false);
             this.adaptersToolStrip.PerformLayout();
             this.settingsTabPage.ResumeLayout(false);
-            this.settingsTabPage.PerformLayout();
             this.settingsSplitContainer.Panel1.ResumeLayout(false);
             this.settingsSplitContainer.Panel1.PerformLayout();
             this.settingsSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.settingsSplitContainer)).EndInit();
             this.settingsSplitContainer.ResumeLayout(false);
-            this.settingsToolStrip.ResumeLayout(false);
-            this.settingsToolStrip.PerformLayout();
             this.TransfersTabPage.ResumeLayout(false);
             this.TransfersTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.transfersDataGrid)).EndInit();
