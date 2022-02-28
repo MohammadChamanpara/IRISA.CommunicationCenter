@@ -328,11 +328,11 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadAdapters()
         {
-            ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+            //ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
-            //ConnectedAdapters = LoadAdapters<IIccAdapter>();
+            ConnectedAdapters = LoadAdapters<IIccAdapter>();
 
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
