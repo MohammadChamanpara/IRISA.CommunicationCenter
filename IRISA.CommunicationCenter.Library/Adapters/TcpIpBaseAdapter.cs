@@ -253,7 +253,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                                     if (RetrieveCompleteTelegram(out byte[] completeTelegram, ref iccTelegram))
                                     {
                                         ToIccTelegram(completeTelegram, ref iccTelegram);
-                                        OnReceive(new ReceiveEventArgs(iccTelegram, true, null));
+                                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, true, null));
                                     }
                                     else
                                     {
@@ -264,7 +264,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                             catch (Exception failException)
                             {
                                 receivedBuffer.Clear();
-                                OnReceive(new ReceiveEventArgs(iccTelegram, false, failException));
+                                OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, false, failException));
                             }
                         }
                     }

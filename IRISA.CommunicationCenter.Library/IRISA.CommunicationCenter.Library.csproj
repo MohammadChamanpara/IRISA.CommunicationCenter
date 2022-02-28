@@ -49,8 +49,7 @@
     <Compile Include="Adapters\TelegramSendCompletedEventArgs.cs" />
     <Compile Include="Adapters\IccCoreClientConnectionChangedEventArgs.cs" />
     <Compile Include="Adapters\IIccAdapter.cs" />
-    <Compile Include="Adapters\ReceiveEventArgs.cs" />
-    <Compile Include="Adapters\ReceiveEventHandler.cs" />
+    <Compile Include="Adapters\TelegramReceivedEventArgs.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="Definitions\FieldDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

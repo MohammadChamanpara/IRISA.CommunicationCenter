@@ -5,7 +5,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 {
     public interface IIccAdapter
     {
-        event ReceiveEventHandler TelegramReceived;
+        event Action<TelegramReceivedEventArgs> TelegramReceived;
         event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         event EventHandler<SendCompletedEventArgs> SendCompleted;
 

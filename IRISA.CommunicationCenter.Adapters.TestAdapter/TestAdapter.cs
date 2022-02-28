@@ -49,9 +49,9 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                         throw new Exception("my disconnection------------");
                     }
 
-                    OnReceive
+                    OnTelegramReceived
                     (
-                        new ReceiveEventArgs
+                        new TelegramReceivedEventArgs
                         (
                             new IccTelegram()
                             {

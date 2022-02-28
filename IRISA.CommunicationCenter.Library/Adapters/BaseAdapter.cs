@@ -7,7 +7,6 @@ using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace IRISA.CommunicationCenter.Library.Adapters
 {
@@ -20,7 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
 
-        public event ReceiveEventHandler TelegramReceived;
+        public event Action<TelegramReceivedEventArgs> TelegramReceived;
         public event EventHandler<AdapterConnectionChangedEventArgs> ConnectionChanged;
         public event EventHandler<SendCompletedEventArgs> SendCompleted;
 
@@ -253,7 +252,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
 
-        public virtual void OnReceive(ReceiveEventArgs e)
+        public virtual void OnTelegramReceived(TelegramReceivedEventArgs e)
         {
             TelegramReceived?.Invoke(e);
         }

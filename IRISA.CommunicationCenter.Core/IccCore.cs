@@ -255,7 +255,7 @@ namespace IRISA.CommunicationCenter.Core
             return destinationAdapter.Single();
         }
 
-        private void Adapter_OnReceive(ReceiveEventArgs e)
+        private void Adapter_TelegramReceived(TelegramReceivedEventArgs e)
         {
             lock (receiveLocker)
             {
@@ -343,7 +343,7 @@ namespace IRISA.CommunicationCenter.Core
             {
                 try
                 {
-                    adapter.TelegramReceived += new ReceiveEventHandler(Adapter_OnReceive);
+                    adapter.TelegramReceived += Adapter_TelegramReceived;
                     adapter.SendCompleted += Adapter_SendCompleted;
                     adapter.Start(_logger);
                 }

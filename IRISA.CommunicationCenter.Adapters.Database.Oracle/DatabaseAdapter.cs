@@ -160,7 +160,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
                     {
                         clientTelegram.PROCESSED = true;
                         clientTelegramsTable.Edit(clientTelegram);
-                        OnReceive(new ReceiveEventArgs(iccTelegram, successful, failException));
+                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, successful, failException));
                     }
                 }
             }
