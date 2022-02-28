@@ -2,7 +2,7 @@
 {
     public class LogSearchModel
     {
-        public string PersianTime { get; set; }
+        public string SearchKeyword { get; set; }
 
         public LogLevel? LogLevel { get; set; }
     }

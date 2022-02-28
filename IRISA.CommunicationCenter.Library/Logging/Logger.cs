@@ -13,7 +13,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
         public Logger(IEnumerable<ILogAppender> logAppenders)
         {
             if (!logAppenders.Any())
-                throw new ArgumentException("Log Appenders must be passed to logger.");
+                throw new ArgumentException("Log Appenders list is empty.");
 
             _logAppenders = logAppenders;
         }

@@ -27,8 +27,17 @@ namespace IRISA.CommunicationCenter.Library.Logging
         {
             var events = logs.AsEnumerable();
 
-            events = searchModel.PersianTime.HasValue()
-                ? events.Where(x => x.PersianTime.Contains(searchModel.PersianTime))
+            events = searchModel.SearchKeyword.HasValue()
+                ? events
+                    .Where
+                    (
+                        x =>
+                            x.Id.ToString().Contains(searchModel.SearchKeyword)||
+                            x.LogLevel.ToString().Contains(searchModel.SearchKeyword) ||
+                            x.PersianLogLevel.Contains(searchModel.SearchKeyword) ||
+                            x.PersianTime.Contains(searchModel.SearchKeyword) ||
+                            x.Text.Contains(searchModel.SearchKeyword)
+                    )
                 : events;
 
             events = searchModel.LogLevel.HasValue
