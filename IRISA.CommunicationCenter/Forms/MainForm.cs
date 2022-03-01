@@ -26,7 +26,7 @@ namespace IRISA.CommunicationCenter.Forms
         private readonly IIccCore _iccCore;
         private readonly ILogger _logger;
         private readonly ITelegramDefinitions _telegramDefinitions;
-        
+
 
         public MainForm(ILogger logger, IIccCore iccCore, ITelegramDefinitions telegramDefinitions)
         {
@@ -41,8 +41,8 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                InitialUiSettings();
                 _iccCore.Start();
+                InitialUiSettings();
                 LoadAdapters();
                 LoadSettings();
                 LoadLogLevelComboBox();
@@ -53,21 +53,14 @@ namespace IRISA.CommunicationCenter.Forms
                 Text = _uiSettings.ProgramTitle;
                 notifyIcon.Text = _uiSettings.ProgramTitle;
                 Application.DoEvents();
-                if (!_iccCore.Started)
-                {
-                    StopApplication();
-                }
                 InitializeRefreshTimer();
                 _refreshTimer.Start();
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
-            }
-            finally
-            {
-                if (!_iccCore.Started)
-                    StopApplication();
+                StopApplication();
+                MessageForm.ShowErrorMessage(exception.Message);
             }
         }
 
@@ -212,7 +205,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                searchModel.ReceiveTime= DateTime.MinValue;
+                searchModel.ReceiveTime = DateTime.MinValue;
                 _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها");
             }
 
@@ -537,7 +530,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (transfersDataGrid.RowCount != 0)
                 {
                     IccTelegram iccTelegram = transfersDataGrid.Rows[transfersDataGrid.SelectedCells[0].RowIndex].DataBoundItem as IccTelegram;
-                    new TelegramViewerForm(iccTelegram,_telegramDefinitions).ShowDialog();
+                    new TelegramViewerForm(iccTelegram, _telegramDefinitions).ShowDialog();
                 }
             }
             catch (Exception ex)

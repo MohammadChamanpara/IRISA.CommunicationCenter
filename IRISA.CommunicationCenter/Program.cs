@@ -18,40 +18,47 @@ namespace IRISA.CommunicationCenter
         [STAThread]
         private static void Main()
         {
-            using (Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
+            try
             {
-                if (!firstInstanceOfApp)
+                using (Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
                 {
-                    MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد");
-                    return;
+                    if (!firstInstanceOfApp)
+                    {
+                        MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد");
+                        return;
+                    }
                 }
+
+                InitializeApplication();
+
+                ConfigureServices();
+
+                Run();
             }
+            catch (Exception exception)
+            {
+                HandleStartupException(exception);
+            }
+        }
 
-            InitializeApplication();
-
-            ConfigureServices();
-
-            Run();
+        private static void HandleStartupException(Exception exception)
+        {
+            string message = "بروز خطا هنگام اجرای اولیه برنامه";
+            ServiceProvider.GetService<ILogger>().LogException(exception, message);
+            MessageForm.ShowErrorMessage($"{message} \r\n{exception.Message}");
         }
 
         private static void Run()
         {
-            try
-            {
-                Application.Run
+            Application.Run
+            (
+                new MainForm
                 (
-                    new MainForm
-                    (
-                        ServiceProvider.GetService<ILogger>(),
-                        ServiceProvider.GetService<IIccCore>(),
-                        ServiceProvider.GetService<ITelegramDefinitions>()
-                    )
-                );
-            }
-            catch (Exception exception)
-            {
-                ServiceProvider.GetService<ILogger>().LogException(exception, "بروز خطا هنگام اجرای اولیه برنامه");
-            }
+                    ServiceProvider.GetService<ILogger>(),
+                    ServiceProvider.GetService<IIccCore>(),
+                    ServiceProvider.GetService<ITelegramDefinitions>()
+                )
+            );
         }
 
         private static void InitializeApplication()
@@ -75,17 +82,17 @@ namespace IRISA.CommunicationCenter
                 //.AddSingleton<IIccQueue, IccQueueInOracle>()
                 .AddSingleton<IIccQueue, IccQueueInMemory>()
                 .AddSingleton<IIccCore, IccCore>()
-                .AddSingleton<ITelegramDefinitions,TelegramDefinitions>()
+                .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 ;
 
             ServiceProvider = services.BuildServiceProvider();
         }
-
-
+        
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ServiceProvider.GetService<ILogger>().LogException((Exception)e.ExceptionObject, "بروز خطای کنترل نشده.");
         }
+
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             ServiceProvider.GetService<ILogger>().LogException(e.Exception, "بروز خطای کنترل نشده.");
