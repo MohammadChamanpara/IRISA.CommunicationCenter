@@ -7,7 +7,7 @@ namespace IRISA.CommunicationCenter.Core
     public interface IIccCore
     {
         bool Started { get; }
-        IIccQueue IccQueue { get; }
+        ITransferHistory TransferHistory { get; }
         string PersianDescription { get; }
         List<IIccAdapter> ConnectedAdapters { get; }
         void Stop();

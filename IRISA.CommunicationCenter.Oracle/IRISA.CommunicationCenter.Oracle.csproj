@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityBusiness.cs" />
-    <Compile Include="IccQueueInOracle.cs" />
+    <Compile Include="TransferHistoryInOracle.cs" />
     <Compile Include="Model\IccModel1.Designer.cs">
       <DependentUpon>IccModel.edmx</DependentUpon>
       <AutoGen>True</AutoGen>

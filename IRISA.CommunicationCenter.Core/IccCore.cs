@@ -19,7 +19,7 @@ namespace IRISA.CommunicationCenter.Core
     public class IccCore : IIccCore
     {
         public List<IIccAdapter> ConnectedAdapters { get; private set; }
-        public IIccQueue IccQueue { get; set; }
+        public ITransferHistory TransferHistory { get; set; }
 
         private BackgroundTimer sendTimer;
         private DLLSettings<IccCore> dllSettings;
@@ -133,10 +133,10 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        public IccCore(ILogger logger, IIccQueue iccQueue, ITelegramDefinitions telegramDefinitions)
+        public IccCore(ILogger logger, ITransferHistory transferHistory, ITelegramDefinitions telegramDefinitions)
         {
             _logger = logger;
-            IccQueue = iccQueue;
+            TransferHistory = transferHistory;
             _telegramDefinitions = telegramDefinitions;
         }
 
@@ -193,7 +193,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             lock (sendLocker)
             {
-                SendTelegrams(IccQueue.GetTelegramsToSend(), ConnectedAdapters);
+                SendTelegrams(TransferHistory.GetTelegramsToSend(), ConnectedAdapters);
             }
         }
 
@@ -367,7 +367,7 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.ReceiveTime = new DateTime?(DateTime.Now);
                 iccTelegram.Sent = true;
 
-                IccQueue.Edit(iccTelegram);
+                TransferHistory.Edit(iccTelegram);
 
                 _logger.LogInformation("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
                 {
@@ -400,11 +400,11 @@ namespace IRISA.CommunicationCenter.Core
 
                 if (existingRecord)
                 {
-                    IccQueue.Edit(iccTelegram);
+                    TransferHistory.Edit(iccTelegram);
                 }
                 else
                 {
-                    IccQueue.Add(iccTelegram);
+                    TransferHistory.Add(iccTelegram);
                 }
 
                 _logger.LogInformation("تلگرام با شناسه {0} حذف شد.", new object[]
@@ -432,7 +432,7 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.DropReason = null;
                 iccTelegram.Sent = false;
 
-                IccQueue.Add(iccTelegram);
+                TransferHistory.Add(iccTelegram);
                 _logger.LogInformation("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
                 {
                     iccTelegram.TransferId

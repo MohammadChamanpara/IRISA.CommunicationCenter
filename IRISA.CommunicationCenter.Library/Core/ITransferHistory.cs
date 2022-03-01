@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IRISA.CommunicationCenter.Library.Core
 {
-    public interface IIccQueue
+    public interface ITransferHistory
     {
         List<IccTelegram> GetTelegramsToSend();
         void Edit(IccTelegram iccTelegram);

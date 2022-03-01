@@ -79,8 +79,8 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
 
-                //.AddSingleton<IIccQueue, IccQueueInOracle>()
-                .AddSingleton<IIccQueue, IccQueueInMemory>()
+                .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
+                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
                 .AddSingleton<IIccCore, IccCore>()
                 .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 ;

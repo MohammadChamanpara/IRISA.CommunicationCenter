@@ -55,7 +55,7 @@
     <Compile Include="Definitions\ITelegramDefinition.cs" />
     <Compile Include="Definitions\ITelegramDefinitions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Core\IIccQueue.cs" />
+    <Compile Include="Core\ITransferHistory.cs" />
     <Compile Include="Logging\ILogAppender.cs" />
     <Compile Include="Tasks\BackgroundTimer.cs" />
     <Compile Include="Logging\IrisaException.cs" />

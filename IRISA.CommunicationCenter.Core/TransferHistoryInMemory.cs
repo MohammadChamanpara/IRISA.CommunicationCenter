@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace IRISA.CommunicationCenter.Core
 {
-    public class IccQueueInMemory : IIccQueue
+    public class TransferHistoryInMemory : ITransferHistory
     {
         private static List<IccTelegram> items = new List<IccTelegram>();
         private static long id = 1;
@@ -138,7 +138,7 @@ namespace IRISA.CommunicationCenter.Core
 
         [DisplayName("نوع صف")]
         [Category("Information")]
-        public string Type => nameof(IccQueueInMemory);
+        public string Type => nameof(TransferHistoryInMemory);
 
         [Category("Information")]
         [DisplayName("وضعیت اتصال")]

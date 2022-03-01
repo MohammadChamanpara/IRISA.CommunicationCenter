@@ -12,12 +12,12 @@ using System.Linq;
 
 namespace IRISA.CommunicationCenter.Oracle
 {
-    public class IccQueueInOracle : IIccQueue
+    public class TransferHistoryInOracle : ITransferHistory
     {
-        private readonly DLLSettings<IccQueueInOracle> dllSettings = new DLLSettings<IccQueueInOracle>();
+        private readonly DLLSettings<TransferHistoryInOracle> dllSettings = new DLLSettings<TransferHistoryInOracle>();
         private readonly ILogger Logger;
 
-        public IccQueueInOracle(ILogger logger)
+        public TransferHistoryInOracle(ILogger logger)
         {
             Logger = logger;
         }
@@ -47,7 +47,7 @@ namespace IRISA.CommunicationCenter.Oracle
 
         [DisplayName("نوع صف")]
         [Category("Information")]
-        public string Type => nameof(IccQueueInOracle);
+        public string Type => nameof(TransferHistoryInOracle);
 
         [Category("Information")]
         [DisplayName("وضعیت اتصال")]

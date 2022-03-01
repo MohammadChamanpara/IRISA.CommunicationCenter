@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IccCore.cs" />
-    <Compile Include="IccQueueInMemory.cs" />
+    <Compile Include="TransferHistoryInMemory.cs" />
     <Compile Include="IIccCore.cs" />
   </ItemGroup>
   <ItemGroup>

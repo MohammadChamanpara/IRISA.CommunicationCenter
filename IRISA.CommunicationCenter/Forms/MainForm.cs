@@ -263,7 +263,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (GetSelectedTab() != TransfersTabPage)
                     return;
 
-                if (!_iccCore.IccQueue.Connected)
+                if (!_iccCore.TransferHistory.Connected)
                     return;
 
                 IccTelegramSearchModel searchModel = new IccTelegramSearchModel();
@@ -271,7 +271,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (telegramSearchGroupbox.Visible)
                     Invoke(new Action(() => { CopySearchControlsToSearchModel(searchModel); }));
 
-                var telegrams = _iccCore.IccQueue.GetTelegrams(searchModel, pageSize, out int resultsCount);
+                var telegrams = _iccCore.TransferHistory.GetTelegrams(searchModel, pageSize, out int resultsCount);
 
                 pageSize = Math.Min(pageSize, resultsCount);
 
@@ -358,7 +358,7 @@ namespace IRISA.CommunicationCenter.Forms
                     new RadioButton
                     {
                         Text = "صف تلگرام ها",
-                        Tag = _iccCore.IccQueue
+                        Tag = _iccCore.TransferHistory
                     }
                 };
                 if (_iccCore?.ConnectedAdapters != null)
