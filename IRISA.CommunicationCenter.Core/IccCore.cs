@@ -41,6 +41,7 @@ namespace IRISA.CommunicationCenter.Core
             set
             {
                 dllSettings.SaveSetting("LogMinimumLevel", value);
+                _logger.SetMinumumLevel(value);
             }
         }
 
