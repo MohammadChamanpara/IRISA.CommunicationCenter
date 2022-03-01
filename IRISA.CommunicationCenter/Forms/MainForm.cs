@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IRISA.CommunicationCenter.Forms
@@ -70,9 +71,14 @@ namespace IRISA.CommunicationCenter.Forms
                 AliveTime = _uiSettings.RecordsRefreshAliveTime,
                 PersianDescription = "پروسه نمایش رویداد ها و تلگرام ها در فرم"
             };
-            _refreshTimer.DoWork += LoadRecords;
+            _refreshTimer.DoWork += RefreshTimer_DoWork;
             _refreshTimer.Started += RefreshTimer_Started;
             _refreshTimer.Stopped += RefreshTimer_Stopped;
+        }
+
+        private void RefreshTimer_DoWork()
+        {
+            LoadRecords();
         }
 
         private void RefreshTimer_Stopped()
@@ -225,6 +231,10 @@ namespace IRISA.CommunicationCenter.Forms
                 searchModel.LogLevel = (LogLevel)LogLevelComboBox.SelectedIndex;
         }
 
+        private async Task LoadRecordsAsync()
+        {
+            await Task.Run(() => LoadRecords());
+        }
         private void LoadRecords()
         {
             LoadEvents();
@@ -295,7 +305,7 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                if (!base.Visible)
+                if (!Visible)
                     return;
 
                 if (GetSelectedTab() != eventsTabPage)
@@ -537,9 +547,9 @@ namespace IRISA.CommunicationCenter.Forms
             }
         }
 
-        private void ClearSearchButton_Click(object sender, EventArgs e)
+        private async void ClearSearchButton_Click(object sender, EventArgs e)
         {
-            ClearControls(searchFlowLayoutPanel);
+            await Task.Run(() => ClearControls(searchFlowLayoutPanel));
             telegramSearchGroupbox.Visible = false;
         }
         private void MaskedTextBox_Click(object sender, EventArgs e)
@@ -556,11 +566,12 @@ namespace IRISA.CommunicationCenter.Forms
             {
                 ClearSearchButton_Click(null, null);
             }
+            Application.DoEvents();
         }
 
-        private void DoTelegramSearch_Click(object sender, EventArgs e)
+        private async void DoTelegramSearch_Click(object sender, EventArgs e)
         {
-            LoadTransfers();
+            await LoadRecordsAsync();
         }
 
         private void LogSearchShowHideButton_Click(object sender, EventArgs e)
@@ -572,16 +583,16 @@ namespace IRISA.CommunicationCenter.Forms
             }
         }
 
-        private void DoIccEventSearch_Click(object sender, EventArgs e)
+        private async void DoIccEventSearch_Click(object sender, EventArgs e)
         {
-            LoadEvents();
+            await LoadRecordsAsync();
         }
 
-        private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
+        private async void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             ClearControls(eventsSearchflowLayout);
             LogsSearchGroupBox.Visible = false;
-            LoadEvents();
+            await LoadRecordsAsync();
         }
 
         public static string ShowPasswordDialog(string caption)

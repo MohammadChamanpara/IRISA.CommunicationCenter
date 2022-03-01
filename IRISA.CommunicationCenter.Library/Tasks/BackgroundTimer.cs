@@ -1,8 +1,5 @@
 ﻿using IRISA.CommunicationCenter.Library.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IRISA.CommunicationCenter.Library.Tasks
