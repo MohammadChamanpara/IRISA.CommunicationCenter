@@ -41,26 +41,24 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                _iccCore.Start();
                 InitialUiSettings();
+                InitializeRefreshTimer();
+                _iccCore.Start();
                 LoadAdapters();
                 LoadSettings();
                 LoadLogLevelComboBox();
-                transfersDataGrid.Click += DataGrid_Click;
-                eventsDataGrid.Click += DataGrid_Click;
                 stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
                 stopStartApplicationButton.Image = Resources.stop;
                 Text = _uiSettings.ProgramTitle;
                 notifyIcon.Text = _uiSettings.ProgramTitle;
                 Application.DoEvents();
-                InitializeRefreshTimer();
                 _refreshTimer.Start();
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
                 StopApplication();
-                MessageForm.ShowErrorMessage(exception.Message);
+                MessageForm.ShowErrorMessage($"{exception.Message} \r\nStack Trace:{exception.StackTrace}");
             }
         }
 

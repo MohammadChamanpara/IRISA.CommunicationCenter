@@ -281,21 +281,12 @@ namespace IRISA.CommunicationCenter.Core
 
         public void Start()
         {
-            try
-            {
-                InitializeLogger();
-                ConnectedAdapters = new List<IIccAdapter>();
-                dllSettings = new DLLSettings<IccCore>();
-                LoadAdapters();
-                InitializeSendTimer();
-                Started = true;
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
-                Stop();
-                throw;
-            }
+            ConnectedAdapters = new List<IIccAdapter>();
+            dllSettings = new DLLSettings<IccCore>();
+            InitializeLogger();
+            LoadAdapters();
+            InitializeSendTimer();
+            Started = true;
         }
 
         private void InitializeLogger()
@@ -328,7 +319,8 @@ namespace IRISA.CommunicationCenter.Core
                 adapter.Stop();
             }
 
-            _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
+            if (Started)
+                _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
 
             Started = false;
         }

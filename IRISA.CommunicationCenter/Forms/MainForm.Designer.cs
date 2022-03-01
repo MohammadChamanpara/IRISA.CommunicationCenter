@@ -121,12 +121,12 @@ namespace IRISA.CommunicationCenter.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
             this.adaptersSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -499,8 +499,8 @@ namespace IRISA.CommunicationCenter.Forms
             this.transfersDataGrid.AllowUserToAddRows = false;
             this.transfersDataGrid.AllowUserToDeleteRows = false;
             this.transfersDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.AliceBlue;
-            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
+            this.transfersDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.transfersDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.transfersDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.transfersDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -521,6 +521,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.transfersDataGrid.ReadOnly = true;
             this.transfersDataGrid.Size = new System.Drawing.Size(1086, 455);
             this.transfersDataGrid.TabIndex = 1;
+            this.transfersDataGrid.Click += new System.EventHandler(this.DataGrid_Click);
             // 
             // transfersIdColumn
             // 
@@ -563,10 +564,10 @@ namespace IRISA.CommunicationCenter.Forms
             // SendTimeColumn
             // 
             this.SendTimeColumn.DataPropertyName = "PersianSendTime";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Format = "G";
-            dataGridViewCellStyle7.NullValue = null;
-            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "G";
+            dataGridViewCellStyle2.NullValue = null;
+            this.SendTimeColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.SendTimeColumn.HeaderText = "زمان ارسال";
             this.SendTimeColumn.Name = "SendTimeColumn";
             this.SendTimeColumn.ReadOnly = true;
@@ -575,10 +576,10 @@ namespace IRISA.CommunicationCenter.Forms
             // ReceiveTimeColumn
             // 
             this.ReceiveTimeColumn.DataPropertyName = "PersianReceiveTime";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Format = "G";
-            dataGridViewCellStyle8.NullValue = null;
-            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "G";
+            dataGridViewCellStyle3.NullValue = null;
+            this.ReceiveTimeColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.ReceiveTimeColumn.HeaderText = "زمان دریافت";
             this.ReceiveTimeColumn.Name = "ReceiveTimeColumn";
             this.ReceiveTimeColumn.ReadOnly = true;
@@ -1459,8 +1460,8 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.AllowUserToAddRows = false;
             this.eventsDataGrid.AllowUserToDeleteRows = false;
             this.eventsDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.AliceBlue;
-            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.AliceBlue;
+            this.eventsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.eventsDataGrid.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.eventsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IdColumn,
@@ -1474,6 +1475,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.eventsDataGrid.ReadOnly = true;
             this.eventsDataGrid.Size = new System.Drawing.Size(1086, 455);
             this.eventsDataGrid.TabIndex = 0;
+            this.eventsDataGrid.Click += new System.EventHandler(this.DataGrid_Click);
             // 
             // IdColumn
             // 
@@ -1486,9 +1488,9 @@ namespace IRISA.CommunicationCenter.Forms
             // TimeColumn
             // 
             this.TimeColumn.DataPropertyName = "PersianTime";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.NullValue = null;
-            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.NullValue = null;
+            this.TimeColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.TimeColumn.HeaderText = "زمان رویداد";
             this.TimeColumn.Name = "TimeColumn";
             this.TimeColumn.ReadOnly = true;
