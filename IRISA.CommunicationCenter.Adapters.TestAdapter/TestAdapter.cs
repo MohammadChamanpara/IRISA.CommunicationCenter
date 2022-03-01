@@ -20,11 +20,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             {
                 get
                 {
-                    return dllSettings.FindIntValue("DelayInSend", 0);
+                    return _dllSettings.FindIntValue("DelayInSend", 0);
                 }
                 set
                 {
-                    dllSettings.SaveSetting("DelayInSend", value);
+                    _dllSettings.SaveSetting("DelayInSend", value);
                 }
             }
 
@@ -48,24 +48,20 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                         Connected = false;
                         throw new Exception("my disconnection------------");
                     }
+                    var iccTelegram = new IccTelegram()
+                    {
+                        Source = Name,
+                        Body = new List<string>() { "A", "B" },
+                        TelegramId = Name == "Behnam" ? 1 : 2,
+                        TransferId = id++,
+                        SendTime = DateTime.Now
+                    };
 
-                    OnTelegramReceived
-                    (
-                        new TelegramReceivedEventArgs
-                        (
-                            new IccTelegram()
-                            {
-                                Source = Name,
-                                Destination = Name == "Behnam" ? "Mamad" : "Behnam",
-                                Body = new List<string>() { "A", "B" },
-                                TelegramId = Name == "Behnam" ? 1 : 2,
-                                TransferId = id++,
-                                SendTime = DateTime.Now
-                            }
-                            , true
-                            , null
-                        )
-                    );
+                    var definition=_telegramDefinitions.Find(iccTelegram);
+                    
+                    iccTelegram.Destination = definition.Destination;
+
+                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram,true,null));
                 }
                 catch (Exception exception)
                 {

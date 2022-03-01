@@ -25,14 +25,14 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
 
         public Byte CrcDivisor
         {
-            get { return dllSettings.FindByteValue("CrcDivisor", (byte)0xF); }
-            set { dllSettings.SaveSetting("CrcDivisor", value); }
+            get { return _dllSettings.FindByteValue("CrcDivisor", (byte)0xF); }
+            set { _dllSettings.SaveSetting("CrcDivisor", value); }
         }
 
         public Boolean CheckCrc
         {
-            get { return dllSettings.FindBooleanValue("CheckCrc", true); }
-            set { dllSettings.SaveSetting("CheckCrc", value); }
+            get { return _dllSettings.FindBooleanValue("CheckCrc", true); }
+            set { _dllSettings.SaveSetting("CheckCrc", value); }
         }
 
         protected override void ExtraValidationsOnReceive(byte[] completeTelegram, byte[] bodyBytes, IccTelegram iccTelegram)

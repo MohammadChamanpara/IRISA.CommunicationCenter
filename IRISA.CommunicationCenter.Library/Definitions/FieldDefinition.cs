@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace IRISA.CommunicationCenter.Library.Definitions
 {
-    public class FieldDefinition : NodeBase
+    public class FieldDefinition : NodeBase, IFieldDefinition
     {
         public int Size
         {
@@ -27,6 +27,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 return result;
             }
         }
+
         public string Type
         {
             get
@@ -46,16 +47,19 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 return result;
             }
         }
+
         public bool IsArray
         {
             get
             {
-                return Type.ToLower() == "array".ToLower();
+                return Type.ToLower() == "array";
             }
         }
+
         public FieldDefinition(XmlNode node) : base(node)
         {
         }
+
         public byte[] GetBytes(string value)
         {
             string text = Type.ToLower();

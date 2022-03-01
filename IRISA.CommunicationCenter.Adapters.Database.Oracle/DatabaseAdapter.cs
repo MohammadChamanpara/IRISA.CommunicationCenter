@@ -35,11 +35,11 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
         {
             get
             {
-                return dllSettings.FindConnectionString();
+                return _dllSettings.FindConnectionString();
             }
             set
             {
-                dllSettings.SaveConnectionString(value);
+                _dllSettings.SaveConnectionString(value);
             }
         }
 
@@ -48,11 +48,11 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
         {
             get
             {
-                return dllSettings.FindCharacterValue("BodySeparator", '$');
+                return _dllSettings.FindCharacterValue("BodySeparator", '$');
             }
             set
             {
-                dllSettings.SaveSetting("BodySeparator", value);
+                _dllSettings.SaveSetting("BodySeparator", value);
             }
         }
 
@@ -61,11 +61,11 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
         {
             get
             {
-                return dllSettings.FindBooleanValue("GetDestinationFromSender", false);
+                return _dllSettings.FindBooleanValue("GetDestinationFromSender", false);
             }
             set
             {
-                dllSettings.SaveSetting("GetDestinationFromSender", value);
+                _dllSettings.SaveSetting("GetDestinationFromSender", value);
             }
         }
 
@@ -88,7 +88,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
         private IccClientTelegram ToClientTelegram(IccTelegram iccTelegram)
         {
-            telegramDefinitions.Find(iccTelegram);
+            _telegramDefinitions.Find(iccTelegram);
             return new IccClientTelegram
             {
                 BODY = iccTelegram.GetBodyAsString(BodySeparator),
@@ -113,7 +113,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
             iccTelegram.Destination = GetDestinationFromSender
                 ? clientTelegram.DESTINATION
-                : telegramDefinitions.Find(iccTelegram).Destination;
+                : _telegramDefinitions.Find(iccTelegram).Destination;
 
             iccTelegram.SetBodyFromString(clientTelegram.BODY, BodySeparator);
 

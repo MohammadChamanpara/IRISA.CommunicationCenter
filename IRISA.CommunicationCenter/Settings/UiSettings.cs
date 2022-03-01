@@ -111,18 +111,7 @@ namespace IRISA.CommunicationCenter.Settings
                 dllSettings.SaveSetting("RecordsIncrementCount", value);
             }
         }
-        [DisplayName("آدرس فایل تعریف ساختار تلگرام ها")]
-        public string TelegramDefinitionFile
-        {
-            get
-            {
-                return dllSettings.FindStringValue("TelegramDefinitionFile", "TelegramDefinitions.xml");
-            }
-            set
-            {
-                dllSettings.SaveSetting("TelegramDefinitionFile", value);
-            }
-        }
+
         [Category("Information"), DisplayName("نوع نرم افزار واسط کاربر")]
         public string UIApplicationType
         {

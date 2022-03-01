@@ -37,11 +37,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindCharacterValue("StartCharacter", '$');
+                return _dllSettings.FindCharacterValue("StartCharacter", '$');
             }
             set
             {
-                dllSettings.SaveSetting("StartCharacter", value);
+                _dllSettings.SaveSetting("StartCharacter", value);
             }
         }
 
@@ -51,11 +51,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindCharacterValue("EndCharacter", '#');
+                return _dllSettings.FindCharacterValue("EndCharacter", '#');
             }
             set
             {
-                dllSettings.SaveSetting("EndCharacter", value);
+                _dllSettings.SaveSetting("EndCharacter", value);
             }
         }
 
@@ -65,11 +65,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("HeaderSize", 27);
+                return _dllSettings.FindIntValue("HeaderSize", 27);
             }
             set
             {
-                dllSettings.SaveSetting("HeaderSize", value);
+                _dllSettings.SaveSetting("HeaderSize", value);
             }
         }
 
@@ -79,11 +79,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("Id", 0);
+                return _dllSettings.FindIntValue("Id", 0);
             }
             set
             {
-                dllSettings.SaveSetting("Id", value);
+                _dllSettings.SaveSetting("Id", value);
             }
         }
 
@@ -93,11 +93,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindStringValue("Ip", "127.0.0.1");
+                return _dllSettings.FindStringValue("Ip", "127.0.0.1");
             }
             set
             {
-                dllSettings.SaveSetting("Ip", value);
+                _dllSettings.SaveSetting("Ip", value);
             }
         }
 
@@ -107,11 +107,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("port", 6000);
+                return _dllSettings.FindIntValue("port", 6000);
             }
             set
             {
-                dllSettings.SaveSetting("port", value);
+                _dllSettings.SaveSetting("port", value);
             }
         }
 
@@ -121,11 +121,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("ClientDetectInterval", 2000);
+                return _dllSettings.FindIntValue("ClientDetectInterval", 2000);
             }
             set
             {
-                dllSettings.SaveSetting("ClientDetectInterval", value);
+                _dllSettings.SaveSetting("ClientDetectInterval", value);
             }
         }
 
@@ -134,11 +134,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("TcpIpConnectExpireTime", 20000);
+                return _dllSettings.FindIntValue("TcpIpConnectExpireTime", 20000);
             }
             set
             {
-                dllSettings.SaveSetting("TcpIpConnectExpireTime", value);
+                _dllSettings.SaveSetting("TcpIpConnectExpireTime", value);
             }
         }
 
@@ -147,11 +147,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("SendTimeout", 5000);
+                return _dllSettings.FindIntValue("SendTimeout", 5000);
             }
             set
             {
-                dllSettings.SaveSetting("SendTimeout", value);
+                _dllSettings.SaveSetting("SendTimeout", value);
             }
         }
         [Category("Information"), DisplayName("کلاینت متصل شده - آدرس")]
@@ -329,9 +329,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 });
             }
         }
-        public override void Start(ILogger eventLogger)
+        public override void Start(ILogger eventLogger, ITelegramDefinitions telegramDefinitions)
         {
-            base.Start(eventLogger);
+            base.Start(eventLogger, telegramDefinitions);
             lastConnectionTime = DateTime.Now;
             IPAddress localaddr = IPAddress.Parse(Ip);
             InitializeTcpListener(localaddr);
@@ -474,23 +474,17 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
             iccTelegram.SendTime = DateTime.Now;
             iccTelegram.Source = GetTelegramSource(completeTelegram);
-            TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
+            var telegramDefinition = _telegramDefinitions.Find(iccTelegram);
             iccTelegram.Destination = telegramDefinition.Destination;
             byte[] array = completeTelegram.Skip(HeaderSize).ToArray<byte>();
             array = array.Take(telegramBodySize).ToArray<byte>();
             byte[] bodyBytes = array;
-            List<FieldDefinition> fields = telegramDefinition.Fields;
-            int count = fields.Count;
-            for (int i = 0; i < count; i++)
+
+            foreach (var fieldDefinition in telegramDefinition.Fields)
             {
-                FieldDefinition fieldDefinition = fields[i];
                 if (array.Length < fieldDefinition.Size)
                 {
-                    throw IrisaException.Create("تعداد فیلد های ارسال شده {0} و تعداد فیلد های تعریف شده {1} می باشد.", new object[]
-                    {
-                        i,
-                        count
-                    });
+                    throw IrisaException.Create($"تعداد فیلد های ارسال شده {array.Length} و تعداد فیلد های تعریف شده {fieldDefinition.Size} می باشد.");
                 }
                 string value = fieldDefinition.GetValue(array);
                 array = array.Skip(fieldDefinition.Size).ToArray<byte>();
@@ -510,19 +504,19 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
         protected virtual byte[] ToClientTelegram(IccTelegram iccTelegram)
         {
-            TelegramDefinition telegramDefinition = telegramDefinitions.Find(iccTelegram);
+            var telegramDefinition = _telegramDefinitions.Find(iccTelegram);
             MemoryStream memoryStream = new MemoryStream();
-            List<FieldDefinition> fields = telegramDefinition.Fields;
-            if (fields.Count != iccTelegram.Body.Count)
+            var fields = telegramDefinition.Fields;
+            if (fields.Count() != iccTelegram.Body.Count)
             {
                 throw IrisaException.Create("تعداد فیلد های تلگرام ارسالی {0} و تعداد فیلد های تلگرام تعریف شده {1} می باشد.", new object[]
                 {
                     iccTelegram.Body.Count,
-                    fields.Count
+                    fields.Count()
                 });
             }
             int num = 0;
-            foreach (FieldDefinition current in fields)
+            foreach (IFieldDefinition current in fields)
             {
                 byte[] bytes = current.GetBytes(iccTelegram.Body[num++]);
                 memoryStream.Write(bytes, 0, bytes.Length);

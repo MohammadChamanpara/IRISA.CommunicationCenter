@@ -1,6 +1,7 @@
 using IRISA.CommunicationCenter.Components;
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
@@ -19,17 +20,21 @@ namespace IRISA.CommunicationCenter.Forms
     {
         private const string ApplicationPassword = "iccAdmin";
 
-        private readonly IIccCore _iccCore;
-        private UiSettings _uiSettings;
-        private readonly ILogger _logger;
         private BackgroundTimer _refreshTimer;
+        private UiSettings _uiSettings;
 
-        public MainForm(ILogger logger, IIccCore iccCore)
+        private readonly IIccCore _iccCore;
+        private readonly ILogger _logger;
+        private readonly ITelegramDefinitions _telegramDefinitions;
+        
+
+        public MainForm(ILogger logger, IIccCore iccCore, ITelegramDefinitions telegramDefinitions)
         {
             InitializeComponent();
 
             _logger = logger;
             _iccCore = iccCore;
+            _telegramDefinitions = telegramDefinitions;
         }
 
         private void StartApplication()
@@ -532,7 +537,7 @@ namespace IRISA.CommunicationCenter.Forms
                 if (transfersDataGrid.RowCount != 0)
                 {
                     IccTelegram iccTelegram = transfersDataGrid.Rows[transfersDataGrid.SelectedCells[0].RowIndex].DataBoundItem as IccTelegram;
-                    new TelegramViewerForm(iccTelegram).ShowDialog();
+                    new TelegramViewerForm(iccTelegram,_telegramDefinitions).ShowDialog();
                 }
             }
             catch (Exception ex)

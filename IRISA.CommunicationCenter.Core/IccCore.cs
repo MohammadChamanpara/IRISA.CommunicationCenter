@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Core;
+using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
@@ -26,6 +27,7 @@ namespace IRISA.CommunicationCenter.Core
         private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
         private readonly ILogger _logger;
+        private readonly ITelegramDefinitions _telegramDefinitions;
 
         public event Action<IccTelegram> TelegramQueued;
         public event Action<IccTelegram> TelegramSent;
@@ -131,10 +133,11 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        public IccCore(ILogger logger, IIccQueue iccQueue)
+        public IccCore(ILogger logger, IIccQueue iccQueue, ITelegramDefinitions telegramDefinitions)
         {
             _logger = logger;
             IccQueue = iccQueue;
+            _telegramDefinitions = telegramDefinitions;
         }
 
         public static List<T> LoadAdapters<T>()
@@ -150,10 +153,7 @@ namespace IRISA.CommunicationCenter.Core
                 List<T> list = new List<T>();
                 if (!Directory.Exists(directory))
                 {
-                    throw IrisaException.Create("مسیر ذخیره آداپتور ها {0} موجود نیست.", new object[]
-                    {
-                        directory
-                    });
+                    throw IrisaException.Create($"مسیر ذخیره آداپتور ها موجود نیست. \r\n{directory}");
                 }
                 Type typeFromHandle = typeof(T);
                 string[] files = Directory.GetFiles(directory, "*.dll");
@@ -184,7 +184,7 @@ namespace IRISA.CommunicationCenter.Core
                         message = typeLoadException.LoaderExceptions.First<Exception>().Message;
                     }
                 }
-                throw IrisaException.Create("خطا هنگام لود کردن آداپتور ها. متن خطا : " + message);
+                throw IrisaException.Create($"خطا هنگام لود کردن آداپتور ها. \r\n{message}");
             }
             return result;
         }
@@ -283,19 +283,25 @@ namespace IRISA.CommunicationCenter.Core
         {
             try
             {
+                InitializeLogger();
                 ConnectedAdapters = new List<IIccAdapter>();
                 dllSettings = new DLLSettings<IccCore>();
-                _logger.LogInformation($"اجرای {PersianDescription} آغاز شد.");
                 LoadAdapters();
                 InitializeSendTimer();
-                _logger.SetMinumumLevel(LogMinimumLevel);
                 Started = true;
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, $"بروز خطا هنگام شروع به کار {PersianDescription}.");
                 Stop();
+                throw;
             }
+        }
+
+        private void InitializeLogger()
+        {
+            _logger.LogInformation($"اجرای {PersianDescription} آغاز شد.");
+            _logger.SetMinumumLevel(LogMinimumLevel);
         }
 
         private void InitializeSendTimer()
@@ -316,24 +322,23 @@ namespace IRISA.CommunicationCenter.Core
         public void Stop()
         {
             sendTimer?.Stop();
+
             foreach (IIccAdapter adapter in ConnectedAdapters)
             {
                 adapter.Stop();
             }
 
-            if (Started)
-                _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
+            _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
 
             Started = false;
         }
 
         private void LoadAdapters()
         {
-            //ConnectedAdapters = LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug");
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
-
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
@@ -344,7 +349,7 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     adapter.TelegramReceived += Adapter_TelegramReceived;
                     adapter.SendCompleted += Adapter_SendCompleted;
-                    adapter.Start(_logger);
+                    adapter.Start(_logger, _telegramDefinitions);
                 }
                 catch (Exception exception)
                 {

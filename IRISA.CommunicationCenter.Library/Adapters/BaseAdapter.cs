@@ -13,8 +13,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
     public abstract class BaseAdapter<DLLT> : IIccAdapter
     {
         #region Variables
-        protected TelegramDefinitions telegramDefinitions;
-        protected DLLSettings<DLLT> dllSettings;
+        protected ITelegramDefinitions _telegramDefinitions;
+        protected DLLSettings<DLLT> _dllSettings;
         protected ILogger _logger;
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
@@ -34,11 +34,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("TelegramReceiveInterval", 1000);
+                return _dllSettings.FindIntValue("TelegramReceiveInterval", 1000);
             }
             set
             {
-                dllSettings.SaveSetting("TelegramReceiveInterval", value);
+                _dllSettings.SaveSetting("TelegramReceiveInterval", value);
             }
         }
 
@@ -47,11 +47,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindIntValue("TelegramSendInterval", 1000);
+                return _dllSettings.FindIntValue("TelegramSendInterval", 1000);
             }
             set
             {
-                dllSettings.SaveSetting("TelegramSendInterval", value);
+                _dllSettings.SaveSetting("TelegramSendInterval", value);
             }
         }
 
@@ -73,7 +73,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.Assembly.AsssemblyFileName();
+                return _dllSettings.Assembly.AsssemblyFileName();
             }
         }
 
@@ -82,7 +82,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.Assembly.AssemblyVersion();
+                return _dllSettings.Assembly.AssemblyVersion();
             }
         }
 
@@ -91,7 +91,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.Assembly.Location;
+                return _dllSettings.Assembly.Location;
             }
         }
 
@@ -100,7 +100,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.Assembly.AssemblyName();
+                return _dllSettings.Assembly.AssemblyName();
             }
         }
 
@@ -109,11 +109,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindStringValue("Name", FileName);
+                return _dllSettings.FindStringValue("Name", FileName);
             }
             set
             {
-                dllSettings.SaveSetting("Name", value);
+                _dllSettings.SaveSetting("Name", value);
             }
         }
 
@@ -122,24 +122,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             get
             {
-                return dllSettings.FindStringValue("PersianDescription", "کلاینت");
+                return _dllSettings.FindStringValue("PersianDescription", "کلاینت");
             }
             set
             {
-                dllSettings.SaveSetting("PersianDescription", value);
-            }
-        }
-
-        [DisplayName("آدرس فایل تعریف ساختار تلگرام ها")]
-        public string TelegramDefinitionFile
-        {
-            get
-            {
-                return dllSettings.FindStringValue("TelegramDefinitionFile", "TelegramDefinitions.xml");
-            }
-            set
-            {
-                dllSettings.SaveSetting("TelegramDefinitionFile", value);
+                _dllSettings.SaveSetting("PersianDescription", value);
             }
         }
 
@@ -176,11 +163,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #endregion
 
-        public virtual void Start(ILogger eventLogger)
+        public virtual void Start(ILogger eventLogger, ITelegramDefinitions telegramDefinitions)
         {
             _logger = eventLogger;
-            dllSettings = new DLLSettings<DLLT>();
-            telegramDefinitions = new TelegramDefinitions(TelegramDefinitionFile);
+            _dllSettings = new DLLSettings<DLLT>();
+            _telegramDefinitions = telegramDefinitions;
 
             InitializeSendTimer();
             InitializeReceiveTimer();

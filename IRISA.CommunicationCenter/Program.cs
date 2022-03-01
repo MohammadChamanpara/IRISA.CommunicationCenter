@@ -1,6 +1,7 @@
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Forms;
 using IRISA.CommunicationCenter.Library.Core;
+using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Oracle;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,8 @@ namespace IRISA.CommunicationCenter
                     new MainForm
                     (
                         ServiceProvider.GetService<ILogger>(),
-                        ServiceProvider.GetService<IIccCore>()
+                        ServiceProvider.GetService<IIccCore>(),
+                        ServiceProvider.GetService<ITelegramDefinitions>()
                     )
                 );
             }
@@ -66,13 +68,15 @@ namespace IRISA.CommunicationCenter
             var services = new ServiceCollection();
 
             services
-                .AddSingleton<IIccQueue, IccQueueInOracle>()
-                //.AddSingleton<IIccQueue, IccQueueInMemory>()
-                .AddSingleton<IIccCore, IccCore>()
-
                 .AddSingleton<ILogger, Logger>()
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
-                .AddSingleton<ILogAppender, LogAppenderInFile>();
+                .AddSingleton<ILogAppender, LogAppenderInFile>()
+
+                //.AddSingleton<IIccQueue, IccQueueInOracle>()
+                .AddSingleton<IIccQueue, IccQueueInMemory>()
+                .AddSingleton<IIccCore, IccCore>()
+                .AddSingleton<ITelegramDefinitions,TelegramDefinitions>()
+                ;
 
             ServiceProvider = services.BuildServiceProvider();
         }

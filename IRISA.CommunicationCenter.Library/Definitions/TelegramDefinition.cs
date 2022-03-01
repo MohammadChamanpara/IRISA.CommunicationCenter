@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace IRISA.CommunicationCenter.Library.Definitions
 {
-    public class TelegramDefinition : NodeBase
+    public class TelegramDefinition : NodeBase, ITelegramDefinition
     {
         public int Id
         {
@@ -57,7 +57,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 return result;
             }
         }
-        public List<FieldDefinition> Fields
+        public IEnumerable<IFieldDefinition> Fields
         {
             get
             {

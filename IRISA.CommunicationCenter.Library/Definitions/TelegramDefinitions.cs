@@ -8,71 +8,51 @@ using System.Xml;
 
 namespace IRISA.CommunicationCenter.Library.Definitions
 {
-    public class TelegramDefinitions
+    public class TelegramDefinitions : ITelegramDefinitions
     {
-        public List<TelegramDefinition> List
-        {
-            get;
-            set;
-        }
-        public TelegramDefinitions(string telegramDefinitionFilePath)
+        private const string TelegramDefinitionFilePath = "TelegramDefinitions.xml";
+
+        private readonly List<TelegramDefinition> _telegramDefinitions = new List<TelegramDefinition>();
+        public TelegramDefinitions()
         {
             XmlDocument xmlDocument = new XmlDocument();
-            if (!File.Exists(telegramDefinitionFilePath))
+
+            if (!File.Exists(TelegramDefinitionFilePath))
             {
-                throw IrisaException.Create("فایل تعریف تلگرام ها با نام {0} وجود ندارد.", new object[]
-                {
-                    telegramDefinitionFilePath
-                });
+                throw IrisaException.Create($"فایل تعریف تلگرام ها وجود ندارد. موقعیت فایل: {Path.GetFullPath(TelegramDefinitionFilePath)}");
             }
-            xmlDocument.Load(telegramDefinitionFilePath);
-            List = new List<TelegramDefinition>();
+
+            xmlDocument.Load(TelegramDefinitionFilePath);
+
+            _telegramDefinitions.Clear();
             foreach (XmlNode node in xmlDocument.DocumentElement.ChildNodes)
             {
-                List.Add(new TelegramDefinition(node));
+                _telegramDefinitions.Add(new TelegramDefinition(node));
             }
         }
-        public TelegramDefinition Find(IccTelegram iccTelegram)
+
+        public ITelegramDefinition Find(IccTelegram iccTelegram)
         {
-            List<TelegramDefinition> list = new List<TelegramDefinition>();
-            foreach (TelegramDefinition current in List)
-            {
-                if (iccTelegram.TelegramId == current.Id)
-                {
-                    list.Add(current);
-                }
-            }
-            if (list.Count == 0)
-            {
+            var telegramDefinitions = _telegramDefinitions.Where(x => x.Id == iccTelegram.TelegramId);
+
+            if (telegramDefinitions.Count() == 0)
                 throw IrisaException.Create("تلگرام دریافت شده در سیستم تعریف نشده است.");
-            }
-            list = (
-                from x in list
-                where x.Source.Contains(iccTelegram.Source)
-                select x).ToList();
-            if (list.Count() == 0)
-            {
+
+            if (!iccTelegram.Source.HasValue())
+                throw IrisaException.Create("فرستنده تلگرام مشخص نشده است.");
+
+            telegramDefinitions = telegramDefinitions
+                .Where(definition => ("," + definition.Source?.ToLower() + ",")
+                .Contains("," + iccTelegram.Source.ToLower() + ","))
+                .ToList();
+
+            if (telegramDefinitions.Count() == 0)
                 throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.");
-            }
-            if (iccTelegram.Destination.HasValue())
-            {
-                if (list.Count > 0)
-                {
-                    list = (
-                        from x in list
-                        where x.Destination.Contains(iccTelegram.Destination)
-                        select x).ToList();
-                }
-                if (list.Count == 0)
-                {
-                    throw IrisaException.Create("گیرنده تعیین شده برای تلگرام با گیرنده جاری متفاوت است.");
-                }
-            }
-            if (list.Count > 1)
-            {
+
+            if (telegramDefinitions.Count() > 1)
                 throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
-            }
-            return list.First();
+
+            return telegramDefinitions.Single();
         }
     }
 }
