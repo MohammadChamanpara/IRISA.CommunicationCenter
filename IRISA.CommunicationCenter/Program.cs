@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
 
                 .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
-                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
+                //.AddSingleton<ITransferHistory, TransferHistoryInMemory>()
                 .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 .AddSingleton<IIccCore, IccCore>()
                 ;

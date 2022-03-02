@@ -229,6 +229,7 @@ namespace IRISA.CommunicationCenter.Core
                 try
                 {
                     IIccAdapter destination = GetDestinationAdapter(adapters, iccTelegram.Destination);
+                    ValidateTelegramExpiry(iccTelegram);
                     _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destination.PersianDescription} تحویل داده شد.");
                     destination.Send(iccTelegram);
                 }
@@ -237,6 +238,21 @@ namespace IRISA.CommunicationCenter.Core
                     DropTelegram(iccTelegram, exception);
                 }
             }
+        }
+
+        private void ValidateTelegramExpiry(IccTelegram iccTelegram)
+        {
+            var definition = _telegramDefinitions.Find(iccTelegram);
+            
+            if (!definition.ExpiryInMinutes.HasValue)
+                return;
+            
+            var expiry = definition.ExpiryInMinutes.Value;
+            var passedMinutes = (DateTime.Now - iccTelegram.SendTime).TotalMinutes;
+
+            if (passedMinutes > expiry)
+                throw IrisaException.Create($"تلگرام منقضی شده است. از زمان ارسال تلگرام {passedMinutes} دقیقه گذشته است. زمان معتبر بودن تلگرام {expiry} دقیقه است");
+
         }
 
         public IIccAdapter GetDestinationAdapter(IEnumerable<IIccAdapter> adapters, string destinationName)
@@ -336,8 +352,8 @@ namespace IRISA.CommunicationCenter.Core
         private void LoadAdapters()
         {
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
             //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
             if (!ConnectedAdapters.Any())

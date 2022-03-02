@@ -45,7 +45,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                     Body = new List<string>() { "A", "B" },
                     TelegramId = Name == "Behnam" ? 1 : 2,
                     TransferId = id++,
-                    SendTime = DateTime.Now
+                    SendTime = DateTime.Now.AddMinutes(10),
                 };
                 try
                 {
@@ -62,7 +62,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                     Source = Name,
                     TelegramId = 3,
                     TransferId = id++,
-                    SendTime = DateTime.Now
+                    SendTime = DateTime.Now.AddMinutes(-10)
                 };
                 try
                 {

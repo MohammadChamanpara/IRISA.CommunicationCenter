@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TelegramDefinitions >
 
-	<Telegram id="1" name="Ben to Mo" source="Behnam" destination="Mamad" description="Behnam to Mamad telegram description">
+	<Telegram id="1" name="Ben to Mo" source="Behnam" destination="Mamad" ExpiryInMinutes="1" description="Behnam to Mamad telegram description">
 		<Field name="filed bm 1" type="String" size="4"/>
 		<Field name="field bm 2" type="String" size="4"/>
 	</Telegram>
 
-	<Telegram id="2" name="Mo to Ben" source="Mamad" destination="Behnam" description="Mamad to Behnam telegram description">
+	<Telegram id="2" name="Mo to Ben" source="Mamad" destination="Behnam" ExpiryInMinutes="1" description="Mamad to Behnam telegram description">
 		<Field name="filed mb 1" type="String" size="4"/>
 		<Field name="field mb 2" type="String" size="4"/>
 	</Telegram>
 
-	<Telegram id="3" name="To Disconnected Adapter" source="Mamad" destination="Disconnect" description="Mamad to Disconnect telegram description">
+	<Telegram id="3" name="To Disconnected Adapter" source="Mamad" destination="Disconnect" ExpiryInMinutes="1" description="Mamad to Disconnect telegram description">
 	</Telegram>
 
 	<Telegram id="2999" name="Alive Telegram" source="4b1" destination="4b1" description="L2->L3 Alive Telegram">

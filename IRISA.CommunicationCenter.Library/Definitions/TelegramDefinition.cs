@@ -57,6 +57,20 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 return result;
             }
         }
+        public int? ExpiryInMinutes
+        {
+            get
+            {
+                try
+                {
+                    return int.Parse(Node.Attributes["ExpiryInMinutes"].InnerText.Trim());
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         public IEnumerable<IFieldDefinition> Fields
         {
             get

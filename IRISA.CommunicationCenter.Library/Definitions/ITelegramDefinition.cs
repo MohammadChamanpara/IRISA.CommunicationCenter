@@ -9,6 +9,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
         string Description { get; }
         string Source { get; }
         string Destination { get; }
+        int? ExpiryInMinutes { get; }
         IEnumerable<IFieldDefinition> Fields { get; }
     }
 }
