@@ -190,7 +190,7 @@ namespace IRISA.CommunicationCenter.Core
             return result;
         }
 
-        private void RecoverUnSentTelegramsFromTransferHistory()
+        private void RecoverReadyTelegramsFromTransferHistory()
         {
             lock (sendLocker)
             {
@@ -307,7 +307,7 @@ namespace IRISA.CommunicationCenter.Core
             ConnectedAdapters = new List<IIccAdapter>();
             dllSettings = new DLLSettings<IccCore>();
             InitializeLogger();
-            RecoverUnSentTelegramsFromTransferHistory();
+            RecoverReadyTelegramsFromTransferHistory();
             LoadAdapters();
             InitializeSendTimer();
             Started = true;
