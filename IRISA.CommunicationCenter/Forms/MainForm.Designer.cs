@@ -1663,6 +1663,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.SearchKeywordTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SearchKeywordTextBox.Size = new System.Drawing.Size(170, 21);
             this.SearchKeywordTextBox.TabIndex = 0;
+            this.SearchKeywordTextBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
             // flowLayoutPanel19
             // 
@@ -1756,6 +1757,7 @@ namespace IRISA.CommunicationCenter.Forms
             this.LogLevelComboBox.Name = "LogLevelComboBox";
             this.LogLevelComboBox.Size = new System.Drawing.Size(121, 21);
             this.LogLevelComboBox.TabIndex = 73;
+            this.LogLevelComboBox.TextChanged += new System.EventHandler(this.SearchTextBox_TextChanged);
             // 
             // flowLayoutPanel24
             // 
