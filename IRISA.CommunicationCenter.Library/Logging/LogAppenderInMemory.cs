@@ -25,7 +25,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
 
         public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)
         {
-            var events = logs.AsEnumerable();
+            var events = logs.ToList();
 
             events = searchModel.SearchKeyword.HasValue()
                 ? events
@@ -38,10 +38,11 @@ namespace IRISA.CommunicationCenter.Library.Logging
                             x.PersianTime.Contains(searchModel.SearchKeyword) ||
                             x.Text.Contains(searchModel.SearchKeyword)
                     )
+                    .ToList()
                 : events;
 
             events = searchModel.LogLevel.HasValue
-                ? events.Where(x => x.LogLevel == searchModel.LogLevel)
+                ? events.Where(x => x.LogLevel == searchModel.LogLevel).ToList()
                 : events;
 
             resultsCount = events.Count();
