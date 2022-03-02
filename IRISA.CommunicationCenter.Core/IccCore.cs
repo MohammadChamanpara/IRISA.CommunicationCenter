@@ -31,10 +31,6 @@ namespace IRISA.CommunicationCenter.Core
         private readonly ILogger _logger;
         private readonly ITelegramDefinitions _telegramDefinitions;
 
-        public event Action<IccTelegram> TelegramQueued;
-        public event Action<IccTelegram> TelegramSent;
-        public event Action<IccTelegram> TelegramDropped;
-
         [DisplayName("کمترین سطح ثبت رویداد")]
         public LogLevel LogMinimumLevel
         {
@@ -379,8 +375,6 @@ namespace IRISA.CommunicationCenter.Core
                     TransferHistory.Add(iccTelegram);
 
                 _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} موفقیت آمیز به مقصد ارسال شد.");
-
-                TelegramSent?.Invoke(iccTelegram);
             }
             catch (Exception exception)
             {
@@ -410,8 +404,6 @@ namespace IRISA.CommunicationCenter.Core
                 {
                         iccTelegram.TransferId
                 });
-
-                TelegramDropped?.Invoke(iccTelegram);
             }
             catch (Exception exception)
             {
@@ -428,7 +420,6 @@ namespace IRISA.CommunicationCenter.Core
                 _logger.LogInformation($"تلگرام از {iccTelegram.Source} در صف ارسال قرار گرفت.");
                 TransferHistory.Add(iccTelegram);
                 _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
-                TelegramQueued?.Invoke(iccTelegram);
             }
             catch (Exception ex)
             {
