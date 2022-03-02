@@ -23,9 +23,11 @@ namespace IRISA.CommunicationCenter.Core
 
         private BackgroundTimer sendTimer;
         private DLLSettings<IccCore> dllSettings;
-        private readonly HashSet<long> inProcessTelegrams = new HashSet<long>();
+        private readonly Queue<IccTelegram> _sendQueue = new Queue<IccTelegram>();
+
         private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
+
         private readonly ILogger _logger;
         private readonly ITelegramDefinitions _telegramDefinitions;
 
@@ -38,7 +40,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             get
             {
-                return dllSettings.FindEnumValue("LogMinimumLevel", LogLevel.Information);
+                return dllSettings.FindEnumValue("LogMinimumLevel", LogLevel.Debug);
             }
             set
             {
@@ -189,33 +191,32 @@ namespace IRISA.CommunicationCenter.Core
             return result;
         }
 
+        private void RecoverUnSentTelegramsFromTransferHistory()
+        {
+            lock (sendLocker)
+            {
+                foreach (var telegram in TransferHistory.GetTelegramsToSend().OrderBy(x => x.TransferId))
+                    _sendQueue.Enqueue(telegram);
+            }
+        }
+
         private void SendTimer_DoWork()
         {
             lock (sendLocker)
             {
-                SendTelegrams(TransferHistory.GetTelegramsToSend(), ConnectedAdapters);
+                SendTelegrams(_sendQueue, ConnectedAdapters);
             }
         }
 
-        public void SendTelegrams(List<IccTelegram> iccTelegrams, List<IIccAdapter> adapters)
+        public void SendTelegrams(Queue<IccTelegram> sendQueue, IEnumerable<IIccAdapter> adapters)
         {
-            iccTelegrams = SortSendingTelegrams(iccTelegrams);
-            foreach (IccTelegram iccTelegram in iccTelegrams)
+            while (sendQueue.Any())
             {
+                var iccTelegram = sendQueue.Dequeue();
                 try
                 {
-                    if (inProcessTelegrams.Contains(iccTelegram.TransferId))
-                        continue;
-
                     IIccAdapter destination = GetDestinationAdapter(adapters, iccTelegram.Destination);
-
-                    if (!destination.Connected)
-                        continue;
-
-                    inProcessTelegrams.Add(iccTelegram.TransferId);
-
                     _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destination.PersianDescription} تحویل داده شد.");
-
                     destination.Send(iccTelegram);
                 }
                 catch (Exception exception)
@@ -225,14 +226,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        private List<IccTelegram> SortSendingTelegrams(List<IccTelegram> iccTelegrams)
-        {
-            return iccTelegrams
-                .OrderBy(x => x.TransferId)
-                .ToList();
-        }
-
-        public IIccAdapter GetDestinationAdapter(List<IIccAdapter> adapters, string destinationName)
+        public IIccAdapter GetDestinationAdapter(IEnumerable<IIccAdapter> adapters, string destinationName)
         {
             if (!destinationName.HasValue())
             {
@@ -284,6 +278,7 @@ namespace IRISA.CommunicationCenter.Core
             ConnectedAdapters = new List<IIccAdapter>();
             dllSettings = new DLLSettings<IccCore>();
             InitializeLogger();
+            RecoverUnSentTelegramsFromTransferHistory();
             LoadAdapters();
             InitializeSendTimer();
             Started = true;
@@ -330,7 +325,7 @@ namespace IRISA.CommunicationCenter.Core
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
             ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
             ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
@@ -362,27 +357,20 @@ namespace IRISA.CommunicationCenter.Core
         {
             try
             {
-                iccTelegram.Dropped = false;
-                iccTelegram.DropReason = null;
-                iccTelegram.ReceiveTime = new DateTime?(DateTime.Now);
-                iccTelegram.Sent = true;
+                iccTelegram.SetAsSent();
 
-                TransferHistory.Edit(iccTelegram);
+                if (iccTelegram.TransferId != 0)
+                    TransferHistory.Edit(iccTelegram);
+                else
+                    TransferHistory.Add(iccTelegram);
 
-                _logger.LogInformation("تلگرام با شناسه رکورد {0} موفقیت آمیز به مقصد ارسال شد.", new object[]
-                {
-                    iccTelegram.TransferId
-                });
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} موفقیت آمیز به مقصد ارسال شد.");
 
                 TelegramSent?.Invoke(iccTelegram);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
-            }
-            finally
-            {
-                inProcessTelegrams.Remove(iccTelegram.TransferId);
             }
         }
 
@@ -392,12 +380,9 @@ namespace IRISA.CommunicationCenter.Core
             {
                 if (!(dropException is IrisaException))
                 {
-                    _logger.LogException(dropException, "بروز خطا هنگام ارسال تلگرام.");
+                    _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
                 }
-                iccTelegram.Sent = false;
-                iccTelegram.Dropped = true;
-                iccTelegram.DropReason = dropException.InnerExceptionsMessage();
-
+                iccTelegram.SetAsDropped(dropException?.InnerExceptionsMessage());
                 if (existingRecord)
                 {
                     TransferHistory.Edit(iccTelegram);
@@ -418,26 +403,17 @@ namespace IRISA.CommunicationCenter.Core
             {
                 _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
             }
-            finally
-            {
-                inProcessTelegrams.Remove(iccTelegram.TransferId);
-            }
         }
 
         private void QueueTelegram(IccTelegram iccTelegram)
         {
             try
             {
-                iccTelegram.Dropped = false;
-                iccTelegram.DropReason = null;
-                iccTelegram.Sent = false;
-
+                iccTelegram.SetAsReadyToSend();
+                _sendQueue.Enqueue(iccTelegram);
+                _logger.LogInformation($"تلگرام از {iccTelegram.Source} در صف ارسال قرار گرفت.");
                 TransferHistory.Add(iccTelegram);
-                _logger.LogInformation("تلگرام با شناسه رکورد {0} در صف ارسال قرار گرفت.", new object[]
-                {
-                    iccTelegram.TransferId
-                });
-
+                _logger.LogInformation($"تلگرام با شناسه رکورد {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
                 TelegramQueued?.Invoke(iccTelegram);
             }
             catch (Exception ex)

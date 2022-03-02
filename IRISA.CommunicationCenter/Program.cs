@@ -81,8 +81,8 @@ namespace IRISA.CommunicationCenter
 
                 .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
                 .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
-                .AddSingleton<IIccCore, IccCore>()
                 .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
+                .AddSingleton<IIccCore, IccCore>()
                 ;
 
             ServiceProvider = services.BuildServiceProvider();

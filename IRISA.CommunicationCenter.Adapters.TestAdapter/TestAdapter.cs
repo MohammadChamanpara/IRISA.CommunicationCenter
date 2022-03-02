@@ -33,39 +33,53 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 Thread.Sleep(DelayInSend);
-                if (iccTelegram.TransferId % 3 == 0)
-                    throw new Exception("error");
-                File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
+                //if (iccTelegram.TransferId % 3 == 0)
+                //    throw new Exception("error");
+                //File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
             }
 
             protected override void ReceiveTimer_DoWork()
             {
                 int id = Name == "Behnam" ? 1000 : 2000;
+                if (DateTime.Now.Second % 60 == 0 && Name == "Behnam")
+                {
+                    Connected = false;
+                    throw new Exception("my disconnection");
+                }
+
+                var iccTelegram = new IccTelegram()
+                {
+                    Source = Name,
+                    Body = new List<string>() { "A", "B" },
+                    TelegramId = Name == "Behnam" ? 1 : 2,
+                    TransferId = id++,
+                    SendTime = DateTime.Now
+                };
                 try
                 {
-                    if (DateTime.Now.Second % 60 == 0 && Name == "Behnam")
-                    {
-                        Connected = false;
-                        throw new Exception("my disconnection------------");
-                    }
-                    var iccTelegram = new IccTelegram()
-                    {
-                        Source = Name,
-                        Body = new List<string>() { "A", "B" },
-                        TelegramId = Name == "Behnam" ? 1 : 2,
-                        TransferId = id++,
-                        SendTime = DateTime.Now
-                    };
-
-                    var definition=_telegramDefinitions.Find(iccTelegram);
-                    
-                    iccTelegram.Destination = definition.Destination;
-
-                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram,true,null));
+                    iccTelegram.Destination = _telegramDefinitions.Find(iccTelegram).Destination;
+                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, true, null));
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogException(exception, $"Receiving telegrams in test adapter {Name} failed");
+                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, false, exception));
+                }
+
+                var iccTelegram2 = new IccTelegram()
+                {
+                    Source = Name,
+                    TelegramId = 3,
+                    TransferId = id++,
+                    SendTime = DateTime.Now
+                };
+                try
+                {
+                    iccTelegram2.Destination = _telegramDefinitions.Find(iccTelegram2).Destination;
+                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, true, null));
+                }
+                catch (Exception exception)
+                {
+                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, false, exception));
                 }
             }
 

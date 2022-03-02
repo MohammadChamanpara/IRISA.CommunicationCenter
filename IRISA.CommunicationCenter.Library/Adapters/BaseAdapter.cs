@@ -7,6 +7,7 @@ using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace IRISA.CommunicationCenter.Library.Adapters
 {
@@ -18,6 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected ILogger _logger;
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
+        private List<long> _sentTelegrams = new List<long>();
 
         public event Action<TelegramReceivedEventArgs> TelegramReceived;
         public event Action<IIccAdapter> ConnectionChanged;
@@ -168,6 +170,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             _logger = eventLogger;
             _dllSettings = new DLLSettings<DLLT>();
             _telegramDefinitions = telegramDefinitions;
+            _sentTelegrams = new List<long>();
 
             InitializeSendTimer();
             InitializeReceiveTimer();
@@ -203,6 +206,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             Connected = false;
             _sendTimer?.Stop();
             _receiveTimer?.Stop();
+            _sentTelegrams.Clear();
         }
 
         protected abstract bool CheckConnection();
@@ -215,11 +219,21 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         private void SendTimer_DoWork()
         {
-            while (sendQueue.Count > 0)
+            while (sendQueue.Any())
             {
+                if (!Connected)
+                    return;
+
                 var iccTelegram = sendQueue.Dequeue();
                 try
                 {
+                    if (_sentTelegrams.Contains(iccTelegram.TransferId))
+                    {
+                        _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
+                        continue;
+                    }
+                    _sentTelegrams.Add(iccTelegram.TransferId);
+
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
                     SendTelegram(iccTelegram);
                     SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, true, null));
@@ -228,6 +242,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 {
                     SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, false, exception));
                 }
+            }
+
+            if (_sentTelegrams.Count > 2000)
+            {
+                _sentTelegrams = _sentTelegrams
+                    .OrderByDescending(x => x)
+                    .Take(1000)
+                    .ToList();
+                _logger.LogDebug($"SentTelegrams list in {Name} truncated. Count: {_sentTelegrams.Count}. First: {_sentTelegrams.First()}. Last: {_sentTelegrams.Last()}.");
             }
         }
         protected abstract void ReceiveTimer_DoWork();

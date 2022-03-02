@@ -40,5 +40,27 @@ namespace IRISA.CommunicationCenter.Library.Models
         public string PersianSendTime => SendTime.ToPersianDateTime();
         public string PersianReceiveTime => ReceiveTime?.ToPersianDateTime();
         public bool IsReadyToSend => Sent == false && Dropped == false;
+
+        public void SetAsReadyToSend()
+        {
+            Sent = false;
+            Dropped = false;
+            DropReason = null;
+        }
+
+        public void SetAsDropped(string dropReason)
+        {
+            Sent = false;
+            Dropped = true;
+            DropReason = dropReason;
+        }
+
+        public void SetAsSent()
+        {
+            Dropped = false;
+            DropReason = null;
+            Sent = true;
+            ReceiveTime = DateTime.Now;
+        }
     }
 }

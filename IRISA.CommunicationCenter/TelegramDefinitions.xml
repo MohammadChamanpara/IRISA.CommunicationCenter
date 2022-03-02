@@ -11,6 +11,9 @@
 		<Field name="field mb 2" type="String" size="4"/>
 	</Telegram>
 
+	<Telegram id="3" name="To Disconnected Adapter" source="Mamad" destination="Disconnect" description="Mamad to Disconnect telegram description">
+	</Telegram>
+
 	<Telegram id="2999" name="Alive Telegram" source="4b1" destination="4b1" description="L2->L3 Alive Telegram">
 	</Telegram>
 

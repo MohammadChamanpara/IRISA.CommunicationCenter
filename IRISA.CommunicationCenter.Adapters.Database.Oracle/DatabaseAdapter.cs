@@ -88,7 +88,6 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
         private IccClientTelegram ToClientTelegram(IccTelegram iccTelegram)
         {
-            _telegramDefinitions.Find(iccTelegram);
             return new IccClientTelegram
             {
                 BODY = iccTelegram.GetBodyAsString(BodySeparator),
