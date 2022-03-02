@@ -18,7 +18,10 @@ namespace IRISA.CommunicationCenter.Core
 {
     public class IccCore : IIccCore
     {
+        [Browsable(false)]
         public List<IIccAdapter> ConnectedAdapters { get; private set; }
+
+        [Browsable(false)]
         public ITransferHistory TransferHistory { get; set; }
 
         private BackgroundTimer sendTimer;
@@ -195,7 +198,7 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     foreach (var telegram in TransferHistory.GetTelegramsToSend().OrderBy(x => x.TransferId))
                         _sendQueue.Enqueue(telegram);
-                    
+
                     if (!_sendQueue.Any())
                         return;
 
@@ -231,7 +234,7 @@ namespace IRISA.CommunicationCenter.Core
                 }
                 catch (Exception exception)
                 {
-                    DropTelegram(iccTelegram, exception, true);
+                    DropTelegram(iccTelegram, exception);
                 }
             }
         }
@@ -266,7 +269,7 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     if (!e.Successful)
                     {
-                        DropTelegram(e.IccTelegram, e.FailException, false);
+                        DropTelegram(e.IccTelegram, e.FailException);
                     }
                     else
                     {
@@ -278,7 +281,7 @@ namespace IRISA.CommunicationCenter.Core
                 }
                 catch (Exception dropException)
                 {
-                    DropTelegram(e.IccTelegram, dropException, false);
+                    DropTelegram(e.IccTelegram, dropException);
                 }
             }
         }
@@ -360,7 +363,7 @@ namespace IRISA.CommunicationCenter.Core
             if (e.Successful)
                 UpdateSentTelegram(e.IccTelegram);
             else
-                DropTelegram(e.IccTelegram, e.FailException, true);
+                DropTelegram(e.IccTelegram, e.FailException);
         }
 
         private void UpdateSentTelegram(IccTelegram iccTelegram)
@@ -368,12 +371,7 @@ namespace IRISA.CommunicationCenter.Core
             try
             {
                 iccTelegram.SetAsSent();
-
-                if (iccTelegram.TransferId != 0)
-                    TransferHistory.Edit(iccTelegram);
-                else
-                    TransferHistory.Add(iccTelegram);
-
+                TransferHistory.Save(iccTelegram);
                 _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} موفقیت آمیز به مقصد ارسال شد.");
             }
             catch (Exception exception)
@@ -382,7 +380,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        private void DropTelegram(IccTelegram iccTelegram, Exception dropException, bool existingRecord)
+        private void DropTelegram(IccTelegram iccTelegram, Exception dropException)
         {
             try
             {
@@ -390,20 +388,11 @@ namespace IRISA.CommunicationCenter.Core
                 {
                     _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
                 }
-                iccTelegram.SetAsDropped(dropException?.InnerExceptionsMessage());
-                if (existingRecord)
-                {
-                    TransferHistory.Edit(iccTelegram);
-                }
-                else
-                {
-                    TransferHistory.Add(iccTelegram);
-                }
 
-                _logger.LogInformation("تلگرام با شناسه {0} حذف شد.", new object[]
-                {
-                        iccTelegram.TransferId
-                });
+                iccTelegram.SetAsDropped(dropException?.InnerExceptionsMessage());
+                TransferHistory.Save(iccTelegram);
+
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد.");
             }
             catch (Exception exception)
             {
@@ -418,7 +407,7 @@ namespace IRISA.CommunicationCenter.Core
                 iccTelegram.SetAsReadyToSend();
                 _sendQueue.Enqueue(iccTelegram);
                 _logger.LogInformation($"تلگرام از {iccTelegram.Source} در صف ارسال قرار گرفت.");
-                TransferHistory.Add(iccTelegram);
+                TransferHistory.Save(iccTelegram);
                 _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
             }
             catch (Exception ex)

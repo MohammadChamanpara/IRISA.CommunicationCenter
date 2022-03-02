@@ -101,6 +101,14 @@ namespace IRISA.CommunicationCenter.Oracle
                 .ToList();
         }
 
+        public void Save(IccTelegram iccTelegram)
+        {
+            if (iccTelegram.TransferId != 0)
+                Edit(iccTelegram);
+            else
+                Add(iccTelegram);
+        }
+
         public List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount)
         {
             var transfers = IccTransfers.GetAll();

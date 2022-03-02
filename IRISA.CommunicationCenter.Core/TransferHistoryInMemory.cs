@@ -17,13 +17,13 @@ namespace IRISA.CommunicationCenter.Core
         public TransferHistoryInMemory()
         {
             _iccTelegrams.Add(
-                new IccTelegram() 
-                { 
-                    TransferId = 1000, 
-                    Source = "Mamad", 
-                    Destination = "Behnam", 
-                    TelegramId = 2, 
-                    SendTime = DateTime.Now.AddMinutes(-10) 
+                new IccTelegram()
+                {
+                    TransferId = 1000,
+                    Source = "Mamad",
+                    Destination = "Behnam",
+                    TelegramId = 2,
+                    SendTime = DateTime.Now.AddMinutes(-10)
                 });
             _iccTelegrams.Add(
                 new IccTelegram()
@@ -35,7 +35,14 @@ namespace IRISA.CommunicationCenter.Core
                     SendTime = DateTime.Now.AddMinutes(-11)
                 });
         }
-        public void Add(IccTelegram iccTelegram)
+
+        public void Save(IccTelegram iccTelegram)
+        {
+            if (iccTelegram.TransferId == 0)
+                Add(iccTelegram);
+        }
+
+        private void Add(IccTelegram iccTelegram)
         {
             iccTelegram.TransferId = id++;
             _iccTelegrams.Add(iccTelegram);
@@ -48,10 +55,6 @@ namespace IRISA.CommunicationCenter.Core
                     .OrderByDescending(x => x.TransferId)
                     .Take(Math.Max(readytelegrams, 10000))
                     .ToList();
-        }
-
-        public void Edit(IccTelegram iccTelegram)
-        {
         }
 
         public List<IccTelegram> GetTelegramsToSend()
