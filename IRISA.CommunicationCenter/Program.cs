@@ -41,11 +41,22 @@ namespace IRISA.CommunicationCenter
             }
         }
 
-        private static void HandleStartupException(Exception exception)
+        static void ConfigureServices()
         {
-            string message = "بروز خطا هنگام اجرای اولیه برنامه";
-            ServiceProvider.GetService<ILogger>().LogException(exception, message);
-            MessageForm.ShowErrorMessage($"{message} \r\n{exception.Message}");
+            var services = new ServiceCollection();
+
+            services
+                .AddSingleton<ILogger, Logger>()
+                .AddSingleton<ILogAppender, LogAppenderInMemory>()
+                .AddSingleton<ILogAppender, LogAppenderInFile>()
+
+                .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
+                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
+                .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
+                .AddSingleton<IIccCore, IccCore>()
+                ;
+
+            ServiceProvider = services.BuildServiceProvider();
         }
 
         private static void Run()
@@ -69,25 +80,7 @@ namespace IRISA.CommunicationCenter
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
-
-        static void ConfigureServices()
-        {
-            var services = new ServiceCollection();
-
-            services
-                .AddSingleton<ILogger, Logger>()
-                .AddSingleton<ILogAppender, LogAppenderInMemory>()
-                .AddSingleton<ILogAppender, LogAppenderInFile>()
-
-                .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
-                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
-                .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
-                .AddSingleton<IIccCore, IccCore>()
-                ;
-
-            ServiceProvider = services.BuildServiceProvider();
-        }
-        
+                
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ServiceProvider.GetService<ILogger>().LogException((Exception)e.ExceptionObject, "بروز خطای کنترل نشده.");
@@ -98,5 +91,12 @@ namespace IRISA.CommunicationCenter
             ServiceProvider.GetService<ILogger>().LogException(e.Exception, "بروز خطای کنترل نشده.");
 
         }
+        private static void HandleStartupException(Exception exception)
+        {
+            string message = "بروز خطا هنگام اجرای اولیه برنامه";
+            ServiceProvider.GetService<ILogger>().LogException(exception, message);
+            MessageForm.ShowErrorMessage($"{message} \r\n{exception.Message}");
+        }
+
     }
 }

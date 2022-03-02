@@ -195,8 +195,22 @@ namespace IRISA.CommunicationCenter.Core
         {
             lock (sendLocker)
             {
-                foreach (var telegram in TransferHistory.GetTelegramsToSend().OrderBy(x => x.TransferId))
-                    _sendQueue.Enqueue(telegram);
+                try
+                {
+                    foreach (var telegram in TransferHistory.GetTelegramsToSend().OrderBy(x => x.TransferId))
+                        _sendQueue.Enqueue(telegram);
+                    
+                    if (!_sendQueue.Any())
+                        return;
+
+                    string verb = _sendQueue.Count > 1 ? "شدند" : "شد";
+                    _logger.LogInformation($"{_sendQueue.Count} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogException(exception, "بروز خطا هنگام بازیابی تلگرام های آماده ارسال از لیست تاریخچه");
+                    throw;
+                }
             }
         }
 
@@ -413,7 +427,7 @@ namespace IRISA.CommunicationCenter.Core
                 _sendQueue.Enqueue(iccTelegram);
                 _logger.LogInformation($"تلگرام از {iccTelegram.Source} در صف ارسال قرار گرفت.");
                 TransferHistory.Add(iccTelegram);
-                _logger.LogInformation($"تلگرام با شناسه رکورد {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
                 TelegramQueued?.Invoke(iccTelegram);
             }
             catch (Exception ex)

@@ -227,12 +227,15 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 var iccTelegram = sendQueue.Dequeue();
                 try
                 {
-                    if (_sentTelegrams.Contains(iccTelegram.TransferId))
+                    if (iccTelegram.TransferId != 0)
                     {
-                        _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
-                        continue;
+                        if (_sentTelegrams.Contains(iccTelegram.TransferId))
+                        {
+                            _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
+                            continue;
+                        }
+                        _sentTelegrams.Add(iccTelegram.TransferId);
                     }
-                    _sentTelegrams.Add(iccTelegram.TransferId);
 
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
                     SendTelegram(iccTelegram);

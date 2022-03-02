@@ -13,7 +13,7 @@ namespace IRISA.CommunicationCenter.Settings
         {
             get
             {
-                return dllSettings.FindIntValue("NotifyIconShowTime", 2000);
+                return dllSettings.FindIntValue("NotifyIconShowTime", 500);
             }
             set
             {
@@ -39,7 +39,7 @@ namespace IRISA.CommunicationCenter.Settings
         {
             get
             {
-                return dllSettings.FindBooleanValue("NotifyIconShowClientConnected", true);
+                return dllSettings.FindBooleanValue("NotifyIconShowClientConnected", false);
             }
             set
             {

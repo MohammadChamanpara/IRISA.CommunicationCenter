@@ -724,7 +724,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.idTextBox.PromptChar = ' ';
             this.idTextBox.Size = new System.Drawing.Size(61, 21);
             this.idTextBox.TabIndex = 2;
-            this.idTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter2
             // 
@@ -853,7 +852,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.telegramIdTextBox.PromptChar = ' ';
             this.telegramIdTextBox.Size = new System.Drawing.Size(71, 21);
             this.telegramIdTextBox.TabIndex = 37;
-            this.telegramIdTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter5
             // 
@@ -918,7 +916,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.sendSecondTextBox.PromptChar = ' ';
             this.sendSecondTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendSecondTextBox.TabIndex = 3;
-            this.sendSecondTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label10
             // 
@@ -941,7 +938,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.sendMinuteTextBox.PromptChar = ' ';
             this.sendMinuteTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendMinuteTextBox.TabIndex = 2;
-            this.sendMinuteTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label9
             // 
@@ -964,7 +960,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.sendHourTextBox.PromptChar = ' ';
             this.sendHourTextBox.Size = new System.Drawing.Size(24, 21);
             this.sendHourTextBox.TabIndex = 1;
-            this.sendHourTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label7
             // 
@@ -999,7 +994,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.sendDateTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.sendDateTextBox.Size = new System.Drawing.Size(77, 21);
             this.sendDateTextBox.TabIndex = 0;
-            this.sendDateTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter6
             // 
@@ -1063,7 +1057,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.receiveSecondTextBox.PromptChar = ' ';
             this.receiveSecondTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveSecondTextBox.TabIndex = 3;
-            this.receiveSecondTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label11
             // 
@@ -1086,7 +1079,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.receiveMinuteTextBox.PromptChar = ' ';
             this.receiveMinuteTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveMinuteTextBox.TabIndex = 2;
-            this.receiveMinuteTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label12
             // 
@@ -1109,7 +1101,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.receiveHourTextBox.PromptChar = ' ';
             this.receiveHourTextBox.Size = new System.Drawing.Size(24, 21);
             this.receiveHourTextBox.TabIndex = 1;
-            this.receiveHourTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // label13
             // 
@@ -1133,7 +1124,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.receiveDateTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.receiveDateTextBox.Size = new System.Drawing.Size(77, 21);
             this.receiveDateTextBox.TabIndex = 0;
-            this.receiveDateTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // splitter7
             // 
@@ -1673,7 +1663,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.SearchKeywordTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SearchKeywordTextBox.Size = new System.Drawing.Size(170, 21);
             this.SearchKeywordTextBox.TabIndex = 0;
-            this.SearchKeywordTextBox.Click += new System.EventHandler(this.MaskedTextBox_Click);
             // 
             // flowLayoutPanel19
             // 

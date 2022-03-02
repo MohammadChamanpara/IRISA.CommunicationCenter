@@ -357,7 +357,7 @@ namespace IRISA.CommunicationCenter.Forms
                     },
                     new RadioButton
                     {
-                        Text = "صف تلگرام ها",
+                        Text = "تاریخچه تلگرام ها",
                         Tag = _iccCore.TransferHistory
                     }
                 };
@@ -551,13 +551,6 @@ namespace IRISA.CommunicationCenter.Forms
         {
             await Task.Run(() => ClearControls(searchFlowLayoutPanel));
             telegramSearchGroupbox.Visible = false;
-        }
-        private void MaskedTextBox_Click(object sender, EventArgs e)
-        {
-            if (sender is MaskedTextBox)
-            {
-                (sender as MaskedTextBox).SelectAll();
-            }
         }
         private void TelegramSearchShowHideButton_Click(object sender, EventArgs e)
         {

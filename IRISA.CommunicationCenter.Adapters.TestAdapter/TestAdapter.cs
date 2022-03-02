@@ -33,19 +33,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 Thread.Sleep(DelayInSend);
-                //if (iccTelegram.TransferId % 3 == 0)
-                //    throw new Exception("error");
-                //File.AppendAllText($@"c:\icc\{Name}.txt", iccTelegram.TelegramId.ToString() + "\r\n");
             }
 
             protected override void ReceiveTimer_DoWork()
             {
                 int id = Name == "Behnam" ? 1000 : 2000;
-                if (DateTime.Now.Second % 60 == 0 && Name == "Behnam")
-                {
-                    Connected = false;
-                    throw new Exception("my disconnection");
-                }
 
                 var iccTelegram = new IccTelegram()
                 {

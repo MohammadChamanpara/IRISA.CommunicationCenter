@@ -10,19 +10,41 @@ namespace IRISA.CommunicationCenter.Core
 {
     public class TransferHistoryInMemory : ITransferHistory
     {
-        private static List<IccTelegram> items = new List<IccTelegram>();
+        private static List<IccTelegram> _iccTelegrams = new List<IccTelegram>();
         private static long id = 1;
 
+
+        public TransferHistoryInMemory()
+        {
+            _iccTelegrams.Add(
+                new IccTelegram() 
+                { 
+                    TransferId = 1000, 
+                    Source = "Mamad", 
+                    Destination = "Behnam", 
+                    TelegramId = 2, 
+                    SendTime = DateTime.Now.AddMinutes(-10) 
+                });
+            _iccTelegrams.Add(
+                new IccTelegram()
+                {
+                    TransferId = 1001,
+                    Source = "Mamad",
+                    Destination = "Behnam",
+                    TelegramId = 2,
+                    SendTime = DateTime.Now.AddMinutes(-11)
+                });
+        }
         public void Add(IccTelegram iccTelegram)
         {
             iccTelegram.TransferId = id++;
-            items.Add(iccTelegram);
+            _iccTelegrams.Add(iccTelegram);
 
-            int readytelegrams = items.Where(x => x.IsReadyToSend).Count();
+            int readytelegrams = _iccTelegrams.Where(x => x.IsReadyToSend).Count();
 
 
-            if (items.Count > 20000)
-                items = items
+            if (_iccTelegrams.Count > 20000)
+                _iccTelegrams = _iccTelegrams
                     .OrderByDescending(x => x.TransferId)
                     .Take(Math.Max(readytelegrams, 10000))
                     .ToList();
@@ -34,14 +56,14 @@ namespace IRISA.CommunicationCenter.Core
 
         public List<IccTelegram> GetTelegramsToSend()
         {
-            return items
+            return _iccTelegrams
                 .Where(x => x.IsReadyToSend)
                 .ToList();
         }
 
         public List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount)
         {
-            var transfers = items.AsEnumerable();
+            var transfers = _iccTelegrams.AsEnumerable();
 
             /*.................... Transfer Id ....................*/
             transfers = searchModel.TransferId.HasValue
