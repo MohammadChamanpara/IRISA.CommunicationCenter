@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
 
                 .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
-                //.AddSingleton<ITransferHistory, TransferHistoryInMemory>()
+                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
                 .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 .AddSingleton<IIccCore, IccCore>()
                 ;
@@ -80,7 +80,7 @@ namespace IRISA.CommunicationCenter
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
-                
+
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ServiceProvider.GetService<ILogger>().LogException((Exception)e.ExceptionObject, "بروز خطای کنترل نشده.");
