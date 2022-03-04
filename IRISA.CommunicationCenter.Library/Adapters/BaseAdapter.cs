@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Extensions;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
@@ -19,14 +20,13 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected ILogger _logger;
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
-        private List<long> _sentTelegrams = new List<long>();
 
         public event Action<TelegramReceivedEventArgs> TelegramReceived;
         public event Action<IIccAdapter> ConnectionChanged;
         public event Action<SendCompletedEventArgs> SendCompleted;
 
 
-        private readonly Queue<IccTelegram> sendQueue = new Queue<IccTelegram>();
+        private readonly Queue<IccTelegram> _sendQueue = new Queue<IccTelegram>();
         #endregion
 
         #region Properties
@@ -213,31 +213,27 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public void Send(IccTelegram iccTelegram)
         {
-            sendQueue.Enqueue(iccTelegram);
+            _sendQueue.Enqueue(iccTelegram);
             _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال در صف آداپتور {PersianDescription} قرار گرفت.");
         }
 
         private void SendTimer_DoWork()
         {
-            while (sendQueue.Any())
+            while (_sendQueue.Any())
             {
                 if (!Connected)
                     return;
 
-                var iccTelegram = sendQueue.Dequeue();
+                var iccTelegram = _sendQueue.Dequeue();
                 try
                 {
-                    if (iccTelegram.TransferId != 0)
-                    {
-                        if (_sentTelegrams.Contains(iccTelegram.TransferId))
-                        {
-                            _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
-                            continue;
-                        }
-                        _sentTelegrams.Add(iccTelegram.TransferId);
-                    }
+                    if (IsDuplicateSend(iccTelegram))
+                        continue;
 
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
+
+                    _telegramDefinitions.ValidateTelegramExpiry(iccTelegram);
+
                     SendTelegram(iccTelegram);
                     SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, true, null));
                 }
@@ -246,16 +242,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, false, exception));
                 }
             }
-
-            if (_sentTelegrams.Count > 2000)
-            {
-                _sentTelegrams = _sentTelegrams
-                    .OrderByDescending(x => x)
-                    .Take(1000)
-                    .ToList();
-                _logger.LogDebug($"SentTelegrams list in {Name} truncated. Count: {_sentTelegrams.Count}. First: {_sentTelegrams.First()}. Last: {_sentTelegrams.Last()}.");
-            }
+            TruncateSentList();
         }
+
+       
+
         protected abstract void ReceiveTimer_DoWork();
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
@@ -264,5 +255,41 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             TelegramReceived?.Invoke(e);
         }
+
+        #region Temporary Duplicate Send Check
+        private List<long> _sentTelegrams = new List<long>();
+        private void TruncateSentList()
+        {
+            try
+            {
+                if (_sentTelegrams.Count > 2000)
+                {
+                    _sentTelegrams = _sentTelegrams
+                        .OrderByDescending(x => x)
+                        .Take(1000)
+                        .ToList();
+                    _logger.LogDebug($"SentTelegrams list in {Name} truncated. Count: {_sentTelegrams.Count}. First: {_sentTelegrams.First()}. Last: {_sentTelegrams.Last()}.");
+                }
+            }
+            catch (Exception exception)
+            {
+                _logger.LogDebug($"Error While trying to truncate sent telegrams list in Base Adapter {exception.AllInnerExceptionsMessages()}");
+
+            }
+        }
+        private bool IsDuplicateSend(IccTelegram iccTelegram)
+        {
+            if (iccTelegram.TransferId == 0)
+                return false;
+
+            if (!_sentTelegrams.Contains(iccTelegram.TransferId))
+                return false;
+
+            _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
+            _sentTelegrams.Add(iccTelegram.TransferId);
+
+            return true;
+        }
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,6 +54,20 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
 
             return telegramDefinitions.Single();
+        }
+
+        public void ValidateTelegramExpiry(IccTelegram iccTelegram)
+        {
+            var definition = Find(iccTelegram);
+
+            if (!definition.ExpiryInMinutes.HasValue)
+                return;
+
+            var expiry = definition.ExpiryInMinutes.Value;
+            int passedMinutes = (int)(DateTime.Now - iccTelegram.SendTime).TotalMinutes;
+
+            if (passedMinutes > expiry)
+                throw IrisaException.Create($"تلگرام منقضی شده است. از زمان ارسال تلگرام {passedMinutes} دقیقه گذشته است. زمان معتبر بودن تلگرام {expiry} دقیقه است.");
         }
     }
 }

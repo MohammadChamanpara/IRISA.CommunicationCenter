@@ -42,7 +42,7 @@ namespace IRISA.CommunicationCenter.Library.Logging
         {
             string text =
                 $"{message}\r\n" +
-                $"{exception.InnerExceptionsMessage()}\r\n" +
+                $"{exception.AllInnerExceptionsMessages()}\r\n" +
                 $"StackTrace :{exception.StackTrace}\r\n";
 
             Log(text, LogLevel.Error);

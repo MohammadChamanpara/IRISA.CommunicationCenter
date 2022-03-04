@@ -20,7 +20,7 @@ namespace IRISA.CommunicationCenter.Library.Loggers
 
     public static class ExceptionExtensions
     {
-        public static string InnerExceptionsMessage(this Exception exception)
+        public static string AllInnerExceptionsMessages(this Exception exception)
         {
             string text = exception.Message;
             while (exception.InnerException != null)

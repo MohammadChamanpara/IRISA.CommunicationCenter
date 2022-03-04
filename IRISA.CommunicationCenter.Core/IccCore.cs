@@ -228,31 +228,15 @@ namespace IRISA.CommunicationCenter.Core
                 var iccTelegram = sendQueue.Dequeue();
                 try
                 {
-                    IIccAdapter destination = GetDestinationAdapter(adapters, iccTelegram.Destination);
-                    ValidateTelegramExpiry(iccTelegram);
-                    _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destination.PersianDescription} تحویل داده شد.");
-                    destination.Send(iccTelegram);
+                    IIccAdapter destinationAdapter = GetDestinationAdapter(adapters, iccTelegram.Destination);
+                    _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destinationAdapter.PersianDescription} تحویل داده شد.");
+                    destinationAdapter.Send(iccTelegram);
                 }
                 catch (Exception exception)
                 {
                     DropTelegram(iccTelegram, exception);
                 }
             }
-        }
-
-        private void ValidateTelegramExpiry(IccTelegram iccTelegram)
-        {
-            var definition = _telegramDefinitions.Find(iccTelegram);
-            
-            if (!definition.ExpiryInMinutes.HasValue)
-                return;
-            
-            var expiry = definition.ExpiryInMinutes.Value;
-            int passedMinutes = (int)(DateTime.Now - iccTelegram.SendTime).TotalMinutes;
-
-            if (passedMinutes > expiry)
-                throw IrisaException.Create($"تلگرام منقضی شده است. از زمان ارسال تلگرام {passedMinutes} دقیقه گذشته است. زمان معتبر بودن تلگرام {expiry} دقیقه است");
-
         }
 
         public IIccAdapter GetDestinationAdapter(IEnumerable<IIccAdapter> adapters, string destinationName)
@@ -354,7 +338,7 @@ namespace IRISA.CommunicationCenter.Core
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
             ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
             ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
@@ -405,7 +389,7 @@ namespace IRISA.CommunicationCenter.Core
                     _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
                 }
 
-                iccTelegram.SetAsDropped(dropException?.InnerExceptionsMessage());
+                iccTelegram.SetAsDropped(dropException?.AllInnerExceptionsMessages());
                 TransferHistory.Save(iccTelegram);
 
                 _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد.");

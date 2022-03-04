@@ -5,5 +5,6 @@ namespace IRISA.CommunicationCenter.Library.Definitions
     public interface ITelegramDefinitions
     {
         ITelegramDefinition Find(IccTelegram iccTelegram);
+        void ValidateTelegramExpiry(IccTelegram iccTelegram);
     }
 }
