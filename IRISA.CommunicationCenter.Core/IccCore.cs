@@ -267,15 +267,16 @@ namespace IRISA.CommunicationCenter.Core
             {
                 try
                 {
+                    e.IccTelegram.TransferId = 0;
                     if (!e.Successful)
                     {
                         DropTelegram(e.IccTelegram, e.FailException);
                     }
                     else
                     {
-                        foreach (IccTelegram current in DuplicateTelegramByDestination(e.IccTelegram))
+                        foreach (IccTelegram iccTelegram in DuplicateTelegramByDestination(e.IccTelegram))
                         {
-                            QueueTelegram(current);
+                            QueueTelegram(iccTelegram);
                         }
                     }
                 }
@@ -405,14 +406,13 @@ namespace IRISA.CommunicationCenter.Core
             try
             {
                 iccTelegram.SetAsReadyToSend();
-                _sendQueue.Enqueue(iccTelegram);
-                _logger.LogInformation($"تلگرام از {iccTelegram.Source} در صف ارسال قرار گرفت.");
                 TransferHistory.Save(iccTelegram);
-                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در لیست تاریخچه تلگرام ها ثبت شد.");
+                _sendQueue.Enqueue(iccTelegram);
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در صف ارسال قرار گرفت.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                _logger.LogException(ex, "بروز خطا هنگام ثبت تلگرام در صف.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام در صف ارسال.");
             }
         }
 

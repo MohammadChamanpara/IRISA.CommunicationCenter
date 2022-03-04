@@ -19,7 +19,7 @@ namespace IRISA.CommunicationCenter.Core
             _iccTelegrams.Add(
                 new IccTelegram()
                 {
-                    TransferId = 1000,
+                    TransferId = -2,
                     Source = "Mamad",
                     Destination = "Behnam",
                     TelegramId = 2,
@@ -28,7 +28,7 @@ namespace IRISA.CommunicationCenter.Core
             _iccTelegrams.Add(
                 new IccTelegram()
                 {
-                    TransferId = 1001,
+                    TransferId = -1,
                     Source = "Mamad",
                     Destination = "Behnam",
                     TelegramId = 2,
@@ -66,55 +66,55 @@ namespace IRISA.CommunicationCenter.Core
 
         public List<IccTelegram> GetTelegrams(IccTelegramSearchModel searchModel, int pageSize, out int resultCount)
         {
-            var transfers = _iccTelegrams.AsEnumerable();
+            var telegrams = _iccTelegrams.AsEnumerable();
 
             /*.................... Transfer Id ....................*/
-            transfers = searchModel.TransferId.HasValue
-                ? transfers.Where(x => x.TransferId == searchModel.TransferId)
-                : transfers;
+            telegrams = searchModel.TransferId.HasValue
+                ? telegrams.Where(x => x.TransferId == searchModel.TransferId)
+                : telegrams;
 
             /*.................... Telegram Id ....................*/
 
-            transfers = searchModel.TelegramId.HasValue
-                 ? transfers.Where(x => x.TelegramId == searchModel.TelegramId)
-                 : transfers;
+            telegrams = searchModel.TelegramId.HasValue
+                 ? telegrams.Where(x => x.TelegramId == searchModel.TelegramId)
+                 : telegrams;
 
             /*.................... Source ....................*/
 
-            transfers = searchModel.Source.HasValue()
-                ? transfers.Where(x => x.Source.ToLower().Contains(searchModel.Source.ToLower()))
-                : transfers;
+            telegrams = searchModel.Source.HasValue()
+                ? telegrams.Where(x => x.Source.ToLower().Contains(searchModel.Source.ToLower()))
+                : telegrams;
 
             /*.................... Destination ....................*/
 
-            transfers = searchModel.Destination.HasValue()
-                ? transfers.Where(x => x.Destination?.ToLower()?.Contains(searchModel.Destination.ToLower()) == true)
-                : transfers;
+            telegrams = searchModel.Destination.HasValue()
+                ? telegrams.Where(x => x.Destination?.ToLower()?.Contains(searchModel.Destination.ToLower()) == true)
+                : telegrams;
 
             /*.................... Sent ....................*/
 
-            transfers = searchModel.Sent.HasValue
-                ? transfers.Where(x => x.Sent == searchModel.Sent)
-                : transfers;
+            telegrams = searchModel.Sent.HasValue
+                ? telegrams.Where(x => x.Sent == searchModel.Sent)
+                : telegrams;
 
             /*.................... Dropped....................*/
 
-            transfers = searchModel.Dropped.HasValue
-                ? transfers.Where(x => x.Dropped == searchModel.Dropped)
-                : transfers;
+            telegrams = searchModel.Dropped.HasValue
+                ? telegrams.Where(x => x.Dropped == searchModel.Dropped)
+                : telegrams;
 
             /* ................Drop Reason...................*/
 
-            transfers = searchModel.DropReason.HasValue()
-                ? transfers.Where(x => x.DropReason?.Contains(searchModel.DropReason) == true)
-                : transfers;
+            telegrams = searchModel.DropReason.HasValue()
+                ? telegrams.Where(x => x.DropReason?.Contains(searchModel.DropReason) == true)
+                : telegrams;
 
             /*....................Send Time....................*/
 
             if (searchModel.SendTime.HasValue)
             {
                 var sendTime = searchModel.SendTime.Value;
-                transfers = transfers.Where
+                telegrams = telegrams.Where
                 (
                     x =>
                     x.SendTime.Year == sendTime.Year &&
@@ -123,11 +123,11 @@ namespace IRISA.CommunicationCenter.Core
                 );
 
                 if (sendTime.Hour > 0)
-                    transfers = transfers.Where(x => x.SendTime.Hour == sendTime.Hour);
+                    telegrams = telegrams.Where(x => x.SendTime.Hour == sendTime.Hour);
                 if (sendTime.Minute > 0)
-                    transfers = transfers.Where(x => x.SendTime.Minute == sendTime.Minute);
+                    telegrams = telegrams.Where(x => x.SendTime.Minute == sendTime.Minute);
                 if (sendTime.Second > 0)
-                    transfers = transfers.Where(x => x.SendTime.Second == sendTime.Second);
+                    telegrams = telegrams.Where(x => x.SendTime.Second == sendTime.Second);
             }
 
             /*....................Receive Time....................*/
@@ -135,7 +135,7 @@ namespace IRISA.CommunicationCenter.Core
             if (searchModel.ReceiveTime.HasValue)
             {
                 var receiveTime = searchModel.ReceiveTime.Value;
-                transfers = transfers.Where
+                telegrams = telegrams.Where
                 (
                     x =>
                     x.ReceiveTime.Value.Year == receiveTime.Year &&
@@ -144,18 +144,18 @@ namespace IRISA.CommunicationCenter.Core
                 );
 
                 if (receiveTime.Hour > 0)
-                    transfers = transfers.Where(x => x.ReceiveTime.Value.Hour == receiveTime.Hour);
+                    telegrams = telegrams.Where(x => x.ReceiveTime.Value.Hour == receiveTime.Hour);
                 if (receiveTime.Minute > 0)
-                    transfers = transfers.Where(x => x.ReceiveTime.Value.Minute == receiveTime.Minute);
+                    telegrams = telegrams.Where(x => x.ReceiveTime.Value.Minute == receiveTime.Minute);
                 if (receiveTime.Second > 0)
-                    transfers = transfers.Where(x => x.ReceiveTime.Value.Second == receiveTime.Second);
+                    telegrams = telegrams.Where(x => x.ReceiveTime.Value.Second == receiveTime.Second);
             }
 
-            resultCount = transfers.Count();
+            resultCount = telegrams.Count();
 
             pageSize = Math.Min(pageSize, resultCount);
 
-            return transfers
+            return telegrams
                 .OrderByDescending(t => t.TransferId)
                 .Take(pageSize)
                 .ToList();

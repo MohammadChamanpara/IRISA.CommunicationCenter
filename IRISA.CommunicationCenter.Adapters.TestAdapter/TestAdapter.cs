@@ -1,13 +1,9 @@
 ﻿using IRISA.CommunicationCenter.Library.Adapters;
-using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
-using IRISA.CommunicationCenter.Library.Tasks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace IRISA.CommunicationCenter.Adapters.TestAdapter
 {
@@ -37,14 +33,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
 
             protected override void ReceiveTimer_DoWork()
             {
-                int id = Name == "Behnam" ? 1000 : 2000;
-
                 var iccTelegram = new IccTelegram()
                 {
                     Source = Name,
                     Body = new List<string>() { "A", "B" },
                     TelegramId = Name == "Behnam" ? 1 : 2,
-                    TransferId = id++,
                     SendTime = DateTime.Now.AddMinutes(-10),
                 };
                 try
@@ -61,7 +54,6 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 {
                     Source = Name,
                     TelegramId = 3,
-                    TransferId = id++,
                     SendTime = DateTime.Now.AddMinutes(-10)
                 };
                 try
