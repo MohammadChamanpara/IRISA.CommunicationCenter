@@ -49,19 +49,6 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [DisplayName("کاراکتر جدا کننده بین مقصد های تلگرام")]
-        public char DestinationSeparator
-        {
-            get
-            {
-                return dllSettings.FindCharacterValue("DestinationSeparator", ',');
-            }
-            set
-            {
-                dllSettings.SaveSetting("DestinationSeparator", value);
-            }
-        }
-
         [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
         public int SendTimerInterval
         {
@@ -397,7 +384,7 @@ namespace IRISA.CommunicationCenter.Core
         {
             List<IccTelegram> iccTelegrams = new List<IccTelegram>();
 
-            string[] destinations = iccTelegram.Destination.Split(DestinationSeparator);
+            string[] destinations = iccTelegram.Destination.Split(',');
 
             for (int i = 0; i < destinations.Length; i++)
             {
