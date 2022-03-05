@@ -2,6 +2,7 @@
 using IRISA.CommunicationCenter.Library.Extensions;
 using IRISA.CommunicationCenter.Library.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace IRISA.CommunicationCenter.Core
 {
     public class TransferHistoryInMemory : ITransferHistory
     {
-        private static List<IccTelegram> _iccTelegrams = new List<IccTelegram>();
-        private static long id = 1;
+        private static ConcurrentBag<IccTelegram> _iccTelegrams = new ConcurrentBag<IccTelegram>();
+        private static long _id = 1;
 
 
         public TransferHistoryInMemory()
@@ -44,17 +45,19 @@ namespace IRISA.CommunicationCenter.Core
 
         private void Add(IccTelegram iccTelegram)
         {
-            iccTelegram.TransferId = id++;
+            iccTelegram.TransferId = _id++;
             _iccTelegrams.Add(iccTelegram);
 
             int readytelegrams = _iccTelegrams.Where(x => x.IsReadyToSend).Count();
 
-
-            if (_iccTelegrams.Count > 2000000)
-                _iccTelegrams = _iccTelegrams
+            int limit = 1000000;
+            if (_iccTelegrams.Count > limit * 2)
+                _iccTelegrams = new ConcurrentBag<IccTelegram>
+                (
+                    _iccTelegrams
                     .OrderByDescending(x => x.TransferId)
-                    .Take(Math.Max(readytelegrams, 1000000))
-                    .ToList();
+                    .Take(Math.Max(readytelegrams, limit))
+                );
         }
 
         public List<IccTelegram> GetTelegramsToSend()

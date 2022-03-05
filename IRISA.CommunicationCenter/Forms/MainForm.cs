@@ -231,10 +231,6 @@ namespace IRISA.CommunicationCenter.Forms
                 searchModel.LogLevel = (LogLevel)LogLevelComboBox.SelectedIndex;
         }
 
-        private async Task LoadRecordsAsync()
-        {
-            await Task.Run(() => LoadRecords());
-        }
         private void LoadRecords()
         {
             LoadEvents();
@@ -562,9 +558,9 @@ namespace IRISA.CommunicationCenter.Forms
             Application.DoEvents();
         }
 
-        private async void DoTelegramSearch_Click(object sender, EventArgs e)
+        private void DoTelegramSearch_Click(object sender, EventArgs e)
         {
-            await LoadRecordsAsync();
+            _refreshTimer.Start();
         }
 
         private void LogSearchShowHideButton_Click(object sender, EventArgs e)
@@ -576,16 +572,16 @@ namespace IRISA.CommunicationCenter.Forms
             }
         }
 
-        private async void DoIccEventSearch_Click(object sender, EventArgs e)
+        private void DoIccEventSearch_Click(object sender, EventArgs e)
         {
-            await LoadRecordsAsync();
+            _refreshTimer.Start();
         }
 
-        private async void ClearSearchEventsPanel_Click(object sender, EventArgs e)
+        private void ClearSearchEventsPanel_Click(object sender, EventArgs e)
         {
             ClearControls(eventsSearchflowLayout);
             LogsSearchGroupBox.Visible = false;
-            await LoadRecordsAsync();
+            _refreshTimer.Start();
         }
 
         public static string ShowPasswordDialog(string caption)

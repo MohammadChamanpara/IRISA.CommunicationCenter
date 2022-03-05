@@ -31,6 +31,8 @@ namespace IRISA.CommunicationCenter.Library.Tasks
         public void Start()
         {
             _startTime = DateTime.Now;
+            if (_started)
+                return;
             _started = true;
             Started?.Invoke();
             _ = Task.Run(() => KeepRunning());
