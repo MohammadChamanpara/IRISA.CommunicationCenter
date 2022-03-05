@@ -19,8 +19,8 @@ namespace IRISA.CommunicationCenter.Library.Logging
                 LogLevel = logLevel
             });
 
-            if (logs.Count > 20000)
-                logs = logs.OrderByDescending(x => x.Id).Take(10000).ToList();
+            if (logs.Count > 2000000)
+                logs = logs.OrderByDescending(x => x.Id).Take(1000000).ToList();
         }
 
         public List<LogEvent> GetLogs(LogSearchModel searchModel, int pageSize, out int resultsCount)

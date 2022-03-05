@@ -6,6 +6,7 @@ using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
 using IRISA.CommunicationCenter.Library.Tasks;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public event Action<SendCompletedEventArgs> SendCompleted;
 
 
-        private readonly Queue<IccTelegram> _sendQueue = new Queue<IccTelegram>();
+        private readonly ConcurrentQueue<IccTelegram> _sendQueue = new ConcurrentQueue<IccTelegram>();
         #endregion
 
         #region Properties
@@ -224,7 +225,9 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if (!Connected)
                     return;
 
-                var iccTelegram = _sendQueue.Dequeue();
+                if (!_sendQueue.TryDequeue(out var iccTelegram))
+                    return;
+
                 try
                 {
                     if (IsDuplicateSend(iccTelegram))
@@ -245,7 +248,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             TruncateSentList();
         }
 
-       
+
 
         protected abstract void ReceiveTimer_DoWork();
 

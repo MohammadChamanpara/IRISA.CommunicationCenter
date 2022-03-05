@@ -50,10 +50,10 @@ namespace IRISA.CommunicationCenter.Core
             int readytelegrams = _iccTelegrams.Where(x => x.IsReadyToSend).Count();
 
 
-            if (_iccTelegrams.Count > 20000)
+            if (_iccTelegrams.Count > 2000000)
                 _iccTelegrams = _iccTelegrams
                     .OrderByDescending(x => x.TransferId)
-                    .Take(Math.Max(readytelegrams, 10000))
+                    .Take(Math.Max(readytelegrams, 1000000))
                     .ToList();
         }
 

@@ -8,7 +8,6 @@ namespace IRISA.CommunicationCenter.Core
     {
         bool Started { get; }
         ITransferHistory TransferHistory { get; }
-        string PersianDescription { get; }
         List<IIccAdapter> ConnectedAdapters { get; }
         void Stop();
         void Start();

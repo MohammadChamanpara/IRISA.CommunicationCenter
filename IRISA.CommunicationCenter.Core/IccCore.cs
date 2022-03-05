@@ -8,6 +8,7 @@ using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
 using IRISA.CommunicationCenter.Library.Tasks;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -26,7 +27,7 @@ namespace IRISA.CommunicationCenter.Core
 
         private BackgroundTimer sendTimer;
         private DLLSettings<IccCore> dllSettings;
-        private readonly Queue<IccTelegram> _sendQueue = new Queue<IccTelegram>();
+        private readonly ConcurrentQueue<IccTelegram> _sendQueue = new ConcurrentQueue<IccTelegram>();
 
         private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
@@ -45,32 +46,6 @@ namespace IRISA.CommunicationCenter.Core
             {
                 dllSettings.SaveSetting("LogMinimumLevel", value);
                 _logger.SetMinumumLevel(value);
-            }
-        }
-
-        [DisplayName("شرح فارسی هسته مرکزی سیستم ارتباط")]
-        public string PersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("PersianDescription", "هسته مرکزی سیستم ارتباط");
-            }
-            set
-            {
-                dllSettings.SaveSetting("PersianDescription", value);
-            }
-        }
-
-        [DisplayName("شرح فارسی پروسه ارسال تلگرام")]
-        public string SendTimerPersianDescription
-        {
-            get
-            {
-                return dllSettings.FindStringValue("SendTimerPersianDescription", "پروسه ارسال تلگرام");
-            }
-            set
-            {
-                dllSettings.SaveSetting("SendTimerPersianDescription", value);
             }
         }
 
@@ -221,11 +196,13 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        public void SendTelegrams(Queue<IccTelegram> sendQueue, IEnumerable<IIccAdapter> adapters)
+        private void SendTelegrams(ConcurrentQueue<IccTelegram> sendQueue, IEnumerable<IIccAdapter> adapters)
         {
             while (sendQueue.Any())
             {
-                var iccTelegram = sendQueue.Dequeue();
+                if (!sendQueue.TryDequeue(out var iccTelegram))
+                    return;
+
                 try
                 {
                     IIccAdapter destinationAdapter = GetDestinationAdapter(adapters, iccTelegram.Destination);
@@ -300,7 +277,7 @@ namespace IRISA.CommunicationCenter.Core
 
         private void InitializeLogger()
         {
-            _logger.LogInformation($"اجرای {PersianDescription} آغاز شد.");
+            _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط آغاز شد.");
             _logger.SetMinumumLevel(LogMinimumLevel);
         }
 
@@ -313,7 +290,7 @@ namespace IRISA.CommunicationCenter.Core
             sendTimer = new BackgroundTimer(_logger)
             {
                 Interval = SendTimerInterval,
-                PersianDescription = SendTimerPersianDescription + " در " + PersianDescription,
+                PersianDescription = "پروسه ارسال تلگرام در هسته مرکزی",
             };
             sendTimer.DoWork += SendTimer_DoWork;
             sendTimer.Start();
@@ -329,7 +306,7 @@ namespace IRISA.CommunicationCenter.Core
             }
 
             if (Started)
-                _logger.LogInformation($"اجرای {PersianDescription} خاتمه یافت.");
+                _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط خاتمه یافت.");
 
             Started = false;
         }

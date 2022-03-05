@@ -347,7 +347,7 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     new RadioButton
                     {
-                        Text = _iccCore.PersianDescription,
+                        Text = "هسته مرکزی سیستم ارتباط",
                         Tag = _iccCore
                     },
                     new RadioButton
