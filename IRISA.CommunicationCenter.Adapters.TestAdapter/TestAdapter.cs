@@ -3,6 +3,7 @@ using IRISA.CommunicationCenter.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Threading;
 
 namespace IRISA.CommunicationCenter.Adapters.TestAdapter
@@ -29,6 +30,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 Thread.Sleep(DelayInSend);
+                File.AppendAllText($"c:\\icc2\\{Name}.txt", $"{DateTime.Now}: {iccTelegram.TransferId}\r\n");
             }
 
             protected override void ReceiveTimer_DoWork()

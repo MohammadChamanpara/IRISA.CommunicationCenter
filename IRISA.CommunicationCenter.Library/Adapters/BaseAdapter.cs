@@ -65,6 +65,10 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             private set;
         }
 
+
+        [Category("Information"), DisplayName("تعداد تلگرام ها در صف ارسال آداپتور")]
+        public int TelegramsCount => _sendQueue.Count;
+
         [Category("Information"), DisplayName("نوع کلاینت")]
         public abstract string Type
         {
@@ -232,6 +236,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 {
                     if (IsDuplicateSend(iccTelegram))
                         continue;
+                    
+                    _sentTelegrams.Add(iccTelegram.TransferId);
 
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
 
@@ -289,7 +295,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return false;
 
             _logger.LogError($"تلاش برای ارسال مجدد تلگرام ارسال شده با شناسه {iccTelegram.TransferId}.");
-            _sentTelegrams.Add(iccTelegram.TransferId);
 
             return true;
         }

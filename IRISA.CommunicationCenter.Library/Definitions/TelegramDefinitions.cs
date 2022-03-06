@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.");
 
             if (telegramDefinitions.Count() > 1)
-                throw IrisaException.Create("تلگرام  با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
+                throw IrisaException.Create("تلگرام با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
 
             return telegramDefinitions.Single();
         }

@@ -6,9 +6,7 @@ using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Logging;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Library.Settings;
-using IRISA.CommunicationCenter.Library.Tasks;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -25,11 +23,8 @@ namespace IRISA.CommunicationCenter.Core
         [Browsable(false)]
         public ITransferHistory TransferHistory { get; set; }
 
-        private BackgroundTimer sendTimer;
         private DLLSettings<IccCore> dllSettings;
-        private readonly ConcurrentQueue<IccTelegram> _sendQueue = new ConcurrentQueue<IccTelegram>();
 
-        private readonly object sendLocker = new object();
         private readonly object receiveLocker = new object();
 
         private readonly ILogger _logger;
@@ -46,19 +41,6 @@ namespace IRISA.CommunicationCenter.Core
             {
                 dllSettings.SaveSetting("LogMinimumLevel", value);
                 _logger.SetMinumumLevel(value);
-            }
-        }
-
-        [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
-        public int SendTimerInterval
-        {
-            get
-            {
-                return dllSettings.FindIntValue("sendTimerInterval", 2000);
-            }
-            set
-            {
-                dllSettings.SaveSetting("sendTimerInterval", value);
             }
         }
 
@@ -152,54 +134,182 @@ namespace IRISA.CommunicationCenter.Core
             return result;
         }
 
+        public void Start()
+        {
+            ConnectedAdapters = new List<IIccAdapter>();
+            dllSettings = new DLLSettings<IccCore>();
+            InitializeLogger();
+            RecoverReadyTelegramsFromTransferHistory();
+            LoadAdapters();
+            Started = true;
+        }
+
+        public void Stop()
+        {
+            foreach (IIccAdapter adapter in ConnectedAdapters)
+            {
+                adapter.Stop();
+            }
+
+            if (Started)
+                _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط خاتمه یافت.");
+
+            Started = false;
+        }
+
+        private void InitializeLogger()
+        {
+            _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط آغاز شد.");
+            _logger.SetMinumumLevel(LogMinimumLevel);
+        }
+
+        private void LoadAdapters()
+        {
+            ConnectedAdapters = LoadAdapters<IIccAdapter>();
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+
+            if (!ConnectedAdapters.Any())
+                _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
+
+            foreach (IIccAdapter adapter in ConnectedAdapters)
+            {
+                try
+                {
+                    adapter.TelegramReceived += Adapter_TelegramReceived;
+                    adapter.SendCompleted += Adapter_SendCompleted;
+                    adapter.Start(_logger, _telegramDefinitions);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
+                }
+            }
+        }
+
+        private void Adapter_TelegramReceived(TelegramReceivedEventArgs e)
+        {
+            lock (receiveLocker)
+            {
+                try
+                {
+                    e.IccTelegram.TransferId = 0;
+                    if (!e.Successful)
+                    {
+                        UpdateDroppedTelegram(e.IccTelegram, e.FailException);
+                    }
+                    else
+                    {
+                        _logger.LogDebug($"تلگرام جدید از {e.IccTelegram.Source} دریافت شد.");
+                        foreach (IccTelegram iccTelegram in DuplicateTelegramByDestination(e.IccTelegram))
+                        {
+                            QueueTelegram(iccTelegram);
+                            SendTelegram(iccTelegram, ConnectedAdapters);
+                        }
+                    }
+                }
+                catch (Exception dropException)
+                {
+                    UpdateDroppedTelegram(e.IccTelegram, dropException);
+                }
+            }
+        }
+
+        private void QueueTelegram(IccTelegram iccTelegram)
+        {
+            try
+            {
+                iccTelegram.SetAsReadyToSend();
+                TransferHistory.Save(iccTelegram);
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در صف ارسال قرار گرفت.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام در صف ارسال.");
+            }
+        }
+
+        private void SendTelegram(IccTelegram iccTelegram, IEnumerable<IIccAdapter> adapters)
+        {
+            try
+            {
+                iccTelegram.SetAsReadyToSend();
+                TransferHistory.Save(iccTelegram);
+                IIccAdapter destinationAdapter = GetDestinationAdapter(adapters, iccTelegram.Destination);
+                _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destinationAdapter.PersianDescription} تحویل داده شد.");
+                destinationAdapter.Send(iccTelegram);
+            }
+            catch (Exception exception)
+            {
+                UpdateDroppedTelegram(iccTelegram, exception);
+            }
+        }
+
+        private void Adapter_SendCompleted(SendCompletedEventArgs e)
+        {
+            if (e.Successful)
+                UpdateSentTelegram(e.IccTelegram);
+            else
+                UpdateDroppedTelegram(e.IccTelegram, e.FailException);
+        }
+
+        private void UpdateSentTelegram(IccTelegram iccTelegram)
+        {
+            try
+            {
+                iccTelegram.SetAsSent();
+                TransferHistory.Save(iccTelegram);
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} موفقیت آمیز به مقصد ارسال شد.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
+            }
+        }
+
+        private void UpdateDroppedTelegram(IccTelegram iccTelegram, Exception dropException)
+        {
+            try
+            {
+                if (!(dropException is IrisaException))
+                {
+                    _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
+                }
+
+                iccTelegram.SetAsDropped(dropException?.AllInnerExceptionsMessages());
+                TransferHistory.Save(iccTelegram);
+
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
+            }
+        }
+
         private void RecoverReadyTelegramsFromTransferHistory()
         {
-            lock (sendLocker)
+            try
             {
-                try
-                {
-                    foreach (var telegram in TransferHistory.GetTelegramsToSend().OrderBy(x => x.TransferId))
-                        _sendQueue.Enqueue(telegram);
+                var telegrams =
+                    TransferHistory
+                        .GetTelegramsToSend()
+                        .OrderBy(x => x.TransferId);
 
-                    if (!_sendQueue.Any())
-                        return;
-
-                    string verb = _sendQueue.Count > 1 ? "شدند" : "شد";
-                    _logger.LogInformation($"{_sendQueue.Count} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
-                }
-                catch (Exception exception)
-                {
-                    _logger.LogException(exception, "بروز خطا هنگام بازیابی تلگرام های آماده ارسال از لیست تاریخچه");
-                    throw;
-                }
-            }
-        }
-
-        private void SendTimer_DoWork()
-        {
-            lock (sendLocker)
-            {
-                SendTelegrams(_sendQueue, ConnectedAdapters);
-            }
-        }
-
-        private void SendTelegrams(ConcurrentQueue<IccTelegram> sendQueue, IEnumerable<IIccAdapter> adapters)
-        {
-            while (sendQueue.Any())
-            {
-                if (!sendQueue.TryDequeue(out var iccTelegram))
+                if (!telegrams.Any())
                     return;
 
-                try
-                {
-                    IIccAdapter destinationAdapter = GetDestinationAdapter(adapters, iccTelegram.Destination);
-                    _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destinationAdapter.PersianDescription} تحویل داده شد.");
-                    destinationAdapter.Send(iccTelegram);
-                }
-                catch (Exception exception)
-                {
-                    DropTelegram(iccTelegram, exception);
-                }
+                string verb = telegrams.Count() > 1 ? "شدند" : "شد";
+                _logger.LogInformation($"{telegrams.Count()} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
+
+                foreach (var telegram in telegrams)
+                    SendTelegram(telegram, ConnectedAdapters);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, "بروز خطا هنگام بازیابی تلگرام های آماده ارسال از لیست تاریخچه");
+                throw;
             }
         }
 
@@ -223,161 +333,6 @@ namespace IRISA.CommunicationCenter.Core
             }
 
             return destinationAdapter.Single();
-        }
-
-        private void Adapter_TelegramReceived(TelegramReceivedEventArgs e)
-        {
-            lock (receiveLocker)
-            {
-                try
-                {
-                    e.IccTelegram.TransferId = 0;
-                    if (!e.Successful)
-                    {
-                        DropTelegram(e.IccTelegram, e.FailException);
-                    }
-                    else
-                    {
-                        foreach (IccTelegram iccTelegram in DuplicateTelegramByDestination(e.IccTelegram))
-                        {
-                            QueueTelegram(iccTelegram);
-                        }
-                    }
-                }
-                catch (Exception dropException)
-                {
-                    DropTelegram(e.IccTelegram, dropException);
-                }
-            }
-        }
-
-        public void Start()
-        {
-            ConnectedAdapters = new List<IIccAdapter>();
-            dllSettings = new DLLSettings<IccCore>();
-            InitializeLogger();
-            RecoverReadyTelegramsFromTransferHistory();
-            LoadAdapters();
-            InitializeSendTimer();
-            Started = true;
-        }
-
-        private void InitializeLogger()
-        {
-            _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط آغاز شد.");
-            _logger.SetMinumumLevel(LogMinimumLevel);
-        }
-
-        private void InitializeSendTimer()
-        {
-            if (sendTimer != null)
-            {
-                sendTimer.Stop();
-            }
-            sendTimer = new BackgroundTimer(_logger)
-            {
-                Interval = SendTimerInterval,
-                PersianDescription = "پروسه ارسال تلگرام در هسته مرکزی",
-            };
-            sendTimer.DoWork += SendTimer_DoWork;
-            sendTimer.Start();
-        }
-
-        public void Stop()
-        {
-            sendTimer?.Stop();
-
-            foreach (IIccAdapter adapter in ConnectedAdapters)
-            {
-                adapter.Stop();
-            }
-
-            if (Started)
-                _logger.LogInformation($"اجرای هسته مرکزی سیستم ارتباط خاتمه یافت.");
-
-            Started = false;
-        }
-
-        private void LoadAdapters()
-        {
-            ConnectedAdapters = LoadAdapters<IIccAdapter>();
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
-            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
-
-            if (!ConnectedAdapters.Any())
-                _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
-
-            foreach (IIccAdapter adapter in ConnectedAdapters)
-            {
-                try
-                {
-                    adapter.TelegramReceived += Adapter_TelegramReceived;
-                    adapter.SendCompleted += Adapter_SendCompleted;
-                    adapter.Start(_logger, _telegramDefinitions);
-                }
-                catch (Exception exception)
-                {
-                    _logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
-                }
-            }
-        }
-
-        private void Adapter_SendCompleted(SendCompletedEventArgs e)
-        {
-            if (e.Successful)
-                UpdateSentTelegram(e.IccTelegram);
-            else
-                DropTelegram(e.IccTelegram, e.FailException);
-        }
-
-        private void UpdateSentTelegram(IccTelegram iccTelegram)
-        {
-            try
-            {
-                iccTelegram.SetAsSent();
-                TransferHistory.Save(iccTelegram);
-                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} موفقیت آمیز به مقصد ارسال شد.");
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
-            }
-        }
-
-        private void DropTelegram(IccTelegram iccTelegram, Exception dropException)
-        {
-            try
-            {
-                if (!(dropException is IrisaException))
-                {
-                    _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
-                }
-
-                iccTelegram.SetAsDropped(dropException?.AllInnerExceptionsMessages());
-                TransferHistory.Save(iccTelegram);
-
-                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد.");
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
-            }
-        }
-
-        private void QueueTelegram(IccTelegram iccTelegram)
-        {
-            try
-            {
-                iccTelegram.SetAsReadyToSend();
-                TransferHistory.Save(iccTelegram);
-                _sendQueue.Enqueue(iccTelegram);
-                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} در صف ارسال قرار گرفت.");
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام در صف ارسال.");
-            }
         }
 
         private List<IccTelegram> DuplicateTelegramByDestination(IccTelegram iccTelegram)
