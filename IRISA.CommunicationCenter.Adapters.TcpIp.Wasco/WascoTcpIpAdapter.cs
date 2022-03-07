@@ -2,6 +2,7 @@ using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 
@@ -23,12 +24,14 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
             return completeTelegram[HeaderSize - 1];
         }
 
+        [Category("CRC")]
         public Byte CrcDivisor
         {
             get { return _dllSettings.FindByteValue("CrcDivisor", (byte)0xF); }
             set { _dllSettings.SaveSetting("CrcDivisor", value); }
         }
 
+        [Category("CRC")]
         public Boolean CheckCrc
         {
             get { return _dllSettings.FindBooleanValue("CheckCrc", true); }
@@ -44,7 +47,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
             byte sourceCrc = GetTelegramCrc(completeTelegram);
 
             if (destinationCrc != sourceCrc)
-                throw IrisaException.Create("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد."
+                throw IrisaException.Create("بایت {0} محاسبه شده در مقصد {1} و بایت ارسال شده از مبدا {2} می باشد. "
                     , "CRC", destinationCrc, sourceCrc);
         }
         private const string DateFormat = "yyyyMMddHHmmss";
@@ -54,7 +57,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
         }
         protected override int GetTelegramBodySize(byte[] telegramBytes)
         {
-            var size= (int)BitConverter.ToInt16(telegramBytes, 22);
+            var size = (int)BitConverter.ToInt16(telegramBytes, 22);
             return size;
         }
         protected override DateTime GetTelegramSendTime(byte[] telegramBytes)
@@ -66,7 +69,7 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
         {
             string source = Encoding.ASCII.GetString(telegramBytes, 5, 3);
             if (source != Name)
-                throw IrisaException.Create("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد.", source, Name);
+                throw IrisaException.Create("نام کلاینت ارسال کننده {0} و نام کلاینت مورد انتظار {1} می باشد. ", source, Name);
             return Name;
         }
         protected override byte[] CreateClientBytes(IccTelegram iccTelegram, byte[] body)
