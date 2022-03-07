@@ -7,46 +7,8 @@ namespace IRISA.CommunicationCenter.Settings
     public class UiSettings
     {
         private readonly DLLSettings<UiSettings> dllSettings = new DLLSettings<UiSettings>();
-        
-        [DisplayName("طول نمایش رویداد در ویندوز بر حسب میلی ثانیه")]
-        public int NotifyIconShowTime
-        {
-            get
-            {
-                return dllSettings.FindIntValue("NotifyIconShowTime", 500);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconShowTime", value);
-            }
-        }
 
-        [DisplayName("فارسی بودن زبان نمایش رویداد در ویندوز")]
-        public bool NotifyIconPersianLanguage
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("NotifyIconPersianLanguage", false);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconPersianLanguage", value);
-            }
-        }
-    
-        [DisplayName("نمایش رویداد متصل شدن کلاینت در ویندوز")]
-        public bool NotifyIconShowAdapterConnected
-        {
-            get
-            {
-                return dllSettings.FindBooleanValue("NotifyIconShowClientConnected", false);
-            }
-            set
-            {
-                dllSettings.SaveSetting("NotifyIconShowClientConnected", value);
-            }
-        }
-
+        [Category("Operation")]
         [DisplayName("عنوان نرم افزار ")]
         public string ProgramTitle
         {
@@ -60,6 +22,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
+        [Category("Operation")]
         [DisplayName("دوره زمانی بازیابی رکورد ها بر حسب میلی ثانیه")]
         public int RecordsRefreshInterval
         {
@@ -73,6 +36,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
+        [Category("Operation")]
         [DisplayName("طول زمان فعال بودن پروسه بازیابی رکورد ها بر حسب ثانیه")]
         public int RecordsRefreshAliveTime
         {
@@ -86,6 +50,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
+        [Category("Operation")]
         [DisplayName("تعداد رکورد هایی که در لود اولیه نمایش داده می شوند")]
         public int RecordsLoadCount
         {
@@ -99,6 +64,7 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
+        [Category("Operation")]
         [DisplayName("تعداد رکورد هایی که به لیست در حال نمایش اضافه می شوند")]
         public int RecordsIncrementCount
         {
@@ -112,7 +78,8 @@ namespace IRISA.CommunicationCenter.Settings
             }
         }
 
-        [Category("Information"), DisplayName("نوع نرم افزار واسط کاربر")]
+        [Category("Information")]
+        [DisplayName("نوع نرم افزار واسط کاربر")]
         public string UIApplicationType
         {
             get
@@ -120,7 +87,8 @@ namespace IRISA.CommunicationCenter.Settings
                 return "Microsoft Visual C# .Net Framework 4.8, Windows Forms Application. ";
             }
         }
-        [Category("Information"), DisplayName("نوع فایل")]
+        [Category("Information")]
+        [DisplayName("نوع فایل")]
         public string FileAssembly
         {
             get
@@ -128,7 +96,8 @@ namespace IRISA.CommunicationCenter.Settings
                 return dllSettings.Assembly.AssemblyName();
             }
         }
-        [Category("Information"), DisplayName("ورژن برنامه")]
+        [Category("Information")]
+        [DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
             get
@@ -136,7 +105,8 @@ namespace IRISA.CommunicationCenter.Settings
                 return dllSettings.Assembly.AssemblyVersion();
             }
         }
-        [Category("Information"), DisplayName("آدرس فایل")]
+        [Category("Information")]
+        [DisplayName("آدرس فایل")]
         public string FileAddress
         {
             get

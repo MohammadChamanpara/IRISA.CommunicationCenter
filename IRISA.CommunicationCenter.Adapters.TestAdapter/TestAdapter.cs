@@ -13,6 +13,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
         public class TestAdapter : BaseAdapter<TestAdapter>
         {
             [DisplayName("تاخیر در ارسال - میلی ثانیه")]
+            [Category("Operation")]
             public int DelayInSend
             {
                 get
@@ -52,20 +53,23 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                     OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, false, exception));
                 }
 
-                var iccTelegram2 = new IccTelegram()
+                if (Name == "Mamad")
                 {
-                    Source = Name,
-                    TelegramId = 3,
-                    SendTime = DateTime.Now
-                };
-                try
-                {
-                    iccTelegram2.Destination = _telegramDefinitions.Find(iccTelegram2).Destination;
-                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, true, null));
-                }
-                catch (Exception exception)
-                {
-                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, false, exception));
+                    var iccTelegram2 = new IccTelegram()
+                    {
+                        Source = Name,
+                        TelegramId = 3,
+                        SendTime = DateTime.Now
+                    };
+                    try
+                    {
+                        iccTelegram2.Destination = _telegramDefinitions.Find(iccTelegram2).Destination;
+                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, true, null));
+                    }
+                    catch (Exception exception)
+                    {
+                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, false, exception));
+                    }
                 }
             }
 

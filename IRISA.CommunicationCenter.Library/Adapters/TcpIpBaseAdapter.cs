@@ -22,7 +22,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         protected List<byte> receivedBuffer = new List<byte>();
         private DateTime lastConnectionTime;
 
-        [Category("Information")]
         public override string Type
         {
             get
@@ -30,8 +29,59 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return "Tcp/Ip";
             }
         }
+        [Category("Information")]
+        [DisplayName("کلاینت متصل شده - آدرس")]
+        public string ClientServerIp
+        {
+            get
+            {
+                string result;
+                try
+                {
+                    if (socket != null)
+                    {
+                        result = (socket.RemoteEndPoint as IPEndPoint).Address.ToString();
+                    }
+                    else
+                    {
+                        result = "";
+                    }
+                }
+                catch
+                {
+                    result = "";
+                }
+                return result;
+            }
+        }
 
-        [Category("Operation")]
+        [Category("Information")]
+        [DisplayName("کلاینت متصل شده - نام")]
+        public string ClientServerName
+        {
+            get
+            {
+                string result;
+                try
+                {
+                    if (socket == null)
+                    {
+                        result = "";
+                    }
+                    else
+                    {
+                        result = Dns.GetHostEntry((socket.RemoteEndPoint as IPEndPoint).Address).HostName;
+                    }
+                }
+                catch
+                {
+                    result = "";
+                }
+                return result;
+            }
+        }
+
+        [Category("Telegrams")]
         [DisplayName("کاراکتر آغاز کننده تلگرام")]
         public char StartCharacter
         {
@@ -45,7 +95,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("Telegrams")]
         [DisplayName("کاراکتر خاتمه دهنده تلگرام")]
         public char EndCharacter
         {
@@ -59,7 +109,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("Telegrams")]
         [DisplayName("سایز هدر تلگرام بر حسب بایت")]
         public int HeaderSize
         {
@@ -87,7 +137,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("Connection")]
         [DisplayName("آدرس کلاینت")]
         public string Ip
         {
@@ -101,7 +151,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("Connection")]
         [DisplayName("شماره پورت ارتباطی")]
         public int Port
         {
@@ -129,6 +179,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
+        [Category("Operation")]
         [DisplayName("حداکثر زمان معتبر بودن اتصال کلاینت بر حسب میلی ثانیه")]
         public int TcpIpConnectExpireTime
         {
@@ -142,6 +193,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
+        [Category("Operation")]
         [DisplayName("حداکثر زمان انتظار برای ارسال پکت بر حسب میلی ثانیه")]
         public int SendTimeout
         {
@@ -154,56 +206,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 _dllSettings.SaveSetting("SendTimeout", value);
             }
         }
-        [Category("Information"), DisplayName("کلاینت متصل شده - آدرس")]
-        public string ClientServerIp
-        {
-            get
-            {
-                string result;
-                try
-                {
-                    if (socket != null)
-                    {
-                        result = (socket.RemoteEndPoint as IPEndPoint).Address.ToString();
-                    }
-                    else
-                    {
-                        result = "";
-                    }
-                }
-                catch
-                {
-                    result = "";
-                }
-                return result;
-            }
-        }
-        [Category("Information"), DisplayName("کلاینت متصل شده - نام")]
-        public string ClientServerName
-        {
-            get
-            {
-                string result;
-                try
-                {
-                    if (socket == null)
-                    {
-                        result = "";
-                    }
-                    else
-                    {
-                        result = Dns.GetHostEntry((socket.RemoteEndPoint as IPEndPoint).Address).HostName;
-                    }
-                }
-                catch
-                {
-                    result = "";
-                }
-                return result;
-            }
-        }
 
-        [Category("Information")]
         protected override bool CheckConnection()
         {
             return socket != null && socket.Connected;
@@ -223,7 +226,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                         base.PersianDescription
                     });
                     socket = null;
-                    Connected = false;
                 }
                 else
                 {
@@ -279,7 +281,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 if (socket == null)
                 {
                     _logger.LogInformation($"کلاینت {PersianDescription} متصل شد.");
-                    Connected = true;
                 }
                 else
                 {
@@ -313,7 +314,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             byte[] buffer = ToClientTelegram(iccTelegram);
             if (!Connected)
             {
-                throw IrisaException.Create("مقصد تلگرام متصل نمی باشد");
+                throw IrisaException.Create("مقصد تلگرام متصل نمی باشد. ");
             }
             try
             {
