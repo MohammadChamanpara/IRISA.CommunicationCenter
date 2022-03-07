@@ -13,7 +13,6 @@ namespace IRISA.CommunicationCenter.Components
         public PictureBox connectPictureBox;
         private Panel panel1;
         private Label captionLabel;
-        private ILogger eventLogger;
         public IIccAdapter Adapter
         {
             get;

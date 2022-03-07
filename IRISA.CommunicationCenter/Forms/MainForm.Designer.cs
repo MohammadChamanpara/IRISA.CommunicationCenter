@@ -22,7 +22,6 @@ namespace IRISA.CommunicationCenter.Forms
         private ToolStrip transfersToolStrip;
         private ImageList imageList;
         private ToolStrip bottomToolStrip;
-        private NotifyIcon notifyIcon;
         private ToolStripButton eventsMoreButton;
         private ToolStripButton transfersRefreshButton;
         private ToolStripButton transfersMoreButton;
@@ -277,7 +276,6 @@ namespace IRISA.CommunicationCenter.Forms
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.minimizeApplicationButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.adaptersSplitContainer)).BeginInit();
@@ -2054,12 +2052,6 @@ namespace IRISA.CommunicationCenter.Forms
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 39);
-            // 
-            // notifyIcon
-            // 
-            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Visible = true;
-            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
             // 
             // MainForm
             // 

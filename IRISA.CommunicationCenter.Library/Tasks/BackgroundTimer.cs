@@ -53,7 +53,7 @@ namespace IRISA.CommunicationCenter.Library.Tasks
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogException(exception, $"بروز خطا در {PersianDescription}.");
+                    _logger.LogException(exception, $"بروز خطا در {PersianDescription}. ");
                 }
                 finally
                 {

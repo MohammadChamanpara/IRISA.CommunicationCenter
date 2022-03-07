@@ -17,14 +17,13 @@ namespace IRISA.CommunicationCenter.Library.Adapters
     {
         #region Variables
         protected ITelegramDefinitions _telegramDefinitions;
-        protected DLLSettings<DLLT> _dllSettings;
+        protected DLLSettings<DLLT> _dllSettings = new DLLSettings<DLLT>();
         protected ILogger _logger;
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
 
-        public event Action<TelegramReceivedEventArgs> TelegramReceived;
-        public event Action<IIccAdapter> ConnectionChanged;
-        public event Action<SendCompletedEventArgs> SendCompleted;
+        public event Action<TelegramReceivedEventArgs> TelegramReceiveCompleted;
+        public event Action<SendCompletedEventArgs> TelegramSendCompleted;
 
 
         private readonly ConcurrentQueue<IccTelegram> _sendQueue = new ConcurrentQueue<IccTelegram>();
@@ -32,6 +31,89 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #region Properties
 
+        [Category("Information")]
+        [DisplayName("تعداد تلگرام ها در صف ارسال آداپتور")]
+        public int TelegramsCount => _sendQueue.Count;
+
+        [Category("Information")]
+        [DisplayName("نوع کلاینت")]
+        public abstract string Type
+        {
+            get;
+        }
+
+        [Category("Information")]
+        [DisplayName("نام فایل آداپتور")]
+        public string FileName
+        {
+            get
+            {
+                return _dllSettings.Assembly.AsssemblyFileName();
+            }
+        }
+
+        [Category("Information")]
+        [DisplayName("ورژن برنامه")]
+        public string FileAssemblyVersion
+        {
+            get
+            {
+                return _dllSettings.Assembly.AssemblyVersion();
+            }
+        }
+
+
+        [Category("Information")]
+        [DisplayName("آدرس فایل آداپتور")]
+        public string FileAddress
+        {
+            get
+            {
+                return _dllSettings.Assembly.Location;
+            }
+        }
+
+        [Category("Information")]
+        [DisplayName("نوع فایل آداپتور")]
+        public string FileAssembly
+        {
+            get
+            {
+                return _dllSettings.Assembly.AssemblyName();
+            }
+        }
+
+        [Category("Information")]
+        [DisplayName("درحال اجرا")]
+        public bool Started
+        {
+            get;
+            private set;
+        }
+
+        [Category("Information")]
+        [DisplayName("وضعیت اتصال کلاینت")]
+        public bool Connected
+        {
+            get
+            {
+                if (!Started)
+                    return false;
+
+                try
+                {
+                    return CheckConnection();
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogException(exception, $"بروز خطا هنگام بررسی اتصال کلاینت در {PersianDescription}. ");
+                    return false;
+                }
+            }
+        }
+
+
+        [Category("Operation")]
         [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
         public int TelegramReceiveInterval
         {
@@ -45,7 +127,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [DisplayName("دوره زمانی بررسی ارسال تلگرام بر حسب میلی ثانیه")]
+        [Category("Operation")]
+        [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
         public int TelegramSendInterval
         {
             get
@@ -58,59 +141,8 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information"), DisplayName("درحال اجرا")]
-        public bool Started
-        {
-            get;
-            private set;
-        }
 
-
-        [Category("Information"), DisplayName("تعداد تلگرام ها در صف ارسال آداپتور")]
-        public int TelegramsCount => _sendQueue.Count;
-
-        [Category("Information"), DisplayName("نوع کلاینت")]
-        public abstract string Type
-        {
-            get;
-        }
-
-        [Category("Information"), DisplayName("نام فایل آداپتور")]
-        public string FileName
-        {
-            get
-            {
-                return _dllSettings.Assembly.AsssemblyFileName();
-            }
-        }
-
-        [Category("Information"), DisplayName("ورژن برنامه")]
-        public string FileAssemblyVersion
-        {
-            get
-            {
-                return _dllSettings.Assembly.AssemblyVersion();
-            }
-        }
-
-        [Category("Information"), DisplayName("آدرس فایل آداپتور")]
-        public string FileAddress
-        {
-            get
-            {
-                return _dllSettings.Assembly.Location;
-            }
-        }
-
-        [Category("Information"), DisplayName("نوع فایل آداپتور")]
-        public string FileAssembly
-        {
-            get
-            {
-                return _dllSettings.Assembly.AssemblyName();
-            }
-        }
-
+        [Category("Name")]
         [DisplayName("نام کلاینت")]
         public string Name
         {
@@ -124,6 +156,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
+        [Category("Name")]
         [DisplayName("نام فارسی کلاینت")]
         public string PersianDescription
         {
@@ -137,36 +170,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        private bool _connected = false;
-        [Category("Information")]
-        [DisplayName("وضعیت اتصال کلاینت")]
-        public bool Connected
-        {
-            get
-            {
-                if (!Started)
-                    return false;
 
-                try
-                {
-                    Connected = CheckConnection();
-                }
-                catch (Exception exception)
-                {
-                    _logger.LogException(exception, "بروز خطا هنگام بررسی اتصال کلاینت");
-                    Connected = false;
-                }
-
-                return _connected;
-            }
-            set
-            {
-                if (_connected == value)
-                    return;
-                _connected = value;
-                ConnectionChanged?.Invoke(this);
-            }
-        }
 
         #endregion
 
@@ -208,7 +212,6 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         public virtual void Stop()
         {
             Started = false;
-            Connected = false;
             _sendTimer?.Stop();
             _receiveTimer?.Stop();
             _sentTelegrams.Clear();
@@ -236,7 +239,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 {
                     if (IsDuplicateSend(iccTelegram))
                         continue;
-                    
+
                     _sentTelegrams.Add(iccTelegram.TransferId);
 
                     _logger.LogDebug($"ارسال تلگرام با شناسه {iccTelegram.TransferId} در آداپتور {PersianDescription} آغاز شد.");
@@ -244,11 +247,11 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                     _telegramDefinitions.ValidateTelegramExpiry(iccTelegram);
 
                     SendTelegram(iccTelegram);
-                    SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, true, null));
+                    TelegramSendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, true, null));
                 }
                 catch (Exception exception)
                 {
-                    SendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, false, exception));
+                    TelegramSendCompleted?.Invoke(new SendCompletedEventArgs(iccTelegram, false, exception));
                 }
             }
             TruncateSentList();
@@ -262,7 +265,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         public virtual void OnTelegramReceived(TelegramReceivedEventArgs e)
         {
-            TelegramReceived?.Invoke(e);
+            TelegramReceiveCompleted?.Invoke(e);
         }
 
         #region Temporary Duplicate Send Check
@@ -271,13 +274,14 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         {
             try
             {
-                if (_sentTelegrams.Count > 2000)
+                int count = 1000;
+                if (_sentTelegrams.Count > count * 2)
                 {
                     _sentTelegrams = _sentTelegrams
                         .OrderByDescending(x => x)
-                        .Take(1000)
+                        .Take(count)
                         .ToList();
-                    _logger.LogDebug($"SentTelegrams list in {Name} truncated. Count: {_sentTelegrams.Count}. First: {_sentTelegrams.First()}. Last: {_sentTelegrams.Last()}.");
+                    _logger.LogDebug($"SentTelegrams list in {Name} truncated from {count * 2} to {_sentTelegrams.Count}. First: {_sentTelegrams.First()}. Last: {_sentTelegrams.Last()}.");
                 }
             }
             catch (Exception exception)

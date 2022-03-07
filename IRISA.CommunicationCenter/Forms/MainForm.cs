@@ -51,18 +51,39 @@ namespace IRISA.CommunicationCenter.Forms
                 stopStartApplicationButton.ToolTipText = "متوقف نمودن برنامه";
                 stopStartApplicationButton.Image = Resources.stop;
                 Text = _uiSettings.ProgramTitle;
-                notifyIcon.Text = _uiSettings.ProgramTitle;
                 Application.DoEvents();
                 _refreshTimer.Start();
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه.");
+                _logger.LogException(exception, "بروز خطا هنگام راه اندازی برنامه. ");
                 StopApplication();
                 MessageForm.ShowErrorMessage($"{exception.Message} \r\nStack Trace:{exception.StackTrace}");
             }
         }
 
+        private void StopApplication()
+        {
+            try
+            {
+                _iccCore?.Stop();
+                stopStartApplicationButton.Image = Resources.start;
+                stopStartApplicationButton.ToolTipText = "اجرای برنامه";
+                _refreshTimer?.Stop();
+                RefreshAdaptersStatus();
+                Application.DoEvents();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه. ");
+            }
+        }
+
+        private void RestartApplication()
+        {
+            StopApplication();
+            StartApplication();
+        }
         private void InitializeRefreshTimer()
         {
             _refreshTimer = new BackgroundTimer(_logger)
@@ -80,7 +101,6 @@ namespace IRISA.CommunicationCenter.Forms
         {
             LoadRecords();
         }
-
         private void RefreshTimer_Stopped()
         {
             SetRefreshStatus(false);
@@ -88,28 +108,6 @@ namespace IRISA.CommunicationCenter.Forms
         private void RefreshTimer_Started()
         {
             SetRefreshStatus(true);
-        }
-
-        private void StopApplication()
-        {
-            try
-            {
-                _iccCore?.Stop();
-                stopStartApplicationButton.Image = Resources.start;
-                stopStartApplicationButton.ToolTipText = "اجرای برنامه";
-                _refreshTimer?.Stop();
-                Application.DoEvents();
-            }
-            catch (Exception exception)
-            {
-                _logger.LogException(exception, "بروز خطا هنگام متوقف سازی برنامه.");
-            }
-        }
-
-        private void RestartApplication()
-        {
-            StopApplication();
-            StartApplication();
         }
 
         private void DataGrid_Click(object sender, EventArgs e)
@@ -152,7 +150,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد");
+                _logger.LogException(exception, "بروز خطا هنگام بارگذاری انواع رویداد. ");
             }
         }
 
@@ -187,7 +185,7 @@ namespace IRISA.CommunicationCenter.Forms
             catch (Exception exception)
             {
                 searchModel.SendTime = DateTime.MinValue;
-                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها");
+                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها. ");
             }
 
             /*.................... Receive Time....................*/
@@ -210,7 +208,7 @@ namespace IRISA.CommunicationCenter.Forms
             catch (Exception exception)
             {
                 searchModel.ReceiveTime = DateTime.MinValue;
-                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها");
+                _logger.LogException(exception, "بروز خطا هنگام جستجوی رکورد ها. ");
             }
 
             searchModel.DropReason = dropReasonTextBox.Text;
@@ -235,6 +233,20 @@ namespace IRISA.CommunicationCenter.Forms
         {
             LoadEvents();
             LoadTransfers();
+            RefreshAdaptersStatus();
+        }
+
+        private void RefreshAdaptersStatus()
+        {
+            if (!adaptersPanel.Visible)
+                return;
+
+            foreach (var control in adaptersPanel.Controls)
+            {
+                if (!(control is AdapterUserControl))
+                    return;
+                (control as AdapterUserControl).RefreshConnection();
+            }
         }
 
         private void LoadMoreRecords()
@@ -283,7 +295,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها");
+                _logger.LogException(exception, "بروز خطا هنگام نمایش تلگرام ها. ");
             }
         }
 
@@ -326,7 +338,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها");
+                _logger.LogException(exception, "بروز خطا هنگام نمایش رویداد ها. ");
             }
         }
 
@@ -385,7 +397,7 @@ namespace IRISA.CommunicationCenter.Forms
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام لود تنظیمات.");
+                _logger.LogException(exception, "بروز خطا هنگام لود تنظیمات. ");
             }
         }
 
@@ -398,15 +410,14 @@ namespace IRISA.CommunicationCenter.Forms
                 {
                     foreach (IIccAdapter adapter in _iccCore.ConnectedAdapters)
                     {
-                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter, _logger);
+                        AdapterUserControl adapterUserControl = new AdapterUserControl(adapter);
                         adaptersPanel.Controls.Add(adapterUserControl);
-                        adapter.ConnectionChanged += Adapter_ConnectionChanged;
                     }
                 }
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها.");
+                _logger.LogException(exception, "بروز خطا هنگام بارگذاری آداپتور ها. ");
             }
         }
 
@@ -511,22 +522,6 @@ namespace IRISA.CommunicationCenter.Forms
                 StartApplication();
             }
         }
-        private void Adapter_ConnectionChanged(IIccAdapter iccAdapter)
-        {
-            if (_uiSettings.NotifyIconShowAdapterConnected)
-            {
-                string tipText;
-                if (_uiSettings.NotifyIconPersianLanguage)
-                {
-                    tipText = string.Format("کلاینت {0} {1} شد", iccAdapter.PersianDescription, iccAdapter.Connected ? "متصل" : "متوقف");
-                }
-                else
-                {
-                    tipText = string.Format("{0} Client {1}.", iccAdapter.Name, iccAdapter.Connected ? "Connected" : "Disconnected");
-                }
-                notifyIcon.ShowBalloonTip(_uiSettings.NotifyIconShowTime, "Irisa Communication Center", tipText, ToolTipIcon.Info);
-            }
-        }
         private void TelegramDetails_Click(object sender, EventArgs e)
         {
             try
@@ -542,7 +537,6 @@ namespace IRISA.CommunicationCenter.Forms
                 MessageForm.ShowErrorMessage(ex.Message);
             }
         }
-
         private async void ClearSearchButton_Click(object sender, EventArgs e)
         {
             await Task.Run(() => ClearControls(searchFlowLayoutPanel));
