@@ -51,7 +51,7 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
 
                 .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
-                //.AddSingleton<ITransferHistory, TransferHistoryInMemory>()
+                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
                 .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 .AddSingleton<IIccCore, IccCore>()
                 ;
@@ -88,7 +88,7 @@ namespace IRISA.CommunicationCenter
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            ServiceProvider.GetService<ILogger>().LogException(e.Exception, "بروز خطای کنترل نشده.");
+            ServiceProvider.GetService<ILogger>().LogException(e.Exception, "بروز خطای کنترل نشده. ");
 
         }
         private static void HandleStartupException(Exception exception)

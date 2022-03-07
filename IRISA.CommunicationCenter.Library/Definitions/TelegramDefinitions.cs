@@ -37,7 +37,7 @@ namespace IRISA.CommunicationCenter.Library.Definitions
             var telegramDefinitions = _telegramDefinitions.Where(x => x.Id == iccTelegram.TelegramId);
 
             if (telegramDefinitions.Count() == 0)
-                throw IrisaException.Create("تلگرام دریافت شده در سیستم تعریف نشده است.");
+                throw IrisaException.Create($"تلگرام دریافت شده در فایل {TelegramDefinitionFilePath} تعریف نشده است.");
 
             if (!iccTelegram.Source.HasValue())
                 throw IrisaException.Create("فرستنده تلگرام مشخص نشده است.");
@@ -51,7 +51,18 @@ namespace IRISA.CommunicationCenter.Library.Definitions
                 throw IrisaException.Create("فرستنده تعیین شده برای تلگرام با فرستنده جاری متفاوت است.");
 
             if (telegramDefinitions.Count() > 1)
-                throw IrisaException.Create("تلگرام با مشخصات دریافت شده چند بار در سیستم تعریف شده است.");
+            {
+                if (!iccTelegram.Destination.HasValue())
+                    throw IrisaException.Create("گیرنده تلگرام مشخص نشده است.");
+
+                telegramDefinitions = telegramDefinitions
+                    .Where(definition => ("," + definition.Destination?.ToLower() + ",")
+                    .Contains("," + iccTelegram.Destination.ToLower() + ","))
+                    .ToList();
+            }
+
+            if (telegramDefinitions.Count() > 1)
+                throw IrisaException.Create($"تلگرام با مشخصات دریافت شده چند بار در فایل {TelegramDefinitionFilePath} تعریف شده است.");
 
             return telegramDefinitions.Single();
         }

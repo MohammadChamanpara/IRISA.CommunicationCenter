@@ -65,22 +65,9 @@ namespace IRISA.CommunicationCenter.Oracle
         {
             var iccTransfer = iccTelegram.ToIccTransfer();
             IccTransfers.Create(iccTransfer);
-
-            if (iccTransfer.ID != 0)
-            {
-                iccTelegram.TransferId = iccTransfer.ID;
-
-                Logger.LogDebug("Created item in Oracle Queue updates the ID in the same object, no need to Query for id again");
-            }
-            else
-            {
-                iccTelegram.TransferId = IccTransfers
-                    .GetAll()
-                    .Max(x => x.ID);
-
-                Logger.LogDebug("Created item in Oracle Queue did not have the ID, A separate query executed to get the id ");
-            }
-
+            iccTelegram.TransferId = IccTransfers
+                .GetAll()
+                .Max(x => x.ID);
         }
 
         public void Edit(IccTelegram iccTelegram)

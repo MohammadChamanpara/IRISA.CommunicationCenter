@@ -30,6 +30,7 @@ namespace IRISA.CommunicationCenter.Core
         private readonly ILogger _logger;
         private readonly ITelegramDefinitions _telegramDefinitions;
 
+        [Category("Operation")]
         [DisplayName("کمترین سطح ثبت رویداد")]
         public LogLevel LogMinimumLevel
         {
@@ -44,14 +45,16 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information"), DisplayName("وضعیت اجرای پروسه")]
+        [Category("Information")]
+        [DisplayName("وضعیت اجرای پروسه")]
         public bool Started
         {
             get;
             private set;
         }
 
-        [Category("Information"), DisplayName("نوع فایل")]
+        [Category("Information")]
+        [DisplayName("نوع فایل")]
         public string FileAssembly
         {
             get
@@ -60,7 +63,8 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information"), DisplayName("ورژن برنامه")]
+        [Category("Information")]
+        [DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
             get
@@ -69,7 +73,8 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information"), DisplayName("آدرس فایل")]
+        [Category("Information")]
+        [DisplayName("آدرس فایل")]
         public string FileAddress
         {
             get
@@ -139,8 +144,9 @@ namespace IRISA.CommunicationCenter.Core
             ConnectedAdapters = new List<IIccAdapter>();
             dllSettings = new DLLSettings<IccCore>();
             InitializeLogger();
-            RecoverReadyTelegramsFromTransferHistory();
+            var recoverdTelegrams = RecoverReadyTelegramsFromTransferHistory();
             LoadAdapters();
+            SendRecoveredTelegrams(recoverdTelegrams);
             Started = true;
         }
 
@@ -166,24 +172,27 @@ namespace IRISA.CommunicationCenter.Core
         private void LoadAdapters()
         {
             ConnectedAdapters = LoadAdapters<IIccAdapter>();
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
+            ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
 
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
 
-            foreach (IIccAdapter adapter in ConnectedAdapters)
+            lock (receiveLocker)
             {
-                try
+                foreach (IIccAdapter adapter in ConnectedAdapters)
                 {
-                    adapter.TelegramReceived += Adapter_TelegramReceived;
-                    adapter.SendCompleted += Adapter_SendCompleted;
-                    adapter.Start(_logger, _telegramDefinitions);
-                }
-                catch (Exception exception)
-                {
-                    _logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها.");
+                    try
+                    {
+                        adapter.TelegramReceiveCompleted += Adapter_TelegramReceived;
+                        adapter.TelegramSendCompleted += Adapter_SendCompleted;
+                        adapter.Start(_logger, _telegramDefinitions);
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogException(exception, "بروز خطا هنگام لود کلاینت ها. ");
+                    }
                 }
             }
         }
@@ -226,7 +235,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام در صف ارسال.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام در صف ارسال. ");
             }
         }
 
@@ -234,8 +243,6 @@ namespace IRISA.CommunicationCenter.Core
         {
             try
             {
-                iccTelegram.SetAsReadyToSend();
-                TransferHistory.Save(iccTelegram);
                 IIccAdapter destinationAdapter = GetDestinationAdapter(adapters, iccTelegram.Destination);
                 _logger.LogDebug($"تلگرام با شناسه {iccTelegram.TransferId} جهت ارسال به آداپتور {destinationAdapter.PersianDescription} تحویل داده شد.");
                 destinationAdapter.Send(iccTelegram);
@@ -264,7 +271,7 @@ namespace IRISA.CommunicationCenter.Core
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام ارسال شده. ");
             }
         }
 
@@ -274,21 +281,21 @@ namespace IRISA.CommunicationCenter.Core
             {
                 if (!(dropException is IrisaException))
                 {
-                    _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد.");
+                    _logger.LogException(dropException, "بروز خطا منجر به حذف تلگرام شد. ");
                 }
 
                 iccTelegram.SetAsDropped(dropException?.AllInnerExceptionsMessages());
                 TransferHistory.Save(iccTelegram);
 
-                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد.");
+                _logger.LogInformation($"تلگرام با شناسه {iccTelegram.TransferId} حذف شد. ");
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده.");
+                _logger.LogException(exception, "بروز خطا هنگام ثبت تلگرام حذف شده. ");
             }
         }
 
-        private void RecoverReadyTelegramsFromTransferHistory()
+        private IEnumerable<IccTelegram> RecoverReadyTelegramsFromTransferHistory()
         {
             try
             {
@@ -297,27 +304,34 @@ namespace IRISA.CommunicationCenter.Core
                         .GetTelegramsToSend()
                         .OrderBy(x => x.TransferId);
 
-                if (!telegrams.Any())
-                    return;
+                if (telegrams.Any())
+                {
+                    string verb = telegrams.Count() > 1 ? "شدند" : "شد";
+                    _logger.LogInformation($"{telegrams.Count()} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
+                }
 
-                string verb = telegrams.Count() > 1 ? "شدند" : "شد";
-                _logger.LogInformation($"{telegrams.Count()} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
-
-                foreach (var telegram in telegrams)
-                    SendTelegram(telegram, ConnectedAdapters);
+                return telegrams;
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, "بروز خطا هنگام بازیابی تلگرام های آماده ارسال از لیست تاریخچه");
+                _logger.LogException(exception, "بروز خطا هنگام بازیابی تلگرام های آماده ارسال از لیست تاریخچه. ");
                 throw;
             }
+        }
+
+        private void SendRecoveredTelegrams(IEnumerable<IccTelegram> telegrams)
+        {
+            foreach (var telegram in telegrams)
+                SendTelegram(telegram, ConnectedAdapters);
+
+            _logger.LogInformation($"{telegrams.Count()} تلگرام بازیابی شده در صف ارسال آداپتور های مقصد قرار داده شد. ");
         }
 
         public IIccAdapter GetDestinationAdapter(IEnumerable<IIccAdapter> adapters, string destinationName)
         {
             if (!destinationName.HasValue())
             {
-                throw IrisaException.Create("مقصد تلگرام مشخص نشده است.");
+                throw IrisaException.Create("مقصد تلگرام مشخص نشده است. ");
             }
 
             var destinationAdapter = adapters.Where(x => x.Name == destinationName);
