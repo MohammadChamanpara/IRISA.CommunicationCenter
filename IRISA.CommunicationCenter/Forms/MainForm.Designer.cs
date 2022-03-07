@@ -717,7 +717,6 @@ namespace IRISA.CommunicationCenter.Forms
             // idTextBox
             // 
             this.idTextBox.Location = new System.Drawing.Point(3, 22);
-            this.idTextBox.Mask = "0000000";
             this.idTextBox.Name = "idTextBox";
             this.idTextBox.PromptChar = ' ';
             this.idTextBox.Size = new System.Drawing.Size(61, 21);
@@ -845,7 +844,6 @@ namespace IRISA.CommunicationCenter.Forms
             // telegramIdTextBox
             // 
             this.telegramIdTextBox.Location = new System.Drawing.Point(5, 22);
-            this.telegramIdTextBox.Mask = "000000000";
             this.telegramIdTextBox.Name = "telegramIdTextBox";
             this.telegramIdTextBox.PromptChar = ' ';
             this.telegramIdTextBox.Size = new System.Drawing.Size(71, 21);
