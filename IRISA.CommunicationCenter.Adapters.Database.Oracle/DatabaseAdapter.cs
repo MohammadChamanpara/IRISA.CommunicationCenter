@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Adapters.Database.Oracle.Model;
 using IRISA.CommunicationCenter.Library.Adapters;
+using IRISA.CommunicationCenter.Library.Loggers;
 using IRISA.CommunicationCenter.Library.Models;
 using IRISA.CommunicationCenter.Oracle;
 using System;
@@ -30,6 +31,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
+        [Category("Operation")]
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
         {
@@ -43,6 +45,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
+        [Category("Operation")]
         [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
         public char BodySeparator
         {
@@ -56,6 +59,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
+        [Category("Operation")]
         [DisplayName("تعیین مقصد تلگرام توسط فرستنده")]
         public bool GetDestinationFromSender
         {
@@ -78,12 +82,101 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
 
         protected override void SendTelegram(IccTelegram iccTelegram)
         {
+            EnsureDatabaseConnection();
+
             var clientTelegram = ToClientTelegram(iccTelegram);
 
             using (EntityBusiness<Entities, IccClientTelegram> clientTelegrams = ClientTelegrams)
             {
+                int? countBeforeInsert = null;
+                try
+                {
+                    countBeforeInsert = clientTelegrams.GetAll().Count();
+                    _logger.LogDebug($"[DEBUG] count before insert: {countBeforeInsert}.");
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogException(exception, "[DEBUG] Error in retrieving number of records before insert.");
+                }
+
                 clientTelegrams.Create(clientTelegram);
+
+                int? countAfterInsert = null;
+                try
+                {
+                    countAfterInsert = clientTelegrams.GetAll().Count();
+                    _logger.LogDebug($"[DEBUG] Count After insert: {countAfterInsert}.");
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogException(exception, "[DEBUG] Error in retrieving number of records after insert.");
+                }
+
+                if (countBeforeInsert.HasValue && countAfterInsert.HasValue)
+                {
+                    if (countAfterInsert.Value - countBeforeInsert.Value < 1)
+                    {
+                        _logger.LogError($"[DEBUG] Inserting record in client Telegrams in the {Name} was not successful. Count Before: {countBeforeInsert}, Count After: {countAfterInsert}");
+                    }
+                }
+
             }
+        }
+
+        protected override void ReceiveTimer_DoWork()
+        {
+            EnsureDatabaseConnection();
+
+            using (var clientTelegramsTable = ClientTelegrams)
+            {
+                List<IccClientTelegram> clientTelegrams = clientTelegramsTable
+                        .GetAll()
+                        .Where
+                        (
+                            t =>
+                            t.PROCESSED == false &&
+                            t.SOURCE.ToLower() == Name.ToLower() &&
+                            t.READY_FOR_CLIENT == false
+                        )
+                        .Take(100)
+                        .ToList();
+
+                _logger.LogDebug($"{clientTelegrams.Count} تلگرام جهت ارسال از پایگاه داده {PersianDescription} بازیابی شدند. ");
+
+                foreach (IccClientTelegram clientTelegram in clientTelegrams)
+                {
+                    IccTelegram iccTelegram = new IccTelegram
+                    {
+                        Source = Name
+                    };
+
+                    bool successful = false;
+                    Exception failException = null;
+
+                    try
+                    {
+                        iccTelegram = ToIccTelegram(clientTelegram);
+                        successful = true;
+                    }
+                    catch (Exception exception)
+                    {
+                        failException = exception;
+                        successful = false;
+                    }
+                    finally
+                    {
+                        clientTelegram.PROCESSED = true;
+                        clientTelegramsTable.Edit(clientTelegram);
+                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, successful, failException));
+                    }
+                }
+            }
+        }
+
+        private void EnsureDatabaseConnection()
+        {
+            if (!Connected)
+                throw IrisaException.Create($"{PersianDescription} قادر به دسترسی به پایگاه داده نیست. ");
         }
 
         private IccClientTelegram ToClientTelegram(IccTelegram iccTelegram)
@@ -119,50 +212,5 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             return iccTelegram;
         }
 
-        protected override void ReceiveTimer_DoWork()
-        {
-            using (var clientTelegramsTable = ClientTelegrams)
-            {
-                List<IccClientTelegram> clientTelegrams = clientTelegramsTable
-                        .GetAll()
-                        .Where
-                        (
-                            t =>
-                            t.PROCESSED == false &&
-                            t.SOURCE.ToLower() == Name.ToLower() &&
-                            t.READY_FOR_CLIENT == false
-                        )
-                        .Take(100)
-                        .ToList();
-
-                foreach (IccClientTelegram clientTelegram in clientTelegrams)
-                {
-                    IccTelegram iccTelegram = new IccTelegram
-                    {
-                        Source = Name
-                    };
-
-                    bool successful = false;
-                    Exception failException = null;
-
-                    try
-                    {
-                        iccTelegram = ToIccTelegram(clientTelegram);
-                        successful = true;
-                    }
-                    catch (Exception exception)
-                    {
-                        failException = exception;
-                        successful = false;
-                    }
-                    finally
-                    {
-                        clientTelegram.PROCESSED = true;
-                        clientTelegramsTable.Edit(clientTelegram);
-                        OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, successful, failException));
-                    }
-                }
-            }
-        }
     }
 }
