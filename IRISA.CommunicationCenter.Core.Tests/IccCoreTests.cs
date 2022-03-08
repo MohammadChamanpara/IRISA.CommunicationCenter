@@ -37,7 +37,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             var adapterRepository = MockOfAdapterRepository(adapter.Object);
 
-            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository);
+            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository.Object);
 
             // Act
             iccCore.Start();
@@ -45,8 +45,12 @@ namespace IRISA.CommunicationCenter.Core.Tests
             // Assert
             iccCore.Started.Should().BeTrue();
             adapter.Verify(x => x.Send(telegram), Times.Exactly(2));
-            transferHistory.Verify(x => x.GetTelegramsToSend(), Times.Once());
+
+            transferHistory.Verify(x => x.GetTelegramsToSend(), Times.Once);
             transferHistory.GetTelegramsShouldNotBeCalled();
+
+            adapterRepository.Verify(x => x.GetAll(), Times.Once);
+
             logger.ShouldHaveNoErrors();
         }
 
@@ -75,7 +79,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             var adapterRepository = MockOfAdapterRepository(sourceAdapter, destinationAdapter);
 
-            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository);
+            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository.Object);
 
             // Act
             iccCore.Start();
@@ -88,7 +92,6 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             destinationAdapter.SentTelegrams.Count.Should().Be(1);
             destinationAdapter.SentTelegrams.Single().Sent.Should().BeTrue();
-            destinationAdapter.SentTelegrams.Single().Dropped.Should().BeFalse();
             destinationAdapter.SentTelegrams.Single().Destination.Should().Be(destinationAdapterName);
 
             transferHistory.Verify(x => x.GetTelegramsToSend(), Times.Once());
@@ -107,7 +110,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             IccTelegram telegram = new IccTelegram()
             {
-                Destination = $"{destination1AdapterName},{destination2AdapterName}"
+                Destination = $",{destination1AdapterName},,{destination2AdapterName},,,"
             };
 
             var logger = new Mock<ILogger>();
@@ -122,7 +125,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             var adapterRepository = MockOfAdapterRepository(sourceAdapter, destination1Adapter, destination2Adapter);
 
-            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository);
+            var iccCore = new IccCore(logger.Object, transferHistory.Object, telegramDefinitions, adapterRepository.Object);
 
             // Act
             iccCore.Start();
@@ -135,12 +138,10 @@ namespace IRISA.CommunicationCenter.Core.Tests
 
             destination1Adapter.SentTelegrams.Count.Should().Be(1);
             destination1Adapter.SentTelegrams.Single().Sent.Should().BeTrue();
-            destination1Adapter.SentTelegrams.Single().Dropped.Should().BeFalse();
             destination1Adapter.SentTelegrams.Single().Destination.Should().Be(destination1AdapterName);
 
             destination2Adapter.SentTelegrams.Count.Should().Be(1);
             destination2Adapter.SentTelegrams.Single().Sent.Should().BeTrue();
-            destination2Adapter.SentTelegrams.Single().Dropped.Should().BeFalse();
             destination2Adapter.SentTelegrams.Single().Destination.Should().Be(destination2AdapterName);
 
             transferHistory.Verify(x => x.GetTelegramsToSend(), Times.Once());
@@ -149,7 +150,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
             logger.ShouldHaveNoErrors();
         }
 
-        private static IAdapterRepository MockOfAdapterRepository(params IIccAdapter[] adapters)
+        private static Mock<IAdapterRepository> MockOfAdapterRepository(params IIccAdapter[] adapters)
         {
             var adapterRepository = new Mock<IAdapterRepository>();
 
@@ -157,7 +158,7 @@ namespace IRISA.CommunicationCenter.Core.Tests
                 .Setup(x => x.GetAll())
                 .Returns(new List<IIccAdapter>(adapters));
 
-            return adapterRepository.Object;
+            return adapterRepository;
         }
     }
 }
