@@ -310,21 +310,20 @@ namespace IRISA.CommunicationCenter.Core
 
             string[] destinations = iccTelegram.Destination.Split(',');
 
-            for (int i = 0; i < destinations.Length; i++)
+            foreach (var destination in destinations)
             {
-                string text = destinations[i];
-                if (!(text.Trim() == ""))
+                if (!destination.Trim().HasValue())
+                    continue;
+             
+                IccTelegram item = new IccTelegram
                 {
-                    IccTelegram item = new IccTelegram
-                    {
-                        Destination = text,
-                        TelegramId = iccTelegram.TelegramId,
-                        SendTime = iccTelegram.SendTime,
-                        Source = iccTelegram.Source,
-                        Body = new List<string>(iccTelegram.Body)
-                    };
-                    iccTelegrams.Add(item);
-                }
+                    Destination = destination,
+                    TelegramId = iccTelegram.TelegramId,
+                    SendTime = iccTelegram.SendTime,
+                    Source = iccTelegram.Source,
+                    Body = new List<string>(iccTelegram.Body)
+                };
+                iccTelegrams.Add(item);
             }
 
             if (destinations.Length > 1)
