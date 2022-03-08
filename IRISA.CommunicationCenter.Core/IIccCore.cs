@@ -8,7 +8,7 @@ namespace IRISA.CommunicationCenter.Core
     {
         bool Started { get; }
         ITransferHistory TransferHistory { get; }
-        List<IIccAdapter> ConnectedAdapters { get; }
+        IEnumerable<IIccAdapter> ConnectedAdapters { get; }
         void Stop();
         void Start();
     }

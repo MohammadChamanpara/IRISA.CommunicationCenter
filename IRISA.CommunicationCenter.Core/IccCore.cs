@@ -18,7 +18,7 @@ namespace IRISA.CommunicationCenter.Core
     public class IccCore : IIccCore
     {
         [Browsable(false)]
-        public List<IIccAdapter> ConnectedAdapters { get; private set; }
+        public IEnumerable<IIccAdapter> ConnectedAdapters { get; private set; }
 
         [Browsable(false)]
         public ITransferHistory TransferHistory { get; set; }
@@ -29,6 +29,8 @@ namespace IRISA.CommunicationCenter.Core
 
         private readonly ILogger _logger;
         private readonly ITelegramDefinitions _telegramDefinitions;
+        private readonly IAdapterRepository _adapterRepository;
+
 
         [Category("Operation")]
         [DisplayName("کمترین سطح ثبت رویداد")]
@@ -83,60 +85,12 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        public IccCore(ILogger logger, ITransferHistory transferHistory, ITelegramDefinitions telegramDefinitions)
+        public IccCore(ILogger logger, ITransferHistory transferHistory, ITelegramDefinitions telegramDefinitions, IAdapterRepository adapterRepository)
         {
             _logger = logger;
             TransferHistory = transferHistory;
             _telegramDefinitions = telegramDefinitions;
-        }
-
-        public static List<T> LoadAdapters<T>()
-        {
-            return LoadAdapters<T>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Adapters"));
-        }
-
-        public static List<T> LoadAdapters<T>(string directory)
-        {
-            List<T> result;
-            try
-            {
-                List<T> list = new List<T>();
-                if (!Directory.Exists(directory))
-                {
-                    throw IrisaException.Create($"مسیر ذخیره آداپتور ها موجود نیست. \r\n{directory}");
-                }
-                Type typeFromHandle = typeof(T);
-                string[] files = Directory.GetFiles(directory, "*.dll");
-                for (int i = 0; i < files.Length; i++)
-                {
-                    string path = files[i];
-                    Type[] types = Assembly.LoadFile(path).GetTypes();
-                    for (int j = 0; j < types.Length; j++)
-                    {
-                        Type type = types[j];
-                        if (typeFromHandle.IsAssignableFrom(type) && typeFromHandle != type && !type.ContainsGenericParameters)
-                        {
-                            T item = (T)((object)Activator.CreateInstance(type));
-                            list.Add(item);
-                        }
-                    }
-                }
-                result = list;
-            }
-            catch (Exception exception)
-            {
-                string message = exception.Message;
-                if (exception is ReflectionTypeLoadException)
-                {
-                    ReflectionTypeLoadException typeLoadException = exception as ReflectionTypeLoadException;
-                    if (typeLoadException?.LoaderExceptions.Count() > 0)
-                    {
-                        message = typeLoadException.LoaderExceptions.First<Exception>().Message;
-                    }
-                }
-                throw IrisaException.Create($"خطا هنگام لود کردن آداپتور ها. \r\n{message}");
-            }
-            return result;
+            _adapterRepository = adapterRepository;
         }
 
         public void Start()
@@ -171,11 +125,8 @@ namespace IRISA.CommunicationCenter.Core
 
         private void LoadAdapters()
         {
-            ConnectedAdapters = LoadAdapters<IIccAdapter>();
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TestAdapter\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.TcpIp.Wasco\bin\Debug"));
-            //ConnectedAdapters.AddRange(LoadAdapters<IIccAdapter>(@"C:\Projects\ICC\IRISA.CommunicationCenter.Adapters.Database.Oracle\bin\Debug"));
-
+            ConnectedAdapters = _adapterRepository.GetAll();
+            
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
 

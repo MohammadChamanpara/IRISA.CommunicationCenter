@@ -1,5 +1,6 @@
 using IRISA.CommunicationCenter.Core;
 using IRISA.CommunicationCenter.Forms;
+using IRISA.CommunicationCenter.Library.Adapters;
 using IRISA.CommunicationCenter.Library.Core;
 using IRISA.CommunicationCenter.Library.Definitions;
 using IRISA.CommunicationCenter.Library.Logging;
@@ -20,7 +21,7 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                using (Mutex mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
+                using (var mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
                 {
                     if (!firstInstanceOfApp)
                     {
@@ -37,7 +38,9 @@ namespace IRISA.CommunicationCenter
             }
             catch (Exception exception)
             {
-                HandleStartupException(exception);
+                string message = "بروز خطا هنگام اجرای اولیه برنامه";
+                ServiceProvider.GetService<ILogger>().LogException(exception, message);
+                MessageForm.ShowErrorMessage($"{message} \r\n{exception.Message}");
             }
         }
 
@@ -49,14 +52,24 @@ namespace IRISA.CommunicationCenter
                 .AddSingleton<ILogger, Logger>()
                 .AddSingleton<ILogAppender, LogAppenderInMemory>()
                 .AddSingleton<ILogAppender, LogAppenderInFile>()
-
-                .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
-                //.AddSingleton<ITransferHistory, TransferHistoryInMemory>()
-                .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
                 .AddSingleton<IIccCore, IccCore>()
-                ;
+                .AddSingleton<ITelegramDefinitions, TelegramDefinitions>()
+                .AddSingleton<IAdapterRepository, AdapterRepositoryInFile>()
+                .AddSingleton<ITransferHistory, TransferHistoryInOracle>()
+                .AddDebugServices();
 
             ServiceProvider = services.BuildServiceProvider();
+        }
+
+        private static IServiceCollection AddDebugServices(this IServiceCollection services)
+        {
+#if DEBUG
+
+            services
+                .AddSingleton<ITransferHistory, TransferHistoryInMemory>()
+                .AddSingleton<IAdapterRepository, AdapterRepositoryInFileForDebug>();
+#endif
+            return services;
         }
 
         private static void Run()
@@ -91,12 +104,5 @@ namespace IRISA.CommunicationCenter
             ServiceProvider.GetService<ILogger>().LogException(e.Exception, "بروز خطای کنترل نشده. ");
 
         }
-        private static void HandleStartupException(Exception exception)
-        {
-            string message = "بروز خطا هنگام اجرای اولیه برنامه";
-            ServiceProvider.GetService<ILogger>().LogException(exception, message);
-            MessageForm.ShowErrorMessage($"{message} \r\n{exception.Message}");
-        }
-
     }
 }
