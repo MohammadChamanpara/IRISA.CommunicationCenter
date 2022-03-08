@@ -44,11 +44,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             try
             {
                 iccTelegram.Destination = _telegramDefinitions.Find(iccTelegram).Destination;
-                OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, true, null));
+                OnTelegramReceived(new ReceiveCompletedEventArgs(iccTelegram, true, null));
             }
             catch (Exception exception)
             {
-                OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram, false, exception));
+                OnTelegramReceived(new ReceiveCompletedEventArgs(iccTelegram, false, exception));
             }
 
             if (Name == "Mamad")
@@ -62,11 +62,11 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
                 try
                 {
                     iccTelegram2.Destination = _telegramDefinitions.Find(iccTelegram2).Destination;
-                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, true, null));
+                    OnTelegramReceived(new ReceiveCompletedEventArgs(iccTelegram2, true, null));
                 }
                 catch (Exception exception)
                 {
-                    OnTelegramReceived(new TelegramReceivedEventArgs(iccTelegram2, false, exception));
+                    OnTelegramReceived(new ReceiveCompletedEventArgs(iccTelegram2, false, exception));
                 }
             }
         }

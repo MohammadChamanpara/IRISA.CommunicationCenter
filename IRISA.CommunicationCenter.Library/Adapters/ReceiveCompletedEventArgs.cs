@@ -2,7 +2,7 @@ using IRISA.CommunicationCenter.Library.Models;
 using System;
 namespace IRISA.CommunicationCenter.Library.Adapters
 {
-    public class TelegramReceivedEventArgs
+    public class ReceiveCompletedEventArgs
 	{
 		public IccTelegram IccTelegram
 		{
@@ -19,7 +19,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 			get;
 			set;
 		}
-		public TelegramReceivedEventArgs(IccTelegram iccTelegram, bool successful, Exception failException)
+		public ReceiveCompletedEventArgs(IccTelegram iccTelegram, bool successful, Exception failException)
 		{
 			IccTelegram = iccTelegram;
 			Successful = successful;

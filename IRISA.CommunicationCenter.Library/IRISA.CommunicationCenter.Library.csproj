@@ -49,9 +49,9 @@
     <Compile Include="Adapters\AdapterRepositoryInFile.cs" />
     <Compile Include="Adapters\BaseAdapter.cs" />
     <Compile Include="Adapters\IAdapterRepository.cs" />
-    <Compile Include="Adapters\TelegramSendCompletedEventArgs.cs" />
+    <Compile Include="Adapters\SendCompletedEventArgs.cs" />
     <Compile Include="Adapters\IIccAdapter.cs" />
-    <Compile Include="Adapters\TelegramReceivedEventArgs.cs" />
+    <Compile Include="Adapters\ReceiveCompletedEventArgs.cs" />
     <Compile Include="Adapters\TcpIpBaseAdapter.cs" />
     <Compile Include="Definitions\IFieldDefinition.cs" />
     <Compile Include="Definitions\FieldDefinition.cs" />

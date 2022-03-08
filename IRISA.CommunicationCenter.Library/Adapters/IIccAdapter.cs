@@ -6,7 +6,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 {
     public interface IIccAdapter
     {
-        event Action<TelegramReceivedEventArgs> TelegramReceiveCompleted;
+        event Action<ReceiveCompletedEventArgs> TelegramReceiveCompleted;
         event Action<SendCompletedEventArgs> TelegramSendCompleted;
 
         string Name { get; }

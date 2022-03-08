@@ -22,7 +22,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         private BackgroundTimer _receiveTimer;
         private BackgroundTimer _sendTimer;
 
-        public event Action<TelegramReceivedEventArgs> TelegramReceiveCompleted;
+        public event Action<ReceiveCompletedEventArgs> TelegramReceiveCompleted;
         public event Action<SendCompletedEventArgs> TelegramSendCompleted;
 
 
@@ -263,7 +263,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         protected abstract void SendTelegram(IccTelegram iccTelegram);
 
-        public virtual void OnTelegramReceived(TelegramReceivedEventArgs e)
+        public virtual void OnTelegramReceived(ReceiveCompletedEventArgs e)
         {
             TelegramReceiveCompleted?.Invoke(e);
         }
