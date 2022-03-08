@@ -29,7 +29,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
                 return "Tcp/Ip";
             }
         }
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("کلاینت متصل شده - آدرس")]
         public string ClientServerIp
         {
@@ -55,7 +55,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("کلاینت متصل شده - نام")]
         public string ClientServerName
         {
@@ -81,7 +81,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Telegrams")]
+        [Category("ساختار تلگرام")]
         [DisplayName("کاراکتر آغاز کننده تلگرام")]
         public char StartCharacter
         {
@@ -95,7 +95,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Telegrams")]
+        [Category("ساختار تلگرام")]
         [DisplayName("کاراکتر خاتمه دهنده تلگرام")]
         public char EndCharacter
         {
@@ -109,7 +109,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Telegrams")]
+        [Category("ساختار تلگرام")]
         [DisplayName("سایز هدر تلگرام بر حسب بایت")]
         public int HeaderSize
         {
@@ -123,7 +123,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("شناسه کلاینت")]
         public int Id
         {
@@ -137,7 +137,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Connection")]
+        [Category("اتصال")]
         [DisplayName("آدرس کلاینت")]
         public string Ip
         {
@@ -151,7 +151,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Connection")]
+        [Category("اتصال")]
         [DisplayName("شماره پورت ارتباطی")]
         public int Port
         {
@@ -165,7 +165,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("دوره زمانی بررسی حضور کلاینت بر حسب میلی ثانیه")]
         public int ClientDetectInterval
         {
@@ -179,7 +179,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("حداکثر زمان معتبر بودن اتصال کلاینت بر حسب میلی ثانیه")]
         public int TcpIpConnectExpireTime
         {
@@ -193,7 +193,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("حداکثر زمان انتظار برای ارسال پکت بر حسب میلی ثانیه")]
         public int SendTimeout
         {

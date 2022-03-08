@@ -13,7 +13,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
         public class TestAdapter : BaseAdapter<TestAdapter>
         {
             [DisplayName("تاخیر در ارسال - میلی ثانیه")]
-            [Category("Operation")]
+            [Category("عملیات")]
             public int DelayInSend
             {
                 get
@@ -31,7 +31,7 @@ namespace IRISA.CommunicationCenter.Adapters.TestAdapter
             protected override void SendTelegram(IccTelegram iccTelegram)
             {
                 Thread.Sleep(DelayInSend);
-                File.AppendAllText($"c:\\icc2\\{Name}.txt", $"{DateTime.Now}: {iccTelegram.TransferId}\r\n");
+                File.AppendAllText($"c:\\icc\\{Name}.txt", $"{DateTime.Now}: {iccTelegram.TransferId}\r\n");
             }
 
             protected override void ReceiveTimer_DoWork()

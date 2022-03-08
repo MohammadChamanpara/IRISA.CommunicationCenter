@@ -31,7 +31,7 @@ namespace IRISA.CommunicationCenter.Oracle
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
         {
@@ -46,10 +46,10 @@ namespace IRISA.CommunicationCenter.Oracle
         }
 
         [DisplayName("نوع صف")]
-        [Category("Information")]
+        [Category("اطلاعات")]
         public string Type => nameof(TransferHistoryInOracle);
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("وضعیت اتصال")]
         public bool Connected
         {

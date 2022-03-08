@@ -165,10 +165,10 @@ namespace IRISA.CommunicationCenter.Core
         }
 
         [DisplayName("نوع صف")]
-        [Category("Information")]
+        [Category("اطلاعات")]
         public string Type => nameof(TransferHistoryInMemory);
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("وضعیت اتصال")]
         public bool Connected => true;
     }

@@ -32,7 +32,7 @@ namespace IRISA.CommunicationCenter.Core
         private readonly IAdapterRepository _adapterRepository;
 
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("کمترین سطح ثبت رویداد")]
         public LogLevel LogMinimumLevel
         {
@@ -47,7 +47,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("وضعیت اجرای پروسه")]
         public bool Started
         {
@@ -55,7 +55,7 @@ namespace IRISA.CommunicationCenter.Core
             private set;
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("نوع فایل")]
         public string FileAssembly
         {
@@ -65,7 +65,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
@@ -75,7 +75,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("آدرس فایل")]
         public string FileAddress
         {

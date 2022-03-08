@@ -31,7 +31,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("رشته اتصال به پایگاه داده")]
         public string ConnectionString
         {
@@ -45,7 +45,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("کاراکتر جدا کننده فیلد های تلگرام")]
         public char BodySeparator
         {
@@ -59,7 +59,7 @@ namespace IRISA.CommunicationCenter.Adapters.Database.Oracle
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("تعیین مقصد تلگرام توسط فرستنده")]
         public bool GetDestinationFromSender
         {

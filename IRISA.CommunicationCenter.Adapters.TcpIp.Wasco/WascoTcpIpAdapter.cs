@@ -24,14 +24,14 @@ namespace IRISA.CommunicationCenter.Adapters.TcpIp.Wasco
             return completeTelegram[HeaderSize - 1];
         }
 
-        [Category("CRC")]
+        [Category("اعتبار سنجی")]
         public Byte CrcDivisor
         {
             get { return _dllSettings.FindByteValue("CrcDivisor", (byte)0xF); }
             set { _dllSettings.SaveSetting("CrcDivisor", value); }
         }
 
-        [Category("CRC")]
+        [Category("اعتبار سنجی")]
         public Boolean CheckCrc
         {
             get { return _dllSettings.FindBooleanValue("CheckCrc", true); }

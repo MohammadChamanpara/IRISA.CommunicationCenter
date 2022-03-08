@@ -31,18 +31,18 @@ namespace IRISA.CommunicationCenter.Library.Adapters
 
         #region Properties
 
-        [Category("Information")]
+        [Category("وضعیت")]
         [DisplayName("تعداد تلگرام ها در صف ارسال آداپتور")]
         public int TelegramsCount => _sendQueue.Count;
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("نوع کلاینت")]
         public abstract string Type
         {
             get;
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("نام فایل آداپتور")]
         public string FileName
         {
@@ -52,7 +52,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("ورژن برنامه")]
         public string FileAssemblyVersion
         {
@@ -63,7 +63,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("آدرس فایل آداپتور")]
         public string FileAddress
         {
@@ -73,7 +73,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information")]
+        [Category("اطلاعات")]
         [DisplayName("نوع فایل آداپتور")]
         public string FileAssembly
         {
@@ -83,7 +83,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Information")]
+        [Category("وضعیت")]
         [DisplayName("درحال اجرا")]
         public bool Started
         {
@@ -91,7 +91,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             private set;
         }
 
-        [Category("Information")]
+        [Category("وضعیت")]
         [DisplayName("وضعیت اتصال کلاینت")]
         public bool Connected
         {
@@ -113,7 +113,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("دوره زمانی بررسی دریافت تلگرام بر حسب میلی ثانیه")]
         public int TelegramReceiveInterval
         {
@@ -127,7 +127,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Operation")]
+        [Category("عملیات")]
         [DisplayName("دوره زمانی ارسال تلگرام بر حسب میلی ثانیه")]
         public int TelegramSendInterval
         {
@@ -142,7 +142,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
         }
 
 
-        [Category("Name")]
+        [Category("نام")]
         [DisplayName("نام کلاینت")]
         public string Name
         {
@@ -156,7 +156,7 @@ namespace IRISA.CommunicationCenter.Library.Adapters
             }
         }
 
-        [Category("Name")]
+        [Category("نام")]
         [DisplayName("نام فارسی کلاینت")]
         public string PersianDescription
         {
