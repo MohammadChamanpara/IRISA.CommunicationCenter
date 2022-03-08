@@ -22,7 +22,7 @@ namespace IRISA.CommunicationCenter.Forms
         private const string ApplicationPassword = "iccAdmin";
 
         private BackgroundTimer _refreshTimer;
-        private UiSettings _uiSettings = new UiSettings();
+        private readonly UiSettings _uiSettings = new UiSettings();
 
         private readonly IIccCore _iccCore;
         private readonly ILogger _logger;
