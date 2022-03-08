@@ -21,14 +21,13 @@ namespace IRISA.CommunicationCenter
         {
             try
             {
-                using (var mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp))
+                var mutex = new Mutex(true, "Irisa.CommunicationCenter", out bool firstInstanceOfApp);
+                if (!firstInstanceOfApp)
                 {
-                    if (!firstInstanceOfApp)
-                    {
-                        MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد");
-                        return;
-                    }
+                    MessageForm.ShowErrorMessage("نسخه دیگری از نرم افزار مرکز ارتباطات ایریسا در حال اجرا می باشد. ");
+                    return;
                 }
+                GC.KeepAlive(mutex);
 
                 InitializeApplication();
 
