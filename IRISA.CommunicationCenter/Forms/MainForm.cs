@@ -22,7 +22,7 @@ namespace IRISA.CommunicationCenter.Forms
         private const string ApplicationPassword = "iccAdmin";
 
         private BackgroundTimer _refreshTimer;
-        private UiSettings _uiSettings;
+        private UiSettings _uiSettings = new UiSettings();
 
         private readonly IIccCore _iccCore;
         private readonly ILogger _logger;
@@ -42,7 +42,6 @@ namespace IRISA.CommunicationCenter.Forms
         {
             try
             {
-                InitialUiSettings();
                 InitializeRefreshTimer();
                 _iccCore.Start();
                 LoadAdapters();
@@ -128,11 +127,6 @@ namespace IRISA.CommunicationCenter.Forms
                 eventsRefreshButton.Image = Resources.refresh_disable;
             }
             Application.DoEvents();
-        }
-
-        private void InitialUiSettings()
-        {
-            _uiSettings = new UiSettings();
         }
 
         private void LoadLogLevelComboBox()
