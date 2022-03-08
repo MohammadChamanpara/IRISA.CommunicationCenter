@@ -126,7 +126,7 @@ namespace IRISA.CommunicationCenter.Core
         private void LoadAdapters()
         {
             ConnectedAdapters = _adapterRepository.GetAll();
-            
+
             if (!ConnectedAdapters.Any())
                 _logger.LogWarning("کلاینتی برای اتصال یافت نشد.");
 
@@ -148,7 +148,7 @@ namespace IRISA.CommunicationCenter.Core
             }
         }
 
-        private void Adapter_TelegramReceived(TelegramReceivedEventArgs e)
+        private void Adapter_TelegramReceived(ReceiveCompletedEventArgs e)
         {
             lock (receiveLocker)
             {
@@ -252,10 +252,10 @@ namespace IRISA.CommunicationCenter.Core
             {
                 var telegrams =
                     TransferHistory
-                        .GetTelegramsToSend()
-                        .OrderBy(x => x.TransferId);
+                        ?.GetTelegramsToSend()
+                        ?.OrderBy(x => x.TransferId);
 
-                if (telegrams.Any())
+                if (telegrams?.Any() == true)
                 {
                     string verb = telegrams.Count() > 1 ? "شدند" : "شد";
                     _logger.LogInformation($"{telegrams.Count()} تلگرام آماده ارسال از لیست تاریخچه بازیابی {verb}.");
@@ -272,10 +272,14 @@ namespace IRISA.CommunicationCenter.Core
 
         private void SendRecoveredTelegrams(IEnumerable<IccTelegram> telegrams)
         {
+            if (telegrams == null)
+                return;
+
             foreach (var telegram in telegrams)
                 SendTelegram(telegram, ConnectedAdapters);
 
-            _logger.LogInformation($"{telegrams.Count()} تلگرام بازیابی شده در صف ارسال آداپتور های مقصد قرار داده شد. ");
+            string verb = telegrams.Count() > 1 ? "شدند" : "شد";
+            _logger.LogInformation($"{telegrams.Count()} تلگرام بازیابی شده پردازش {verb}.");
         }
 
         public IIccAdapter GetDestinationAdapter(IEnumerable<IIccAdapter> adapters, string destinationName)
